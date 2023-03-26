@@ -45,7 +45,7 @@ public class Experiment : MonoBehaviour {
     {
         fixCross = GameObject.Find("FixationCross");
         array = new CircularArray();
-        array.Init(3, 10);
+        array.Init(1.5f, 10);
         array.myObj.transform.SetParent(fixCross.transform);
         array.myObj.transform.position = fixCross.transform.position;
     }
@@ -58,17 +58,20 @@ public class Experiment : MonoBehaviour {
             timer.Update();
             if (!timer.isRunning && isCurrentTrialFinished)
             {
-                Debug.Log("setting " + currentSettingNumber + " time: " + currentSetting.timeIntervals[currentTimeIntervalNumber] + " trial " + trialsSoFar);
-                var ret = GenerateSymbols(currentSetting.numbOfTargets, currentSetting.numbOfDistractors, lettersT, lettersD);
-                //Debug.Log("Symbols Generated");
-                array.PutIntoSlots(ret.Item1, ret.Item2);
-                //Debug.Log("Symbols in Slots");
-                if (currentSetting.targetsFarAway) { array.PushBack(currentSetting.depth, true); }
-                else if (currentSetting.distractorsFarAway) { array.PushBack(currentSetting.depth, false); }
-                //Debug.Log("Symbols Pushed");
-                timer.StartCounting(currentTimeInterval);
-                //Debug.Log("Timer Started");
-                isCurrentTrialFinished = false;
+                if ( true ||OVRInput.Get(OVRInput.Button.One))
+                {
+                    Debug.Log("setting " + currentSettingNumber + " time: " + currentSetting.timeIntervals[currentTimeIntervalNumber] + " trial " + trialsSoFar);
+                    var ret = GenerateSymbols(currentSetting.numbOfTargets, currentSetting.numbOfDistractors, lettersT, lettersD);
+                    //Debug.Log("Symbols Generated");
+                    array.PutIntoSlots(ret.Item1, ret.Item2);
+                    //Debug.Log("Symbols in Slots");
+                    if (currentSetting.targetsFarAway) { array.PushBack(currentSetting.depth, true); }
+                    else if (currentSetting.distractorsFarAway) { array.PushBack(currentSetting.depth, false); }
+                    //Debug.Log("Symbols Pushed");
+                    timer.StartCounting(currentTimeInterval);
+                    //Debug.Log("Timer Started");
+                    isCurrentTrialFinished = false;
+                }
             }
             else if (!timer.isRunning)
             {
