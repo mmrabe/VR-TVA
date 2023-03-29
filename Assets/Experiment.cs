@@ -7,7 +7,6 @@ using System;
 public class Experiment : MonoBehaviour {
     private List<ExperimentSetting> settings;
     CircularArray array;
-    public GameObject canvas;
 
     bool isStarted = false;
     List<string> lettersD;
@@ -15,13 +14,16 @@ public class Experiment : MonoBehaviour {
     int trialAmount;
     bool isFinished = false;
 
+    bool isDebugEnabled;
+
 
     ExperimentSetting currentSetting;
     float currentTimeInterval;
     int trialsSoFar = 0;
     TimeCounter timer = new TimeCounter();
 
-    private GameObject fixCross;
+    public Canvas canvas;
+    private Transform fixCross;
 
 
     int currentSettingNumber;
@@ -43,16 +45,22 @@ public class Experiment : MonoBehaviour {
     // Start is called before the first frame update
     void Start()
     {
-        fixCross = GameObject.Find("FixationCross");
         array = new CircularArray();
         array.Init(1.5f, 10);
-        array.myObj.transform.SetParent(fixCross.transform);
-        array.myObj.transform.position = fixCross.transform.position;
+        //array.myObj.transform.SetParent(fixCross.transform);
+        fixCross = canvas.transform;
+        array.myObj.transform.position = fixCross.position;
     }
 
     // Update is called once per frame
     void Update()
     {
+        Debug.Log(fixCross.rotation);
+        Debug.Log(array.myObj.transform.position);
+        array.myObj.transform.rotation = fixCross.rotation;
+        array.myObj.transform.position = fixCross.position;
+        InputHandler();
+
         if(!isFinished)
         {
             timer.Update();
@@ -84,6 +92,60 @@ public class Experiment : MonoBehaviour {
 
             }
 
+        }
+    }
+
+    public void InputHandler()
+    {
+        if (OVRInput.Get(OVRInput.Button.SecondaryThumbstickDown) &&
+                OVRInput.Get(OVRInput.Button.PrimaryThumbstickDown))
+        {
+            if (!isDebugEnabled) { 
+                isDebugEnabled = true;
+                timer.PauseTimer(isDebugEnabled);
+                foreach (GameObject t in array.targets)
+                {
+                    t.GetComponent<Renderer>().material.color = new Color(255, 0, 0);
+                }
+            }
+            //isDebugEnabled = !isDebugEnabled;
+            //timer.PauseTimer(isDebugEnabled);
+        }
+
+        if (isDebugEnabled)
+        {
+            if (OVRInput.Get(OVRInput.Button.One))
+            {
+                array.ChangeRadius(-1);
+            }
+            else if (OVRInput.Get(OVRInput.Button.Two))
+            {
+                array.ChangeRadius(1);
+            }
+            else if (OVRInput.Get(OVRInput.Button.Three))
+            {
+                array.ChangeDepth(-1);
+            }
+            else if (OVRInput.Get(OVRInput.Button.Four))
+            {
+                array.ChangeDepth(1);
+            }
+            else if (OVRInput.Get(OVRInput.Button.PrimaryHandTrigger))
+            {
+                array.ChangeSymbolsSize(1);
+            }
+            else if (OVRInput.Get(OVRInput.Button.SecondaryHandTrigger))
+            {
+                array.ChangeSymbolsSize(-1);
+            }
+            else if (OVRInput.Get(OVRInput.Button.PrimaryIndexTrigger))
+            {
+                array.ChangeDistance(1);
+            }
+            else if (OVRInput.Get(OVRInput.Button.SecondaryIndexTrigger))
+            {
+                array.ChangeDistance(-1);
+            }
         }
     }
 
@@ -175,14 +237,18 @@ public class CircularArray : MonoBehaviour
     public GameObject myObj;
     private Vector3[] slots;
     private int numbOfSlots;
-    private List<GameObject> targets;
-    private List<GameObject> distractors;
+    public List<GameObject> targets;
+    public List<GameObject> distractors;
+    private float radius;
+    private bool targetsPushed = false;
+    private bool distractorsPushed  = false;
 
     public CircularArray() {
     }
 
     public void Init(float radius, int NumbOfSlots)
     {
+        this.radius = radius;
         myObj = new GameObject();
         numbOfSlots = NumbOfSlots;
 
@@ -235,6 +301,8 @@ public class CircularArray : MonoBehaviour
 
     public void PushBack(int depth, bool pushTargets)
     {
+        targetsPushed = pushTargets;
+        distractorsPushed = !pushTargets;
         Vector3 v = new Vector3(0, 0, depth);
         if (pushTargets)
         {
@@ -253,6 +321,45 @@ public class CircularArray : MonoBehaviour
         }
         
     }
+
+    public void ChangeSymbolsSize(int scale)
+    {
+        float s = scale / 10;
+        for (int i=0; i<targets.Count; i++)
+        {
+            targets[i].transform.localScale += new Vector3(s,s,s);
+        }
+        for (int i = 0; i < distractors.Count; i++)
+        {
+            distractors[i].transform.localScale += new Vector3(s, s, s);
+        }
+    }
+
+    public void ChangeRadius(int incr)
+    {
+        this.radius += incr / 10;
+        Init(this.radius, numbOfSlots);
+        for (int i = 0; i<targets.Count; i++)
+        {
+            targets[i].transform.position = myObj.transform.position + slots[i];
+        }
+        for (int i = 0; i < distractors.Count; i++)
+        {
+            distractors[i].transform.position = myObj.transform.position + slots[i+targets.Count-1];
+        }
+    }
+
+    public void ChangeDepth(int incr)
+    {
+        PushBack(incr / 10, targetsPushed);
+    }
+
+    public void ChangeDistance(int incr)
+    {
+        gameObject.transform.position += new Vector3(0, 0, incr / 10);
+    }
+
+   
 
     public void Clear()
     {
@@ -273,6 +380,7 @@ public class TimeCounter: MonoBehaviour
 {
     float secondsLeft;
     public bool isRunning { private set; get; } = false;
+    public bool isPaused { private set; get; } = false;
     bool isFirstFrame = false;
 
     public float startTime;
@@ -296,7 +404,7 @@ public class TimeCounter: MonoBehaviour
             return;
         }
 
-        if(isRunning)
+        if( isRunning && !isPaused)
         {
             
             secondsLeft -= Time.deltaTime;
@@ -307,6 +415,12 @@ public class TimeCounter: MonoBehaviour
            
         }
     }
+
+    public void PauseTimer(bool pause)
+    {
+        isPaused = pause;
+    }
+
 
 }
 
