@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using UnityEngine.UI;
 
 
 public class Experiment : MonoBehaviour {
@@ -13,6 +14,8 @@ public class Experiment : MonoBehaviour {
     List<string> lettersT;
     int trialAmount;
     bool isFinished = false;
+
+    public OVRCameraRig camRig;
 
     bool isDebugEnabled;
 
@@ -48,20 +51,32 @@ public class Experiment : MonoBehaviour {
         array = new CircularArray();
         array.Init(1.5f, 10);
         //array.myObj.transform.SetParent(fixCross.transform);
-        fixCross = canvas.transform;
+        
+        Debug.Log(canvas.gameObject.GetComponent<RectTransform>().transform.position.ToString());
+        fixCross = canvas.gameObject.GetComponent<RectTransform>().transform;
+        Debug.Log(fixCross.position.ToString());
         array.myObj.transform.position = fixCross.position;
+        if (fixCross != null) { Debug.Log(" CANVAS IS NOT NULL !!!!!"); }
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(fixCross.rotation);
-        Debug.Log(array.myObj.transform.position);
+        //if (fixCross != null) { Debug.Log(" CANVAS IS NOT NULL IN UPDATE !!!!!"); }
+        //if(fixCross is Transform) { Debug.Log(" IS TRANSFORM !!!!!"); }
+        //Debug.Log(fixCross.position.ToString());
+        //Debug.Log(array.myObj.transform.position);
         array.myObj.transform.rotation = fixCross.rotation;
         array.myObj.transform.position = fixCross.position;
         InputHandler();
 
-        if(!isFinished)
+        
+
+
+
+
+        if (!isFinished)
         {
             timer.Update();
             if (!timer.isRunning && isCurrentTrialFinished)
@@ -71,7 +86,7 @@ public class Experiment : MonoBehaviour {
                     Debug.Log("setting " + currentSettingNumber + " time: " + currentSetting.timeIntervals[currentTimeIntervalNumber] + " trial " + trialsSoFar);
                     var ret = GenerateSymbols(currentSetting.numbOfTargets, currentSetting.numbOfDistractors, lettersT, lettersD);
                     //Debug.Log("Symbols Generated");
-                    array.PutIntoSlots(ret.Item1, ret.Item2);
+                    array.PutIntoSlots(ret.Item1, ret.Item2, fixCross);
                     //Debug.Log("Symbols in Slots");
                     if (currentSetting.targetsFarAway) { array.PushBack(currentSetting.depth, true); }
                     else if (currentSetting.distractorsFarAway) { array.PushBack(currentSetting.depth, false); }
@@ -93,6 +108,18 @@ public class Experiment : MonoBehaviour {
             }
 
         }
+        canvas.transform.LookAt(camRig.transform);
+        //Debug.Log("UPDATE WORKS");
+        //for (int i = 0; i < array.targets.Count; i++)
+        //{
+        //    array.targets[i].transform.LookAt(camRig.transform);
+        //}
+
+        //for (int i = 0; i < array.distractors.Count; i++)
+        //{
+        //    array.distractors[i].transform.LookAt(camRig.transform);
+        //}
+
     }
 
     public void InputHandler()
@@ -246,6 +273,11 @@ public class CircularArray : MonoBehaviour
     public CircularArray() {
     }
 
+    private void Update()
+    {
+
+    }
+
     public void Init(float radius, int NumbOfSlots)
     {
         this.radius = radius;
@@ -260,14 +292,15 @@ public class CircularArray : MonoBehaviour
         {
             float x = (float)(radius * Math.Cos(currAngle));
             float y = (float)(radius * Math.Sin(currAngle));
-            slots[i] = new Vector3(x, y, 0.0f);
+            float z = 0;
+            slots[i] = new Vector3(x, y, 0);
             currAngle += angleStep;
             Debug.Log("slot " + i + " = " + "(" + x + ";" + y + ")");
         }
 
     }
 
-    public void PutIntoSlots(List<GameObject> Targets, List<GameObject> Distractors)
+    public void PutIntoSlots(List<GameObject> Targets, List<GameObject> Distractors, Transform fixCross)
     {
         List<int> found = new List<int>();
         distractors = Distractors;
@@ -276,27 +309,28 @@ public class CircularArray : MonoBehaviour
         int c = rnd.Next(0, numbOfSlots);
         for (int i = 0; i < targets.Count; i++)
         {
-            targets[i].transform.SetParent(myObj.transform);
-           
+            //targets[i].transform.SetParent(myObj.transform);
+            targets[i].transform.SetParent(fixCross);
+
             while (found.Contains(c))
             { c = rnd.Next(0, numbOfSlots); }
                 
             found.Add(c);
-            targets[i].transform.position = myObj.transform.position +  slots[c];
-
+            //targets[i].transform.position = myObj.transform.position +  slots[c];
+            targets[i].transform.position = fixCross.position + slots[c] ;
+            //targets[i].transform.LookAt(camRig.transform);
         }
         for (int i = 0; i < distractors.Count; i++)
         {
-            distractors[i].transform.SetParent(myObj.transform);
+            //distractors[i].transform.SetParent(myObj.transform);
+            distractors[i].transform.SetParent(fixCross);
             while (found.Contains(c))
             { c = rnd.Next(0, numbOfSlots); }
             found.Add(c);
-            distractors[i].transform.position = myObj.transform.position + slots[c];
-
-
+            //distractors[i].transform.position = myObj.transform.position + slots[c];
+            distractors[i].transform.position = fixCross.position + slots[c];
+            //distractors[i].transform.LookAt(camRig.transform);
         }
-
-
     }
 
     public void PushBack(int depth, bool pushTargets)
@@ -309,7 +343,6 @@ public class CircularArray : MonoBehaviour
             for (int i = 0; i < targets.Count; i++)
             {
                 targets[i].transform.position -= v;
-                
             }
         }
         else
@@ -359,8 +392,6 @@ public class CircularArray : MonoBehaviour
         gameObject.transform.position += new Vector3(0, 0, incr / 10);
     }
 
-   
-
     public void Clear()
     {
         for (int i = 0; i < targets.Count; i++)
@@ -373,7 +404,6 @@ public class CircularArray : MonoBehaviour
             Destroy(distractors[i]);
         }
     }
-
 }
 
 public class TimeCounter: MonoBehaviour
@@ -423,6 +453,9 @@ public class TimeCounter: MonoBehaviour
 
 
 }
+
+
+
 
 
 
