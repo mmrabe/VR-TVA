@@ -6,36 +6,33 @@ using UnityEngine.UI;
 
 
 public class Experiment : MonoBehaviour {
-    private List<ExperimentSetting> settings;
-    CircularArray array;
-
-    bool isStarted = false;
-    List<string> lettersD;
-    List<string> lettersT;
-    int trialAmount;
-    bool isFinished = false;
-
-    public OVRCameraRig camRig;
-
-    bool isDebugEnabled;
-
-
-    ExperimentSetting currentSetting;
-    float currentTimeInterval;
-    int trialsSoFar = 0;
-    TimeCounter timer = new TimeCounter();
-
+    // GameObjects
     public Canvas canvas;
     private Transform fixCross;
+    public OVRCameraRig camRig;
 
-
-    int currentSettingNumber;
-    int currentTimeIntervalNumber;
+    // Booleans
+    bool isStarted = false;
+    bool isFinished = false;
+    bool isDebugEnabled;
     bool isCurrentTrialFinished = true;
 
+    // ExperimentSettings
+    private List<ExperimentSetting> settings;
+    ExperimentSetting currentSetting;
+    List<string> lettersD;
+    List<string> lettersT;
 
-    public Experiment()
-    {
+    CircularArray array;
+    TimeCounter timer = new TimeCounter();
+
+    int trialAmount;
+    int trialsSoFar = 0;
+    int currentSettingNumber;
+    int currentTimeIntervalNumber;
+    float currentTimeInterval;
+
+    public Experiment() {
         trialAmount = 2;
         lettersT = new List<string>() { "a", "b", "c" };
         lettersD = new List<string>() { "o" };
@@ -46,18 +43,16 @@ public class Experiment : MonoBehaviour {
     }
 
     // Start is called before the first frame update
-    void Start()
-    {
+    void Start() {
         array = new CircularArray();
         array.Init(1.5f, 10);
-        //array.myObj.transform.SetParent(fixCross.transform);
-        
-        Debug.Log(canvas.gameObject.GetComponent<RectTransform>().transform.position.ToString());
         fixCross = canvas.gameObject.GetComponent<RectTransform>().transform;
-        Debug.Log(fixCross.position.ToString());
         array.myObj.transform.position = fixCross.position;
-        if (fixCross != null) { Debug.Log(" CANVAS IS NOT NULL !!!!!"); }
-
+        
+        /*array.myObj.transform.SetParent(fixCross.transform);
+        Debug.Log(canvas.gameObject.GetComponent<RectTransform>().transform.position.ToString());
+        Debug.Log(fixCross.position.ToString());
+        if (fixCross != null) { Debug.Log(" CANVAS IS NOT NULL !!!!!"); }*/
     }
 
     // Update is called once per frame
@@ -71,36 +66,22 @@ public class Experiment : MonoBehaviour {
         array.myObj.transform.position = fixCross.position;
         InputHandler();
 
-        
-
-
-
-
         if (!isFinished)
         {
             timer.Update();
             if (!timer.isRunning && isCurrentTrialFinished)
             {
-                if ( true ||OVRInput.Get(OVRInput.Button.One))
+                if (OVRInput.Get(OVRInput.Button.One)) //(Input.GetKeyDown(KeyCode.Space))
                 {
-                    Debug.Log("setting " + currentSettingNumber + " time: " + currentSetting.timeIntervals[currentTimeIntervalNumber] + " trial " + trialsSoFar);
-                    var ret = GenerateSymbols(currentSetting.numbOfTargets, currentSetting.numbOfDistractors, lettersT, lettersD);
-                    //Debug.Log("Symbols Generated");
-                    array.PutIntoSlots(ret.Item1, ret.Item2, fixCross);
-                    //Debug.Log("Symbols in Slots");
-                    if (currentSetting.targetsFarAway) { array.PushBack(currentSetting.depth, true); }
-                    else if (currentSetting.distractorsFarAway) { array.PushBack(currentSetting.depth, false); }
-                    //Debug.Log("Symbols Pushed");
-                    timer.StartCounting(currentTimeInterval);
-                    //Debug.Log("Timer Started");
-                    isCurrentTrialFinished = false;
+                    Debug.Log("Key was pressed");
+                    NewExperiment();
                 }
             }
             else if (!timer.isRunning)
             {
                 isCurrentTrialFinished = true;
                 //Debug.Log("time diff timer:" + (Time.time - timer.startTime));
-                Debug.Log("estimated time diff:" + (Time.time - timer.startTime + Time.deltaTime));
+                //Debug.Log("estimated time diff:" + (Time.time - timer.startTime + Time.deltaTime));
                 array.Clear();
                 //Debug.Log("Cleared");
                 TryToUpdateSetting();
@@ -120,6 +101,15 @@ public class Experiment : MonoBehaviour {
         //    array.distractors[i].transform.LookAt(camRig.transform);
         //}
 
+    }
+
+    public void NewExperiment() {
+        var ret = GenerateSymbols(currentSetting.numbOfTargets, currentSetting.numbOfDistractors, lettersT, lettersD);
+        array.PutIntoSlots(ret.Item1, ret.Item2, fixCross);
+        if (currentSetting.targetsFarAway) { array.PushBack(currentSetting.depth, true); }
+        else if (currentSetting.distractorsFarAway) { array.PushBack(currentSetting.depth, false); }
+        timer.StartCounting(currentTimeInterval);
+        isCurrentTrialFinished = false;
     }
 
     public void InputHandler()
