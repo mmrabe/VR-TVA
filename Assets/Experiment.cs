@@ -31,37 +31,48 @@ public class Experiment : MonoBehaviour {
     int currentSettingNumber;
     int currentTimeIntervalNumber;
     float currentTimeInterval;
+    private float patternMaskDuration;
+    private List<float> timeIntervals;
 
     public Experiment() {
         trialAmount = 2;
         lettersT = new List<string>() { "a", "b", "c" };
         lettersD = new List<string>() { "o" };
-        ExperimentSetting setting1 = new ExperimentSetting(4, 4, false, false, 1);
+        timeIntervals = new List<float> { 10f, 20f, 50f, 100f, 150f, 200f };
+
+        ExperimentSetting wholeReportClose = new ExperimentSetting(8, 0, false, false, 0, timeIntervals);
+        ExperimentSetting wholeReportFar = new ExperimentSetting(8, 0, true, false, 2, timeIntervals);
+
+        ExperimentSetting partialReportFF = new ExperimentSetting(4, 4, false, false, 0, new List<float> { 150 });
+        ExperimentSetting partialReportTF = new ExperimentSetting(4, 4, true, false, 1, new List<float> { 150 });
+        ExperimentSetting partialReportFT = new ExperimentSetting(4, 4, false, true, 1, new List<float> { 150 });
+        ExperimentSetting partialReportTT = new ExperimentSetting(4, 4, true, true, 1, new List<float> { 150 });
+
+        ExperimentSetting setting1 = new ExperimentSetting(3, 5, true, false, 1);
         settings = new List<ExperimentSetting>() { setting1 };
+        //settings = new List<ExperimentSetting>() { wholeReportClose,wholeReportFar,
+        //                partialReportFF,partialReportFT,partialReportTF,partialReportTT };
+
         currentSetting = settings[currentSettingNumber];
         currentTimeInterval = currentSetting.timeIntervals[currentTimeIntervalNumber];
+        patternMaskDuration = 0.5f;
+        
     }
 
     // Start is called before the first frame update
     void Start() {
-        array = new CircularArray();
-        array.Init(1.5f, 10);
+
         fixCross = canvas.gameObject.GetComponent<RectTransform>().transform;
+        array = new CircularArray();
+        array.Init(2f, 8, fixCross);
         array.myObj.transform.position = fixCross.position;
         
-        /*array.myObj.transform.SetParent(fixCross.transform);
-        Debug.Log(canvas.gameObject.GetComponent<RectTransform>().transform.position.ToString());
-        Debug.Log(fixCross.position.ToString());
-        if (fixCross != null) { Debug.Log(" CANVAS IS NOT NULL !!!!!"); }*/
     }
 
     // Update is called once per frame
     void Update()
     {
-        //if (fixCross != null) { Debug.Log(" CANVAS IS NOT NULL IN UPDATE !!!!!"); }
-        //if(fixCross is Transform) { Debug.Log(" IS TRANSFORM !!!!!"); }
-        //Debug.Log(fixCross.position.ToString());
-        //Debug.Log(array.myObj.transform.position);
+
         array.myObj.transform.rotation = fixCross.rotation;
         array.myObj.transform.position = fixCross.position;
         InputHandler();
@@ -71,20 +82,33 @@ public class Experiment : MonoBehaviour {
             timer.Update();
             if (!timer.isRunning && isCurrentTrialFinished)
             {
-                if (OVRInput.Get(OVRInput.Button.One)) //(Input.GetKeyDown(KeyCode.Space))
-                {
+                //if (OVRInput.Get(OVRInput.Button.One)) 
+                if (Input.GetKeyDown(KeyCode.Space))
+                    {
                     Debug.Log("Key was pressed");
                     NewExperiment();
                 }
             }
             else if (!timer.isRunning)
             {
-                isCurrentTrialFinished = true;
+                
                 //Debug.Log("time diff timer:" + (Time.time - timer.startTime));
                 //Debug.Log("estimated time diff:" + (Time.time - timer.startTime + Time.deltaTime));
                 array.Clear();
+
                 //Debug.Log("Cleared");
-                TryToUpdateSetting();
+                if(array.patternMaskEnabled)
+                {
+                    isCurrentTrialFinished = true;
+                    array.HidePatternMask();
+                    TryToUpdateSetting();
+                }
+                else
+                {
+                    array.ShowPatternMask();
+                    timer.StartCounting(patternMaskDuration);
+                }
+                
 
             }
 
@@ -103,9 +127,10 @@ public class Experiment : MonoBehaviour {
 
     }
 
+
     public void NewExperiment() {
         var ret = GenerateSymbols(currentSetting.numbOfTargets, currentSetting.numbOfDistractors, lettersT, lettersD);
-        array.PutIntoSlots(ret.Item1, ret.Item2, fixCross);
+        array.PutIntoSlots(ret.Item1, ret.Item2);
         if (currentSetting.targetsFarAway) { array.PushBack(currentSetting.depth, true); }
         else if (currentSetting.distractorsFarAway) { array.PushBack(currentSetting.depth, false); }
         timer.StartCounting(currentTimeInterval);
@@ -259,6 +284,10 @@ public class CircularArray : MonoBehaviour
     private float radius;
     private bool targetsPushed = false;
     private bool distractorsPushed  = false;
+    private GameObject patternMask;
+    private Transform fixCross;
+    private GameObject[] patternMasks;
+    public bool patternMaskEnabled { get; private set; } = false; 
 
     public CircularArray() {
     }
@@ -268,11 +297,12 @@ public class CircularArray : MonoBehaviour
 
     }
 
-    public void Init(float radius, int NumbOfSlots)
+    public void Init(float radius, int NumbOfSlots, Transform fixCross = null)
     {
         this.radius = radius;
         myObj = new GameObject();
         numbOfSlots = NumbOfSlots;
+        this.fixCross = fixCross;
 
         slots = new Vector3[NumbOfSlots];
         Debug.Log(slots.Length);
@@ -280,17 +310,51 @@ public class CircularArray : MonoBehaviour
         float currAngle = 0f;
         for (int i = 0; i < NumbOfSlots; i++)
         {
-            float x = (float)(radius * Math.Cos(currAngle));
-            float y = (float)(radius * Math.Sin(currAngle));
-            float z = 0;
+            float x = (float)(radius * Math.Cos(currAngle*(Math.PI/180)));
+            float y = (float)(radius * Math.Sin(currAngle * (Math.PI / 180)));
             slots[i] = new Vector3(x, y, 0);
             currAngle += angleStep;
             Debug.Log("slot " + i + " = " + "(" + x + ";" + y + ")");
         }
 
+        patternMask = GameObject.Find("PatternMask");
+        patternMasks = new GameObject[numbOfSlots];
+        CreatePatternMask();
     }
 
-    public void PutIntoSlots(List<GameObject> Targets, List<GameObject> Distractors, Transform fixCross)
+    public void CreatePatternMask()
+    {
+        for (int i = 0; i < slots.Length; i++)
+        {
+            GameObject clone = GameObject.Instantiate(patternMask);
+            clone.transform.position = fixCross.position + slots[i];
+            clone.transform.SetParent(fixCross);
+            patternMasks[i] = clone;
+        }
+        HidePatternMask();
+    }
+
+    public void ShowPatternMask()
+    {
+        for (int i = 0; i < patternMasks.Length; i++)
+        {
+            patternMasks[i].GetComponent<MeshRenderer>().enabled = true;
+        }
+        patternMaskEnabled = true;
+    }
+
+    public void HidePatternMask()
+    {
+        for (int i = 0; i < patternMasks.Length; i++)
+        {
+            patternMasks[i].GetComponent<MeshRenderer>().enabled = false;
+        }
+        patternMaskEnabled = false;
+    }
+
+
+
+    public void PutIntoSlots(List<GameObject> Targets, List<GameObject> Distractors)
     {
         List<int> found = new List<int>();
         distractors = Distractors;
@@ -306,20 +370,15 @@ public class CircularArray : MonoBehaviour
             { c = rnd.Next(0, numbOfSlots); }
                 
             found.Add(c);
-            //targets[i].transform.position = myObj.transform.position +  slots[c];
             targets[i].transform.position = fixCross.position + slots[c] ;
-            //targets[i].transform.LookAt(camRig.transform);
         }
         for (int i = 0; i < distractors.Count; i++)
         {
-            //distractors[i].transform.SetParent(myObj.transform);
             distractors[i].transform.SetParent(fixCross);
             while (found.Contains(c))
             { c = rnd.Next(0, numbOfSlots); }
             found.Add(c);
-            //distractors[i].transform.position = myObj.transform.position + slots[c];
             distractors[i].transform.position = fixCross.position + slots[c];
-            //distractors[i].transform.LookAt(camRig.transform);
         }
     }
 
@@ -342,7 +401,17 @@ public class CircularArray : MonoBehaviour
                 distractors[i].transform.position -= v;
             }
         }
-        
+
+        float mask_depth = Math.Max(targets[0].transform.position.z, distractors[0].transform.position.z);
+
+        for (int i = 0; i < patternMasks.Length; i++)
+        {
+            patternMasks[i].transform.position = new Vector3(
+                                                    patternMasks[i].transform.position.x,
+                                                    patternMasks[i].transform.position.y,
+                                                    mask_depth);
+        }
+
     }
 
     public void ChangeSymbolsSize(int scale)
