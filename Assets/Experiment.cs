@@ -41,6 +41,10 @@ public class Experiment : MonoBehaviour {
         trialAmount = 2;
         //lettersT = new List<string>() { "a", "b", "c" };
         //lettersD = new List<string>() { "o" };
+
+        
+
+
         timeIntervals = new List<float> { 10f, 20f, 50f, 100f, 150f, 200f };
 
         ExperimentSetting wholeReportClose = new ExperimentSetting(8, 0, false, false, 0, timeIntervals);
@@ -69,7 +73,10 @@ public class Experiment : MonoBehaviour {
         array = new CircularArray();
         array.Init(2f, 8, fixCross);
         array.myObj.transform.position = fixCross.position;
-        
+        symbolsT = LoadSymbols("Letters");
+        symbolsD = LoadSymbols("Digits");
+
+
     }
 
     // Update is called once per frame
@@ -132,7 +139,7 @@ public class Experiment : MonoBehaviour {
 
 
     public void NewExperiment() {
-        var ret = GenerateSymbols(currentSetting.numbOfTargets, currentSetting.numbOfDistractors, lettersT, lettersD);
+        var ret = GenerateSymbols(currentSetting.numbOfTargets, currentSetting.numbOfDistractors, symbolsT, symbolsD);
         array.PutIntoSlots(ret.Item1, ret.Item2);
         if (currentSetting.targetsFarAway) { array.PushBack(currentSetting.depth, true); }
         else if (currentSetting.distractorsFarAway) { array.PushBack(currentSetting.depth, false); }
@@ -195,24 +202,35 @@ public class Experiment : MonoBehaviour {
     }
 
 
-    public (List<GameObject>, List<GameObject>) GenerateSymbols(int numbOfTargets, int numbOfDistractors, List<string> lettersT, List<string> lettersD)
+    public (List<GameObject>, List<GameObject>) GenerateSymbols(int numbOfTargets, int numbOfDistractors, List<GameObject> symbolsT, List<GameObject> symbolsD)
     {
         List<GameObject> targets = new List<GameObject>();
         List<GameObject> distractors = new List<GameObject>();
         System.Random rnd = new System.Random();
-
+        List<int> usedIndx = new List<int>();
+        int c = rnd.Next(0, symbolsT.Count);
 
         for (int i = 0; i < numbOfTargets; i++)
         {
-            int c = rnd.Next(0, lettersT.Count);
-            GameObject newTarget = Instantiate(GameObject.Find(lettersT[c]));
-            targets.Add(newTarget);
+            while(usedIndx.Contains(c))
+            {
+                c = rnd.Next(0, symbolsT.Count);
+            }
+            usedIndx.Add(c);
+            targets.Add(Instantiate(symbolsT[c]));
         }
+
+        c = rnd.Next(0, symbolsD.Count);
+        usedIndx = new List<int>();
+
         for (int i = 0; i < numbOfDistractors; i++)
         {
-            int c = rnd.Next(0, lettersD.Count);
-            GameObject newDistractor = Instantiate(GameObject.Find(lettersD[c])); 
-            distractors.Add(newDistractor);
+            while (usedIndx.Contains(c))
+            {
+                c = rnd.Next(0, symbolsD.Count);
+            }
+            usedIndx.Add(c);
+            distractors.Add(Instantiate(symbolsD[c]));
         }
         return (targets, distractors);
     }
@@ -246,6 +264,17 @@ public class Experiment : MonoBehaviour {
             trialsSoFar = 0;
         }
         trialsSoFar += 1;
+    }
+
+    public List<GameObject> LoadSymbols(string parentName)
+    {
+        List<GameObject> retLst = new List<GameObject>();
+        GameObject parent = GameObject.Find(parentName);
+        for (int i = 0; i< parent.transform.childCount; i++)
+        {
+            retLst.Add(parent.transform.GetChild(i).gameObject);
+        }
+        return retLst;
     }
 
 }
