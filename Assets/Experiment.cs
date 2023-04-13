@@ -115,7 +115,7 @@ public class Experiment : MonoBehaviour {
                 }
                 else
                 {
-                    if (Input.GetKeyDown(KeyCode.Space))
+                    if (OVRInput.Get(OVRInput.Button.One)) //(Input.GetKeyDown(KeyCode.Space)) //
                     {
                         ShowFixationCross();
                         timer.StartCounting(fixationCrossDuration);
@@ -357,6 +357,9 @@ public class CircularArray : MonoBehaviour
     private GameObject[] patternMasks;
     public bool patternMaskEnabled { get; private set; } = false;
     private GameObject FixationCrossObject;
+    private Transform canvasUpTrans;
+    private Transform canvasRightTrans;
+
 
     public CircularArray() {
     }
@@ -390,8 +393,10 @@ public class CircularArray : MonoBehaviour
         patternMask = GameObject.Find("PatternMask");
         patternMasks = new GameObject[numbOfSlots];
         CreatePatternMask();
+        canvasRightTrans = GameObject.Find("right").transform;
+        canvasUpTrans = GameObject.Find("up").transform;
 
-        
+
     }
 
     public void CreatePatternMask()
@@ -441,8 +446,11 @@ public class CircularArray : MonoBehaviour
             { c = rnd.Next(0, numbOfSlots); }
                 
             found.Add(c);
-            targets[i].transform.position = canvasTransform.position + slots[c] + new Vector3(0.25f * initialScale, -0.5f * initialScale,0);
+            Vector3 offsetUp = (FixationCrossObject.transform.position - canvasUpTrans.position).normalized * slots[c].y;
+            Vector3 offsetRight = (FixationCrossObject.transform.position - canvasRightTrans.position).normalized * slots[c].x;
             
+            targets[i].transform.position = canvasTransform.position + offsetUp + offsetRight + new Vector3(0.25f * initialScale, -0.5f * initialScale,0);
+            targets[i].transform.rotation = FixationCrossObject.transform.rotation;
 
         }
         for (int i = 0; i < distractors.Count; i++)
@@ -451,8 +459,10 @@ public class CircularArray : MonoBehaviour
             while (found.Contains(c))
             { c = rnd.Next(0, numbOfSlots); }
             found.Add(c);
-            distractors[i].transform.position = canvasTransform.position + slots[c] + new Vector3(0.25f * initialScale, -0.5f * initialScale, 0);
-            
+            Vector3 offsetUp = (FixationCrossObject.transform.position - canvasUpTrans.position).normalized * slots[c].y;
+            Vector3 offsetRight = (FixationCrossObject.transform.position - canvasRightTrans.position).normalized * slots[c].x;
+            distractors[i].transform.position = canvasTransform.position + offsetUp + offsetRight + new Vector3(0.25f * initialScale, -0.5f * initialScale, 0);
+            distractors[i].transform.rotation = FixationCrossObject.transform.rotation;
         }
     }
 
@@ -499,6 +509,8 @@ public class CircularArray : MonoBehaviour
         {
             distractors[i].transform.localScale += new Vector3(s, s, s);
         }
+
+        FixationCrossObject.transform.localScale += new Vector3(s, s, s);
     }
 
     public void ChangeRadius(int incr)
