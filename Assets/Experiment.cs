@@ -8,7 +8,7 @@ using UnityEngine.UI;
 public class Experiment : MonoBehaviour {
     // GameObjects
     public Canvas canvas;
-    private Transform fixCross;
+    private Transform canvasCenter;
     public OVRCameraRig camRig;
 
     // Booleans
@@ -37,6 +37,10 @@ public class Experiment : MonoBehaviour {
     private List<GameObject> symbolsT;
     private List<GameObject> symbolsD;
 
+    private bool isFixCrossShown = false;
+    private GameObject FixationCrossObject;
+    private float fixationCrossDuration;
+    private bool isCrossCooldownOver = false;
     public Experiment() {
         trialAmount = 2;
         //lettersT = new List<string>() { "a", "b", "c" };
@@ -55,7 +59,7 @@ public class Experiment : MonoBehaviour {
         ExperimentSetting partialReportFT = new ExperimentSetting(4, 4, false, true, 1, new List<float> { 150 });
         ExperimentSetting partialReportTT = new ExperimentSetting(4, 4, true, true, 1, new List<float> { 150 });
 
-        ExperimentSetting setting1 = new ExperimentSetting(3, 5, true, false, 1);
+        ExperimentSetting setting1 = new ExperimentSetting(3, 5, false, false, 1);
         settings = new List<ExperimentSetting>() { setting1 };
         //settings = new List<ExperimentSetting>() { wholeReportClose,wholeReportFar,
         //                partialReportFF,partialReportFT,partialReportTF,partialReportTT };
@@ -63,16 +67,18 @@ public class Experiment : MonoBehaviour {
         currentSetting = settings[currentSettingNumber];
         currentTimeInterval = currentSetting.timeIntervals[currentTimeIntervalNumber];
         patternMaskDuration = 0.5f;
+        fixationCrossDuration = 1f;
         
     }
 
     // Start is called before the first frame update
     void Start() {
-
-        fixCross = canvas.gameObject.GetComponent<RectTransform>().transform;
+        FixationCrossObject = GameObject.Find("FixationCross");
+        HideFixationCross();
+        canvasCenter = canvas.gameObject.GetComponent<RectTransform>().transform;
         array = new CircularArray();
-        array.Init(2f, 8, fixCross);
-        array.myObj.transform.position = fixCross.position;
+        array.Init(2f, 8, FixationCrossObject, canvasCenter);
+        array.myObj.transform.position = canvasCenter.position;
         symbolsT = LoadSymbols("Letters");
         symbolsD = LoadSymbols("Digits");
 
@@ -83,8 +89,8 @@ public class Experiment : MonoBehaviour {
     void Update()
     {
 
-        array.myObj.transform.rotation = fixCross.rotation;
-        array.myObj.transform.position = fixCross.position;
+        array.myObj.transform.rotation = canvasCenter.rotation;
+        array.myObj.transform.position = canvasCenter.position;
         InputHandler();
 
         if (!isFinished)
@@ -92,12 +98,32 @@ public class Experiment : MonoBehaviour {
             timer.Update();
             if (!timer.isRunning && isCurrentTrialFinished)
             {
-                //if (OVRInput.Get(OVRInput.Button.One)) 
-                if (Input.GetKeyDown(KeyCode.Space))
+                if (isFixCrossShown  || isCrossCooldownOver)
+                {
+                    if (!isCrossCooldownOver)
                     {
-                    Debug.Log("Key was pressed");
-                    NewExperiment();
+                        HideFixationCross();
+                        timer.StartCounting(1.0f);
+                        isCrossCooldownOver = true;
+                    } else
+                    {
+                        NewExperiment();
+                        isCrossCooldownOver = false;
+                    }
+                    
+                    
                 }
+                else
+                {
+                    if (Input.GetKeyDown(KeyCode.Space))
+                    {
+                        ShowFixationCross();
+                        timer.StartCounting(fixationCrossDuration);
+                    }
+                    
+                }
+                //if (OVRInput.Get(OVRInput.Button.One)) 
+           
             }
             else if (!timer.isRunning)
             {
@@ -123,7 +149,7 @@ public class Experiment : MonoBehaviour {
             }
 
         }
-        canvas.transform.LookAt(camRig.transform);
+        //canvas.transform.LookAt(camRig.transform);
         //Debug.Log("UPDATE WORKS");
         //for (int i = 0; i < array.targets.Count; i++)
         //{
@@ -137,6 +163,16 @@ public class Experiment : MonoBehaviour {
 
     }
 
+    public void ShowFixationCross()
+    {
+        isFixCrossShown = true;
+        FixationCrossObject.GetComponent<MeshRenderer>().enabled = true;
+    }
+
+    public void HideFixationCross() {
+        isFixCrossShown = false;
+        FixationCrossObject.GetComponent<MeshRenderer>().enabled = false;
+    }
 
     public void NewExperiment() {
         var ret = GenerateSymbols(currentSetting.numbOfTargets, currentSetting.numbOfDistractors, symbolsT, symbolsD);
@@ -317,9 +353,10 @@ public class CircularArray : MonoBehaviour
     private bool targetsPushed = false;
     private bool distractorsPushed  = false;
     private GameObject patternMask;
-    private Transform fixCross;
+    private Transform canvasTransform;
     private GameObject[] patternMasks;
-    public bool patternMaskEnabled { get; private set; } = false; 
+    public bool patternMaskEnabled { get; private set; } = false;
+    private GameObject FixationCrossObject;
 
     public CircularArray() {
     }
@@ -329,12 +366,13 @@ public class CircularArray : MonoBehaviour
 
     }
 
-    public void Init(float radius, int NumbOfSlots, Transform fixCross = null)
+    public void Init(float radius, int NumbOfSlots, GameObject FixationCrossObject, Transform canvasTransform = null)
     {
         this.radius = radius;
         myObj = new GameObject();
         numbOfSlots = NumbOfSlots;
-        this.fixCross = fixCross;
+        this.canvasTransform = canvasTransform;
+        this.FixationCrossObject = FixationCrossObject;
 
         slots = new Vector3[NumbOfSlots];
         Debug.Log(slots.Length);
@@ -352,6 +390,8 @@ public class CircularArray : MonoBehaviour
         patternMask = GameObject.Find("PatternMask");
         patternMasks = new GameObject[numbOfSlots];
         CreatePatternMask();
+
+        
     }
 
     public void CreatePatternMask()
@@ -359,8 +399,8 @@ public class CircularArray : MonoBehaviour
         for (int i = 0; i < slots.Length; i++)
         {
             GameObject clone = GameObject.Instantiate(patternMask);
-            clone.transform.position = fixCross.position + slots[i];
-            clone.transform.SetParent(fixCross);
+            clone.transform.position = canvasTransform.position + slots[i];
+            clone.transform.SetParent(canvasTransform);
             patternMasks[i] = clone;
         }
         HidePatternMask();
@@ -384,11 +424,10 @@ public class CircularArray : MonoBehaviour
         patternMaskEnabled = false;
     }
 
-
-
     public void PutIntoSlots(List<GameObject> Targets, List<GameObject> Distractors)
     {
         List<int> found = new List<int>();
+        float initialScale = GameObject.Find("PatternMask").transform.localScale.x;
         distractors = Distractors;
         targets = Targets;
         System.Random rnd = new System.Random();
@@ -396,21 +435,24 @@ public class CircularArray : MonoBehaviour
         for (int i = 0; i < targets.Count; i++)
         {
             //targets[i].transform.SetParent(myObj.transform);
-            targets[i].transform.SetParent(fixCross);
+            targets[i].transform.SetParent(canvasTransform);
 
             while (found.Contains(c))
             { c = rnd.Next(0, numbOfSlots); }
                 
             found.Add(c);
-            targets[i].transform.position = fixCross.position + slots[c] ;
+            targets[i].transform.position = canvasTransform.position + slots[c] + new Vector3(0.25f * initialScale, -0.5f * initialScale,0);
+            
+
         }
         for (int i = 0; i < distractors.Count; i++)
         {
-            distractors[i].transform.SetParent(fixCross);
+            distractors[i].transform.SetParent(canvasTransform);
             while (found.Contains(c))
             { c = rnd.Next(0, numbOfSlots); }
             found.Add(c);
-            distractors[i].transform.position = fixCross.position + slots[c];
+            distractors[i].transform.position = canvasTransform.position + slots[c] + new Vector3(0.25f * initialScale, -0.5f * initialScale, 0);
+            
         }
     }
 
@@ -462,7 +504,7 @@ public class CircularArray : MonoBehaviour
     public void ChangeRadius(int incr)
     {
         this.radius += incr / 10;
-        Init(this.radius, numbOfSlots);
+        Init(this.radius, numbOfSlots, FixationCrossObject);
         for (int i = 0; i<targets.Count; i++)
         {
             targets[i].transform.position = myObj.transform.position + slots[i];
