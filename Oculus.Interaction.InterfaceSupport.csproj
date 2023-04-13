@@ -56,8 +56,8 @@
     <Analyzer Include="C:\Program Files (x86)\Microsoft Visual Studio Tools for Unity\16.0\Analyzers\Microsoft.Unity.Analyzers.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Oculus\Interaction\Runtime\ThirdParty\InterfaceSupport\Editor\InterfacePicker.cs" />
     <Compile Include="Assets\Oculus\Interaction\Runtime\ThirdParty\InterfaceSupport\Editor\InterfaceDrawer.cs" />
+    <Compile Include="Assets\Oculus\Interaction\Runtime\ThirdParty\InterfaceSupport\Editor\InterfacePicker.cs" />
   </ItemGroup>
   <ItemGroup>
      <None Include="Assets\Oculus\Interaction\Runtime\ThirdParty\InterfaceSupport\Editor\Oculus.Interaction.InterfaceSupport.asmdef" />

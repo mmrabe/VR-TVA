@@ -34,10 +34,13 @@ public class Experiment : MonoBehaviour {
     private float patternMaskDuration;
     private List<float> timeIntervals;
 
+    private List<GameObject> symbolsT;
+    private List<GameObject> symbolsD;
+
     public Experiment() {
         trialAmount = 2;
-        lettersT = new List<string>() { "a", "b", "c" };
-        lettersD = new List<string>() { "o" };
+        //lettersT = new List<string>() { "a", "b", "c" };
+        //lettersD = new List<string>() { "o" };
         timeIntervals = new List<float> { 10f, 20f, 50f, 100f, 150f, 200f };
 
         ExperimentSetting wholeReportClose = new ExperimentSetting(8, 0, false, false, 0, timeIntervals);

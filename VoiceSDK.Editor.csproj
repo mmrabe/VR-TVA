@@ -57,14 +57,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Oculus\Voice\Scripts\Editor\Data\VoiceSDKDataCreation.cs" />
-    <Compile Include="Assets\Oculus\Voice\Scripts\Editor\Windows\SettingsWindow.cs" />
-    <Compile Include="Assets\Oculus\Voice\Scripts\Editor\Inspectors\AppVoiceExperienceWitConfigurationEditor.cs" />
     <Compile Include="Assets\Oculus\Voice\Scripts\Editor\Utility\VoiceSDKStyles.cs" />
     <Compile Include="Assets\Oculus\Voice\Scripts\Editor\Utility\VoiceSDKMenu.cs" />
-    <Compile Include="Assets\Oculus\Voice\Scripts\Editor\Windows\WelcomeWizard.cs" />
-    <Compile Include="Assets\Oculus\Voice\Scripts\Editor\Inspectors\AppVoiceExperienceEditor.cs" />
     <Compile Include="Assets\Oculus\Voice\Scripts\Editor\Upgrade\WitUpgrader.cs" />
     <Compile Include="Assets\Oculus\Voice\Scripts\Editor\Windows\UnderstandingViewerWindow.cs" />
+    <Compile Include="Assets\Oculus\Voice\Scripts\Editor\Windows\SettingsWindow.cs" />
+    <Compile Include="Assets\Oculus\Voice\Scripts\Editor\Inspectors\AppVoiceExperienceWitConfigurationEditor.cs" />
+    <Compile Include="Assets\Oculus\Voice\Scripts\Editor\Windows\WelcomeWizard.cs" />
+    <Compile Include="Assets\Oculus\Voice\Scripts\Editor\Inspectors\AppVoiceExperienceEditor.cs" />
     <Compile Include="Assets\Oculus\Voice\Scripts\Editor\Windows\AboutWindow.cs" />
     <Compile Include="Assets\Oculus\Voice\Scripts\Editor\Utility\VoiceSDKVersion.cs" />
     <Compile Include="Assets\Oculus\Voice\Scripts\Editor\Windows\VoiceApplicationDetailProvider.cs" />

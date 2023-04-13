@@ -57,8 +57,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Oculus\Voice\Features\Dictation\Scripts\Editor\Drawers\WitDictationRuntimeConfigDrawer.cs" />
-    <Compile Include="Assets\Oculus\Voice\Features\Dictation\Scripts\Editor\AppDictationExperienceEditor.cs" />
     <Compile Include="Assets\Oculus\Voice\Features\Dictation\Scripts\Editor\Data\AppDictationDataCreation.cs" />
+    <Compile Include="Assets\Oculus\Voice\Features\Dictation\Scripts\Editor\AppDictationExperienceEditor.cs" />
   </ItemGroup>
   <ItemGroup>
      <None Include="Assets\Oculus\Voice\Features\Dictation\Scripts\Editor\VoiceSDK.Dictation.Editor.asmdef" />

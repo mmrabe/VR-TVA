@@ -56,14 +56,14 @@
     <Analyzer Include="C:\Program Files (x86)\Microsoft Visual Studio Tools for Unity\16.0\Analyzers\Microsoft.Unity.Analyzers.dll" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Oculus\Voice\Lib\Wit.ai\Features\Dictation\Scripts\Runtime\Dictation\ServiceReferences\DictationServiceAudioEventReference.cs" />
+    <Compile Include="Assets\Oculus\Voice\Lib\Wit.ai\Features\Dictation\Scripts\Runtime\Dictation\DictationService.cs" />
+    <Compile Include="Assets\Oculus\Voice\Lib\Wit.ai\Features\Dictation\Scripts\Runtime\Dictation\Events\DictationSessionEvent.cs" />
     <Compile Include="Assets\Oculus\Voice\Lib\Wit.ai\Features\Dictation\Scripts\Runtime\Dictation\Data\DictationSession.cs" />
     <Compile Include="Assets\Oculus\Voice\Lib\Wit.ai\Features\Dictation\Scripts\Runtime\Dictation\Events\DictationEvents.cs" />
-    <Compile Include="Assets\Oculus\Voice\Lib\Wit.ai\Features\Dictation\Scripts\Runtime\Dictation\ServiceReferences\DictationServiceAudioEventReference.cs" />
     <Compile Include="Assets\Oculus\Voice\Lib\Wit.ai\Features\Dictation\Scripts\Runtime\Dictation\MultiRequestTranscription.cs" />
-    <Compile Include="Assets\Oculus\Voice\Lib\Wit.ai\Features\Dictation\Scripts\Runtime\Dictation\DictationService.cs" />
     <Compile Include="Assets\Oculus\Voice\Lib\Wit.ai\Features\Dictation\Scripts\Runtime\Dictation\ServiceReferences\DictationServiceReference.cs" />
     <Compile Include="Assets\Oculus\Voice\Lib\Wit.ai\Features\Dictation\Scripts\Runtime\Dictation\WitDictation.cs" />
-    <Compile Include="Assets\Oculus\Voice\Lib\Wit.ai\Features\Dictation\Scripts\Runtime\Dictation\Events\DictationSessionEvent.cs" />
   </ItemGroup>
   <ItemGroup>
      <None Include="Assets\Oculus\Voice\Lib\Wit.ai\Features\Dictation\Scripts\Runtime\Dictation\Facebook.Wit.Dictation.asmdef" />

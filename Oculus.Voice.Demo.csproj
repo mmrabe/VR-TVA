@@ -56,16 +56,16 @@
     <Analyzer Include="C:\Program Files (x86)\Microsoft Visual Studio Tools for Unity\16.0\Analyzers\Microsoft.Unity.Analyzers.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Oculus\Voice\Demo\Scripts\ShortResponse\ShortResponseAssemblyInfo.cs" />
     <Compile Include="Assets\Oculus\Voice\Demo\Scripts\BuiltinDemo\TimerDisplay.cs" />
-    <Compile Include="Assets\Oculus\Voice\Demo\Scripts\BuiltinDemo\TimerController.cs" />
     <Compile Include="Assets\Oculus\Voice\Demo\Scripts\ShortResponse\ShortResponseColorHandler.cs" />
+    <Compile Include="Assets\Oculus\Voice\Demo\Scripts\ShortResponse\ShortResponseInstructions.cs" />
+    <Compile Include="Assets\Oculus\Voice\Demo\Scripts\UIShapesDemo\ColorChanger.cs" />
+    <Compile Include="Assets\Oculus\Voice\Demo\Scripts\ShortResponse\ShortResponseAssemblyInfo.cs" />
+    <Compile Include="Assets\Oculus\Voice\Demo\Scripts\BuiltinDemo\TimerController.cs" />
     <Compile Include="Assets\Oculus\Voice\Demo\Scripts\ParallelTranscriptHandler.cs" />
     <Compile Include="Assets\Oculus\Voice\Demo\Scripts\ButtonEventWatcher.cs" />
     <Compile Include="Assets\Oculus\Voice\Demo\Scripts\UIShapesDemo\Instructions.cs" />
     <Compile Include="Assets\Oculus\Voice\Demo\Scripts\InteractionHandler.cs" />
-    <Compile Include="Assets\Oculus\Voice\Demo\Scripts\ShortResponse\ShortResponseInstructions.cs" />
-    <Compile Include="Assets\Oculus\Voice\Demo\Scripts\UIShapesDemo\ColorChanger.cs" />
   </ItemGroup>
   <ItemGroup>
      <None Include="Assets\Oculus\Voice\Demo\Scripts\Oculus.Voice.Demo.asmdef" />

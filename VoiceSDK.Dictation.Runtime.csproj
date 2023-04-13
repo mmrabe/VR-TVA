@@ -57,14 +57,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Oculus\Voice\Features\Dictation\Scripts\Runtime\Bindings\Android\PlatformDictationSession.cs" />
-    <Compile Include="Assets\Oculus\Voice\Features\Dictation\Scripts\Runtime\Bindings\Android\IServiceEvents.cs" />
     <Compile Include="Assets\Oculus\Voice\Features\Dictation\Scripts\Runtime\API\Configuration\DictationConfiguration.cs" />
     <Compile Include="Assets\Oculus\Voice\Features\Dictation\Scripts\Runtime\API\Service\AppDictationExperience.cs" />
     <Compile Include="Assets\Oculus\Voice\Features\Dictation\Scripts\Runtime\Bindings\Android\DictationConfigurationBinding.cs" />
-    <Compile Include="Assets\Oculus\Voice\Features\Dictation\Scripts\Runtime\Data\WitDictationRuntimeConfiguration.cs" />
     <Compile Include="Assets\Oculus\Voice\Features\Dictation\Scripts\Runtime\Utilities\MicPermissionsManager.cs" />
-    <Compile Include="Assets\Oculus\Voice\Features\Dictation\Scripts\Runtime\Bindings\Android\PlatformDictationImpl.cs" />
     <Compile Include="Assets\Oculus\Voice\Features\Dictation\Scripts\Runtime\Bindings\Android\DictationListenerBinding.cs" />
+    <Compile Include="Assets\Oculus\Voice\Features\Dictation\Scripts\Runtime\Bindings\Android\IServiceEvents.cs" />
+    <Compile Include="Assets\Oculus\Voice\Features\Dictation\Scripts\Runtime\Data\WitDictationRuntimeConfiguration.cs" />
+    <Compile Include="Assets\Oculus\Voice\Features\Dictation\Scripts\Runtime\Bindings\Android\PlatformDictationImpl.cs" />
     <Compile Include="Assets\Oculus\Voice\Features\Dictation\Scripts\Runtime\Bindings\Android\PlatformDictationSDKBinding.cs" />
     <Compile Include="Assets\Oculus\Voice\Features\Dictation\Scripts\Runtime\API\Listeners\DictationListener.cs" />
   </ItemGroup>

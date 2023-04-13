@@ -59,25 +59,25 @@
     <Compile Include="Assets\Oculus\Interaction\Samples\Scripts\ScaleModifier.cs" />
     <Compile Include="Assets\Oculus\Interaction\Samples\Scripts\HandGrabRecord\TimerUIControl.cs" />
     <Compile Include="Assets\Oculus\Interaction\Samples\Scripts\SceneLoader.cs" />
-    <Compile Include="Assets\Oculus\Interaction\Samples\Scripts\HandGrabRecord\HandGrabPoseLiveRecorder.cs" />
-    <Compile Include="Assets\Oculus\Interaction\Samples\Scripts\HandGrabUse\Rendering\BasicPBRGlobals.cs" />
     <Compile Include="Assets\Oculus\Interaction\Samples\Scripts\CarouselView.cs" />
-    <Compile Include="Assets\Oculus\Interaction\Samples\Scripts\ColorChanger.cs" />
-    <Compile Include="Assets\Oculus\Interaction\Samples\Scripts\RotationAudioEvents.cs" />
     <Compile Include="Assets\Oculus\Interaction\Samples\Scripts\ScaleAudioEvents.cs" />
     <Compile Include="Assets\Oculus\Interaction\Samples\Scripts\PoseUseSample.cs" />
     <Compile Include="Assets\Oculus\Interaction\Samples\Scripts\LookAtTarget.cs" />
     <Compile Include="Assets\Oculus\Interaction\Samples\Scripts\ShouldHideHandOnGrab.cs" />
+    <Compile Include="Assets\Oculus\Interaction\Samples\Scripts\HandGrabUse\Effects\MeshBlit.cs" />
+    <Compile Include="Assets\Oculus\Interaction\Samples\Scripts\CountdownTimer.cs" />
+    <Compile Include="Assets\Oculus\Interaction\Samples\Scripts\FadeTextAfterActive.cs" />
+    <Compile Include="Assets\Oculus\Interaction\Samples\Scripts\HandGrabRecord\HandGrabPoseLiveRecorder.cs" />
+    <Compile Include="Assets\Oculus\Interaction\Samples\Scripts\HandGrabUse\Rendering\BasicPBRGlobals.cs" />
+    <Compile Include="Assets\Oculus\Interaction\Samples\Scripts\ColorChanger.cs" />
+    <Compile Include="Assets\Oculus\Interaction\Samples\Scripts\RotationAudioEvents.cs" />
     <Compile Include="Assets\Oculus\Interaction\Samples\Scripts\RespawnOnDrop.cs" />
     <Compile Include="Assets\Oculus\Interaction\Samples\Scripts\HandGrabUse\Effects\WaterSpray\WaterSpray.cs" />
-    <Compile Include="Assets\Oculus\Interaction\Samples\Scripts\HandGrabUse\Effects\MeshBlit.cs" />
     <Compile Include="Assets\Oculus\Interaction\Samples\Scripts\AudioTrigger.cs" />
-    <Compile Include="Assets\Oculus\Interaction\Samples\Scripts\CountdownTimer.cs" />
     <Compile Include="Assets\Oculus\Interaction\Samples\Scripts\EnableTargetOnStart.cs" />
     <Compile Include="Assets\Oculus\Interaction\Samples\Scripts\HandGrabUse\Effects\WaterSpray\WaterSprayNozzleTransformer.cs" />
     <Compile Include="Assets\Oculus\Interaction\Samples\Scripts\StayInView.cs" />
     <Compile Include="Assets\Oculus\Interaction\Samples\Scripts\AudioPhysics.cs" />
-    <Compile Include="Assets\Oculus\Interaction\Samples\Scripts\FadeTextAfterActive.cs" />
     <Compile Include="Assets\Oculus\Interaction\Samples\Scripts\HideHandVisualOnGrab.cs" />
   </ItemGroup>
   <ItemGroup>
