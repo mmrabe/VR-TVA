@@ -12,7 +12,6 @@ public class Experiment : MonoBehaviour {
     public OVRCameraRig camRig;
 
     // Booleans
-    bool isStarted = false;
     bool isFinished = false;
     bool isDebugEnabled;
     bool isCurrentTrialFinished = true;
@@ -20,8 +19,6 @@ public class Experiment : MonoBehaviour {
     // ExperimentSettings
     private List<ExperimentSetting> settings;
     ExperimentSetting currentSetting;
-    List<string> lettersD;
-    List<string> lettersT;
 
     CircularArray array;
     TimeCounter timer = new TimeCounter();
@@ -41,6 +38,9 @@ public class Experiment : MonoBehaviour {
     private GameObject FixationCrossObject;
     private float fixationCrossDuration;
     private bool isCrossCooldownOver = false;
+
+
+
     public Experiment() {
         trialAmount = 2;
         //lettersT = new List<string>() { "a", "b", "c" };
@@ -51,6 +51,8 @@ public class Experiment : MonoBehaviour {
 
         timeIntervals = new List<float> { 10f, 20f, 50f, 100f, 150f, 200f };
 
+        ExperimentSetting calibration = new ExperimentSetting(4, 4, false, false, 1, timeIntervals);
+
         ExperimentSetting wholeReportClose = new ExperimentSetting(8, 0, false, false, 0, timeIntervals);
         ExperimentSetting wholeReportFar = new ExperimentSetting(8, 0, true, false, 2, timeIntervals);
 
@@ -59,6 +61,7 @@ public class Experiment : MonoBehaviour {
         ExperimentSetting partialReportFT = new ExperimentSetting(4, 4, false, true, 1, new List<float> { 150 });
         ExperimentSetting partialReportTT = new ExperimentSetting(4, 4, true, true, 1, new List<float> { 150 });
 
+        
         ExperimentSetting setting1 = new ExperimentSetting(3, 5, false, false, 1);
         settings = new List<ExperimentSetting>() { setting1 };
         //settings = new List<ExperimentSetting>() { wholeReportClose,wholeReportFar,
@@ -85,6 +88,7 @@ public class Experiment : MonoBehaviour {
 
     }
 
+
     // Update is called once per frame
     void Update()
     {
@@ -96,6 +100,7 @@ public class Experiment : MonoBehaviour {
         if (!isFinished)
         {
             timer.Update();
+
             if (!timer.isRunning && isCurrentTrialFinished)
             {
                 if (isFixCrossShown  || isCrossCooldownOver)
@@ -108,31 +113,24 @@ public class Experiment : MonoBehaviour {
                     } else
                     {
                         NewExperiment();
+                        timer.StartCounting(currentTimeInterval);
                         isCrossCooldownOver = false;
                     }
-                    
-                    
                 }
                 else
                 {
-                    if (OVRInput.Get(OVRInput.Button.One)) //(Input.GetKeyDown(KeyCode.Space)) //
+                    if (Input.GetKeyDown(KeyCode.Space)) // // //
+                    //if ((OVRInput.Get(OVRInput.Button.One)))
                     {
                         ShowFixationCross();
                         timer.StartCounting(fixationCrossDuration);
                     }
                     
                 }
-                //if (OVRInput.Get(OVRInput.Button.One)) 
-           
             }
             else if (!timer.isRunning)
             {
-                
-                //Debug.Log("time diff timer:" + (Time.time - timer.startTime));
-                //Debug.Log("estimated time diff:" + (Time.time - timer.startTime + Time.deltaTime));
                 array.Clear();
-
-                //Debug.Log("Cleared");
                 if(array.patternMaskEnabled)
                 {
                     isCurrentTrialFinished = true;
@@ -149,17 +147,6 @@ public class Experiment : MonoBehaviour {
             }
 
         }
-        //canvas.transform.LookAt(camRig.transform);
-        //Debug.Log("UPDATE WORKS");
-        //for (int i = 0; i < array.targets.Count; i++)
-        //{
-        //    array.targets[i].transform.LookAt(camRig.transform);
-        //}
-
-        //for (int i = 0; i < array.distractors.Count; i++)
-        //{
-        //    array.distractors[i].transform.LookAt(camRig.transform);
-        //}
 
     }
 
@@ -179,7 +166,7 @@ public class Experiment : MonoBehaviour {
         array.PutIntoSlots(ret.Item1, ret.Item2);
         if (currentSetting.targetsFarAway) { array.PushBack(currentSetting.depth, true); }
         else if (currentSetting.distractorsFarAway) { array.PushBack(currentSetting.depth, false); }
-        timer.StartCounting(currentTimeInterval);
+        //timer.StartCounting(currentTimeInterval);
         isCurrentTrialFinished = false;
     }
 
@@ -311,6 +298,20 @@ public class Experiment : MonoBehaviour {
             retLst.Add(parent.transform.GetChild(i).gameObject);
         }
         return retLst;
+    }
+
+    public string TrailInfo()
+    {
+        string s = "";
+        s += currentSetting.numbOfTargets + "/";
+        s += currentSetting.numbOfDistractors + "/";
+        s += Convert.ToInt32(currentSetting.targetsFarAway).ToString() + "/";
+        s += Convert.ToInt32(currentSetting.distractorsFarAway).ToString() + "/";
+        s += currentTimeInterval + "/";
+        s += trialsSoFar;
+        s += "\n";
+        s += Math.Round(timer.estimatedTotalTime * 1000,3) + "/" + Math.Round(timer.realTotalTime * 1000,3);
+        return s;
     }
 
 }
@@ -553,10 +554,20 @@ public class CircularArray : MonoBehaviour
 
 public class TimeCounter: MonoBehaviour
 {
+    private float dynamicOffset = 0f;
+    private float dynamicOffset_buffer;
+    private int calibrationTrailCount;
+
     float secondsLeft;
     public bool isRunning { private set; get; } = false;
     public bool isPaused { private set; get; } = false;
     bool isFirstFrame = false;
+
+    bool isExtraFrameLogged = false;
+
+    public float realTotalTime;
+
+    public float estimatedTotalTime;
 
     public float startTime;
     
@@ -565,6 +576,7 @@ public class TimeCounter: MonoBehaviour
         secondsLeft = secondsToWait;
         isRunning = true;
         isFirstFrame = true;
+        //calibrationCount += 1;
     }
     void Start()
     {
@@ -575,6 +587,7 @@ public class TimeCounter: MonoBehaviour
         if (isFirstFrame)
         {
             isFirstFrame = false;
+            isExtraFrameLogged = false;
             startTime = Time.time;
             return;
         }
@@ -584,10 +597,19 @@ public class TimeCounter: MonoBehaviour
             
             secondsLeft -= Time.deltaTime;
         }
-        if( isRunning &&  (secondsLeft - Time.deltaTime)  < 0)
+
+        if( isRunning &&  (secondsLeft - Time.deltaTime) -0.0005f < 0)
         {
             isRunning = false;
+            estimatedTotalTime = secondsLeft - Time.deltaTime - 0.0005f;
+            Debug.Log("Estimated Time: " + estimatedTotalTime);
            
+        }
+        else if (!isRunning && !isExtraFrameLogged)
+        {
+            isExtraFrameLogged = true;
+            realTotalTime = secondsLeft - Time.deltaTime ;
+            Debug.Log("Real Time: " + realTotalTime);
         }
     }
 
