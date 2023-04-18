@@ -18,6 +18,6 @@ public class CanvasBoxInfo : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        info.text = experiment.TrailInfo();
+        //info.text = experiment.TrialInfo();
     }
 }

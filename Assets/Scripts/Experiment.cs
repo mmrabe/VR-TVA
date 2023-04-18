@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using UnityEngine.UI;
-
+using System.IO;
 
 public class Experiment : MonoBehaviour {
     // states
@@ -50,19 +50,19 @@ public class Experiment : MonoBehaviour {
     private bool isFixCrossShown = false;
     private GameObject FixationCrossObject;
     private float fixationCrossDuration;
-    private bool isCrossCooldownOver = false;
 
+    private string loggedData;
 
+    private bool isFirstLoggedFinished = false;
+
+    public string trailInfo { get; private set; }
+
+    private bool isTrialDataLogged = false;
 
     public Experiment() {
-        trialAmount = 2;
-        //lettersT = new List<string>() { "a", "b", "c" };
-        //lettersD = new List<string>() { "o" };
+        trialAmount = 1;
 
-        
-
-
-        timeIntervals = new List<float> { 10f, 20f, 50f, 100f, 150f, 200f };
+        timeIntervals = new List<float> { 2f };//, 20f, 50f };//, 100f, 150f, 200f };
 
         ExperimentSetting calibration = new ExperimentSetting(4, 4, false, false, 1, timeIntervals);
 
@@ -75,7 +75,7 @@ public class Experiment : MonoBehaviour {
         ExperimentSetting partialReportTT = new ExperimentSetting(4, 4, true, true, 1, new List<float> { 150 });
 
         
-        ExperimentSetting setting1 = new ExperimentSetting(3, 5, false, false, 1);
+        ExperimentSetting setting1 = new ExperimentSetting(3, 5, false, false, 1, timeIntervals);
         settings = new List<ExperimentSetting>() { setting1 };
         //settings = new List<ExperimentSetting>() { wholeReportClose,wholeReportFar,
         //                partialReportFF,partialReportFT,partialReportTF,partialReportTT };
@@ -111,10 +111,13 @@ public class Experiment : MonoBehaviour {
         stateMachine = new StateMachine();
         var ret = GenerateSymbols(currentSetting.numbOfTargets, currentSetting.numbOfDistractors, symbolsT, symbolsD);
         array.PutIntoSlots(ret.Item1, ret.Item2, currentSetting.depth);
+        states[(int)States.Stimuli].Initialize(currentTimeInterval);
     }
 
     void Update()
     {
+        //if (debugCnt > 1) { return; }
+
         if (isFinished) { return; }
 
         InputHandler();
@@ -124,35 +127,44 @@ public class Experiment : MonoBehaviour {
             if (currentState == States.AfterTrialCoolDown)
             {
                 TryToUpdateSetting();
+                isTrialDataLogged = false;
                 array.Clear();
                 var ret = GenerateSymbols(currentSetting.numbOfTargets, currentSetting.numbOfDistractors, symbolsT, symbolsD);
                 array.PutIntoSlots(ret.Item1, ret.Item2, currentSetting.depth);
                 states[(int)States.Stimuli].Initialize(currentTimeInterval);
-
             }
 
             currentState = stateMachine.NextState();
             states[(int)currentState].Run();
         }
-    }
 
+        if (currentState == States.WaitingForInput && !isTrialDataLogged &&
+            states[(int)States.AfterTrialCoolDown].timer.isExtraFrameLogged)
+        {
+            loggedData += TrialInfo();
+            isTrialDataLogged = true;
+        }
+
+    }
 
     public void ShowFixationCross()
     {
         isFixCrossShown = true;
-        FixationCrossObject.GetComponent<MeshRenderer>().enabled = true;
+        //FixationCrossObject.GetComponent<MeshRenderer>().enabled = true;
+        FixationCrossObject.SetActive(true);
     }
 
     public void HideFixationCross() {
         isFixCrossShown = false;
-        FixationCrossObject.GetComponent<MeshRenderer>().enabled = false;
+        //FixationCrossObject.GetComponent<MeshRenderer>().enabled = false;
+        FixationCrossObject.SetActive(false);
     }
 
-    public void NewExperiment() {
-        var ret = GenerateSymbols(currentSetting.numbOfTargets, currentSetting.numbOfDistractors, symbolsT, symbolsD);
-        array.PutIntoSlots(ret.Item1, ret.Item2, currentSetting.depth);
-        isCurrentTrialFinished = false;
-    }
+    //public void NewExperiment() {
+    //    var ret = GenerateSymbols(currentSetting.numbOfTargets, currentSetting.numbOfDistractors, symbolsT, symbolsD);
+    //    array.PutIntoSlots(ret.Item1, ret.Item2, currentSetting.depth);
+    //    isCurrentTrialFinished = false;
+    //}
 
     public void InputHandler()
     {
@@ -212,7 +224,7 @@ public class Experiment : MonoBehaviour {
     public (List<GameObject>, List<GameObject>) GenerateSymbols(int numbOfTargets, int numbOfDistractors, List<GameObject> symbolsT, List<GameObject> symbolsD)
     {
         List<GameObject> targets = new List<GameObject>();
-        List<GameObject> distractors = new List<GameObject>();
+        List<GameObject> distractors = new List<GameObject>(); 
         System.Random rnd = new System.Random();
         List<int> usedIndx = new List<int>();
         int c = rnd.Next(0, symbolsT.Count);
@@ -265,6 +277,7 @@ public class Experiment : MonoBehaviour {
                 else
                 {
                     isFinished = true;
+                    WriteLoggedData("data");
                 }
             }
 
@@ -284,19 +297,54 @@ public class Experiment : MonoBehaviour {
         return retLst;
     }
 
-    public string TrailInfo()
+    public string TrialInfo()
     {
         string s = "";
-        s += currentSetting.numbOfTargets + "/";
-        s += currentSetting.numbOfDistractors + "/";
-        s += Convert.ToInt32(currentSetting.targetsFarAway).ToString() + "/";
-        s += Convert.ToInt32(currentSetting.distractorsFarAway).ToString() + "/";
-        s += currentTimeInterval + "/";
-        s += trialsSoFar;
+        if (!isFirstLoggedFinished)
+        {
+            isFirstLoggedFinished = true;
+            s += "T,D,TP,DP,TI,N,FixationCrossTA,FixationCrossTR," +
+                "CoolDownPostCrossTA,CoolDownPostCrossTR,StimuliTA,StimuliTR," +
+                "MaskTA,MaskTR,CoolDownPostTrialTA,CoolDownPostTrialTR" + "\n";
+            return s;
+        }
+
+
+        s += currentSetting.numbOfTargets + ",";
+        s += currentSetting.numbOfDistractors + ",";
+        s += Convert.ToInt32(currentSetting.targetsFarAway).ToString() + ",";
+        s += Convert.ToInt32(currentSetting.distractorsFarAway).ToString() + ",";
+        s += currentTimeInterval + ",";
+        s += trialsSoFar + ",";
+
+
+        //s += array.targets
+        s += Math.Round(fixCrossState.timer.estimatedTotalTime * 1000, 3) + "," + Math.Round(fixCrossState.timer.realTotalTime * 1000, 3) + ",";
+        s += Math.Round(coolDownPostCrossState.timer.estimatedTotalTime * 1000, 3) + "," + Math.Round(coolDownPostCrossState.timer.realTotalTime * 1000, 3) + ",";
+        s += Math.Round(stimuliState.timer.estimatedTotalTime * 1000,3) + "," + Math.Round(stimuliState.timer.realTotalTime * 1000,3) + ",";
+        s += Math.Round(maskState.timer.estimatedTotalTime * 1000, 3) + "," + Math.Round(maskState.timer.realTotalTime * 1000, 3) + ",";
+        s += Math.Round(coolDownPostTrialState.timer.estimatedTotalTime * 1000, 3) + "," + Math.Round(coolDownPostTrialState.timer.realTotalTime * 1000, 3);
         s += "\n";
-        s += Math.Round(timer.estimatedTotalTime * 1000,3) + "/" + Math.Round(timer.realTotalTime * 1000,3);
+        s += "\n";
+        s += "\n";
+        s += "\n";
+        s += "\n";
         return s;
     }
+
+    public void WriteLoggedData(string path)
+    {
+        path = "C:/Users/hccco/Desktop/Mariusz_Uffe_BachelorProject/BachelorProj/Assets";
+        path = "BLAH.txt";
+        FileStream stream = new FileStream(path, FileMode.OpenOrCreate);
+        using (var w = new StreamWriter(stream))
+            {
+                w.WriteLine(loggedData);
+                //w.Flush();
+            }
+        //Debug.Log("Data Logged");
+    }
+
 
 }
     public class ExperimentSetting {
@@ -313,6 +361,7 @@ public class Experiment : MonoBehaviour {
             this.targetsFarAway = targetsFarAway;
             this.distractorsFarAway = distractorsFarAway;
             this.depth = Depth;
+            this.timeIntervals = TimeIntervals;
         }
 
         public ExperimentSetting(int NumbOftargets, int NumbOfdistractors, bool targetsFarAway, bool distractorsFarAway, int Depth)
@@ -357,14 +406,14 @@ public class TimeCounter: MonoBehaviour
 {
     private float dynamicOffset = 0f;
     private float dynamicOffset_buffer;
-    private int calibrationTrailCount;
+    private int calibrationTrialCount;
 
     float secondsLeft;
     public bool isRunning { private set; get; } = false;
     public bool isPaused { private set; get; } = false;
     bool isFirstFrame = false;
 
-    bool isExtraFrameLogged = false;
+    public bool isExtraFrameLogged { get; private set; } = false;
 
     public float realTotalTime;
 
@@ -400,18 +449,18 @@ public class TimeCounter: MonoBehaviour
             secondsLeft -= Time.deltaTime;
         }
 
-        if( isRunning &&  (secondsLeft - Time.deltaTime) -0.0005f < 0)
+        if( isRunning &&  (secondsLeft - Time.deltaTime) < 0)
         {
             isRunning = false;
-            estimatedTotalTime = secondsLeft - Time.deltaTime - 0.0005f;
-            Debug.Log("Estimated Time: " + estimatedTotalTime);
+            estimatedTotalTime = secondsLeft - Time.deltaTime;
+            //Debug.Log("Estimated Time: " + estimatedTotalTime);
            
         }
         else if (!isRunning && !isExtraFrameLogged)
         {
             isExtraFrameLogged = true;
             realTotalTime = secondsLeft - Time.deltaTime ;
-            Debug.Log("Real Time: " + realTotalTime);
+            //Debug.Log("Real Time: " + realTotalTime);
         }
     }
 

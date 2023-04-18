@@ -9,18 +9,18 @@ public class FixationCrossState : ExperimentState
     public override void Initialize(float duration)
     {
         base.Initialize(duration);
-        fixCross.GetComponent<MeshRenderer>().enabled = false;
+        fixCross.SetActive(false);
     }
     public override void Run()
     {
         base.Run();
-        fixCross.GetComponent<MeshRenderer>().enabled = true;
+        fixCross.SetActive(true);
 
     }
 
     protected override void Update()
     {
         base.Update();
-        if (IsFinished()) { fixCross.GetComponent<MeshRenderer>().enabled = false; }
+        if (IsFinished()) { fixCross.SetActive(false); }
     }
 }

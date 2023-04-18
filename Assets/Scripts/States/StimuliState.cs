@@ -11,18 +11,26 @@ public class StimuliState : ExperimentState
     {
         base.Initialize(duration);
         array.HideStimuli();
+        //Debug.Log("Stimuli hidden initialy");
     }
     public override void Run()
     {
-        base.Run();
         array.ShowStimuli();
+        //Debug.Log("Stimuli showed");
+        base.Run();
+        
 
     }
 
     protected override void Update()
     {
         base.Update();
-        if (IsFinished()) { array.HideStimuli(); }
+        if (array.stimuliEnabled &&  IsFinished()) 
+        { 
+            array.HideStimuli();
+            //Debug.Log("Stimuli hidden");
+        }
+        
     }
 
 }

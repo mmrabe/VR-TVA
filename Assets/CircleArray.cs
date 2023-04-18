@@ -17,10 +17,12 @@ public class CircleArray : MonoBehaviour
     private Transform canvasTransform;
     private GameObject[] patternMasks;
     public bool patternMaskEnabled { get; private set; } = false;
+    public bool stimuliEnabled { get; private set; } = false;
     private GameObject FixationCrossObject;
     private Transform canvasUpTrans;
     private Transform canvasRightTrans;
-    public float blah;
+    public GameObject stimuliContainer;
+    public GameObject maskContainer;
 
 
     public CircleArray()
@@ -46,7 +48,7 @@ public class CircleArray : MonoBehaviour
         this.FixationCrossObject = FixationCrossObject;
 
         slots = new Vector3[NumbOfSlots];
-        Debug.Log(slots.Length);
+        //Debug.Log(slots.Length);
         float angleStep = 360 / NumbOfSlots;
         float currAngle = 0f;
         for (int i = 0; i < NumbOfSlots; i++)
@@ -55,7 +57,7 @@ public class CircleArray : MonoBehaviour
             float y = (float)(radius * Math.Sin(currAngle * (Math.PI / 180)));
             slots[i] = new Vector3(x, y, 0);
             currAngle += angleStep;
-            Debug.Log("slot " + i + " = " + "(" + x + ";" + y + ")");
+//            Debug.Log("slot " + i + " = " + "(" + x + ";" + y + ")");
         }
 
         patternMask = GameObject.Find("PatternMask");
@@ -73,7 +75,7 @@ public class CircleArray : MonoBehaviour
         {
             GameObject clone = GameObject.Instantiate(patternMask);
             clone.transform.position = canvasTransform.position + slots[i];
-            clone.transform.SetParent(canvasTransform);
+            clone.transform.SetParent(maskContainer.transform);
             patternMasks[i] = clone;
         }
         HidePatternMask();
@@ -81,44 +83,51 @@ public class CircleArray : MonoBehaviour
 
     public void ShowPatternMask()
     {
-        for (int i = 0; i < patternMasks.Length; i++)
-        {
-            patternMasks[i].GetComponent<MeshRenderer>().enabled = true;
-        }
+        //for (int i = 0; i < patternMasks.Length; i++)
+        //{
+        //    patternMasks[i].GetComponent<MeshRenderer>().enabled = true;
+        //}
+        maskContainer.SetActive(true);
         patternMaskEnabled = true;
     }
 
     public void HidePatternMask()
     {
-        for (int i = 0; i < patternMasks.Length; i++)
-        {
-            patternMasks[i].GetComponent<MeshRenderer>().enabled = false;
-        }
+        //for (int i = 0; i < patternMasks.Length; i++)
+        //{
+        //    patternMasks[i].GetComponent<MeshRenderer>().enabled = false;
+        //}
+        maskContainer.SetActive(false);
         patternMaskEnabled = false;
     }
 
     public void ShowStimuli()
     {
-        for (int i = 0; i < targets.Count; i++)
-        {
-            targets[i].GetComponent<MeshRenderer>().enabled = true;
-        }
-        for (int i = 0; i < distractors.Count; i++)
-        {
-            distractors[i].GetComponent<MeshRenderer>().enabled = true;
-        }
+        //for (int i = 0; i < targets.Count; i++)
+        //{
+        //    targets[i].GetComponent<MeshRenderer>().enabled = true;
+        //}
+        //for (int i = 0; i < distractors.Count; i++)
+        //{
+        //    distractors[i].GetComponent<MeshRenderer>().enabled = true;
+        //}
+        stimuliContainer.SetActive(true);
+        stimuliEnabled = true;
     }
 
     public void HideStimuli()
     {
-        for (int i = 0; i < targets.Count; i++)
-        {
-            targets[i].GetComponent<MeshRenderer>().enabled = false;
-        }
-        for (int i = 0; i < distractors.Count; i++)
-        {
-            distractors[i].GetComponent<MeshRenderer>().enabled = false;
-        }
+        //for (int i = 0; i < targets.Count; i++)
+        //{
+        //    targets[i].GetComponent<MeshRenderer>().enabled = false;
+        //}
+        //for (int i = 0; i < distractors.Count; i++)
+        //{
+        //    distractors[i].GetComponent<MeshRenderer>().enabled = false;
+        //}
+
+        stimuliContainer.SetActive(false);
+        stimuliEnabled = false;
     }
 
 
@@ -132,7 +141,7 @@ public class CircleArray : MonoBehaviour
         int c = rnd.Next(0, numbOfSlots);
         for (int i = 0; i < targets.Count; i++)
         {
-            targets[i].transform.SetParent(canvasTransform);
+            //targets[i].transform.SetParent(canvasTransform);
 
             while (found.Contains(c))
             { c = rnd.Next(0, numbOfSlots); }
@@ -143,11 +152,11 @@ public class CircleArray : MonoBehaviour
 
             targets[i].transform.position = canvasTransform.position + offsetUp + offsetRight + new Vector3(0.25f * initialScale, -0.5f * initialScale, 0);
             targets[i].transform.rotation = FixationCrossObject.transform.rotation;
-
+            targets[i].transform.SetParent(stimuliContainer.transform);
         }
         for (int i = 0; i < distractors.Count; i++)
         {
-            distractors[i].transform.SetParent(canvasTransform);
+            //distractors[i].transform.SetParent(canvasTransform);
             while (found.Contains(c))
             { c = rnd.Next(0, numbOfSlots); }
             found.Add(c);
@@ -155,6 +164,7 @@ public class CircleArray : MonoBehaviour
             Vector3 offsetRight = (FixationCrossObject.transform.position - canvasRightTrans.position).normalized * slots[c].x;
             distractors[i].transform.position = canvasTransform.position + offsetUp + offsetRight + new Vector3(0.25f * initialScale, -0.5f * initialScale, 0);
             distractors[i].transform.rotation = FixationCrossObject.transform.rotation;
+            distractors[i].transform.SetParent(stimuliContainer.transform);
         }
 
         if (targetsPushed) { PushBack(depth, true); }

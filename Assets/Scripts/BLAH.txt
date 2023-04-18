@@ -1,0 +1,7 @@
+T,D,TP,DP,TI,N,FixationCrossTA,FixationCrossTR,CoolDownPostCrossTA,CoolDownPostCrossTR,StimuliTA,StimuliTR,MaskTA,MaskTR,CoolDownPostTrialTA,CoolDownPostTrialTR
+3,5,0,0,2,1,-0.626,-0.635,-0.353,-0.591,-0.193,-0.532,-0.221,-0.293,-0.809,-1.247
+
+
+
+
+
