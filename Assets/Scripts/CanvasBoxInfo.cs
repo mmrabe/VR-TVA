@@ -18,6 +18,12 @@ public class CanvasBoxInfo : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
+        info.text = Application.dataPath;
+        info.text += "\n";
+        info.text += Application.persistentDataPath;
+        info.text += "\n\n\n\n\n\n";
+
         //info.text = experiment.TrialInfo();
     }
 }

@@ -6,6 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scenes/MockupPractice.unity
+    guid: 8282230f748ae5e45b4af96b51c72239
+  - enabled: 1
     path: Assets/Scenes/Mockup.unity
     guid: 4cdec0d51d2ba4cc695863a7af187cc3
   m_configObjects:

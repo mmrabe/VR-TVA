@@ -4,6 +4,7 @@ using UnityEngine;
 using System;
 using UnityEngine.UI;
 using System.IO;
+using UnityEngine.SceneManagement;
 
 public class Experiment : MonoBehaviour {
     // states
@@ -36,12 +37,12 @@ public class Experiment : MonoBehaviour {
     public CircleArray array;
     TimeCounter timer = new TimeCounter();
 
-    int trialAmount;
+    public int trialAmount;
     int trialsSoFar = 0;
     int currentSettingNumber;
     int currentTimeIntervalNumber;
     float currentTimeInterval;
-    private float patternMaskDuration;
+    public float patternMaskDuration;
     private List<float> timeIntervals;
 
     private List<GameObject> symbolsT;
@@ -49,7 +50,7 @@ public class Experiment : MonoBehaviour {
 
     private bool isFixCrossShown = false;
     private GameObject FixationCrossObject;
-    private float fixationCrossDuration;
+    public float fixationCrossDuration;
 
     private string loggedData;
 
@@ -59,31 +60,43 @@ public class Experiment : MonoBehaviour {
 
     private bool isTrialDataLogged = false;
 
-    public Experiment() {
-        trialAmount = 1;
+    public bool isPractice;
 
-        timeIntervals = new List<float> { 2f };//, 20f, 50f };//, 100f, 150f, 200f };
+    public float coolDownPostTrialDuration;
+    public float coolDownPostCrossDuration;
+
+    public Experiment() {
+        trialAmount = 3;
+
+        timeIntervals = new List<float> { 2f,4f };//, 20f, 50f };//, 100f, 150f, 200f };
 
         ExperimentSetting calibration = new ExperimentSetting(4, 4, false, false, 1, timeIntervals);
 
         ExperimentSetting wholeReportClose = new ExperimentSetting(8, 0, false, false, 0, timeIntervals);
         ExperimentSetting wholeReportFar = new ExperimentSetting(8, 0, true, false, 2, timeIntervals);
-
         ExperimentSetting partialReportFF = new ExperimentSetting(4, 4, false, false, 0, new List<float> { 150 });
         ExperimentSetting partialReportTF = new ExperimentSetting(4, 4, true, false, 1, new List<float> { 150 });
         ExperimentSetting partialReportFT = new ExperimentSetting(4, 4, false, true, 1, new List<float> { 150 });
         ExperimentSetting partialReportTT = new ExperimentSetting(4, 4, true, true, 1, new List<float> { 150 });
-
-        
-        ExperimentSetting setting1 = new ExperimentSetting(3, 5, false, false, 1, timeIntervals);
-        settings = new List<ExperimentSetting>() { setting1 };
         //settings = new List<ExperimentSetting>() { wholeReportClose,wholeReportFar,
         //                partialReportFF,partialReportFT,partialReportTF,partialReportTT };
+
+        ExperimentSetting setting1 = new ExperimentSetting(3, 5, false, false, 1, timeIntervals);
+        settings = new List<ExperimentSetting>() { setting1 };
+
+        
+        
 
         currentSetting = settings[currentSettingNumber];
         currentTimeInterval = currentSetting.timeIntervals[currentTimeIntervalNumber];
         patternMaskDuration = 0.5f;
         fixationCrossDuration = 1f;
+
+        if(isPractice)
+        {
+            ExperimentSetting settingPractice = new ExperimentSetting(4, 4, false, false, 1, new List<float> { 1f, 2f, 5f, 10f });
+            settings = new List<ExperimentSetting> { settingPractice };
+        }
 
 
         
@@ -100,11 +113,11 @@ public class Experiment : MonoBehaviour {
         symbolsT = LoadSymbols("Letters");
         symbolsD = LoadSymbols("Digits");
 
-
+        
         fixCrossState.Initialize(fixationCrossDuration);
-        coolDownPostCrossState.Initialize(1f);
+        coolDownPostCrossState.Initialize(coolDownPostCrossDuration);
         maskState.Initialize(patternMaskDuration);
-        coolDownPostTrialState.Initialize(2f);
+        coolDownPostTrialState.Initialize(coolDownPostTrialDuration);
         states = new List<ExperimentState>() { awaitState, fixCrossState,
                                         coolDownPostCrossState, stimuliState,
                                         maskState, coolDownPostTrialState  };
@@ -116,9 +129,11 @@ public class Experiment : MonoBehaviour {
 
     void Update()
     {
-        //if (debugCnt > 1) { return; }
-
-        if (isFinished) { return; }
+        //SceneManager.LoadScene(SceneManager.GetActiveScene().name
+        if (isFinished ) { 
+            if(isPractice) { SceneManager.LoadScene("mockup"); }
+            return;
+        }
 
         InputHandler();
 
@@ -160,11 +175,6 @@ public class Experiment : MonoBehaviour {
         FixationCrossObject.SetActive(false);
     }
 
-    //public void NewExperiment() {
-    //    var ret = GenerateSymbols(currentSetting.numbOfTargets, currentSetting.numbOfDistractors, symbolsT, symbolsD);
-    //    array.PutIntoSlots(ret.Item1, ret.Item2, currentSetting.depth);
-    //    isCurrentTrialFinished = false;
-    //}
 
     public void InputHandler()
     {
@@ -303,7 +313,7 @@ public class Experiment : MonoBehaviour {
         if (!isFirstLoggedFinished)
         {
             isFirstLoggedFinished = true;
-            s += "T,D,TP,DP,TI,N,FixationCrossTA,FixationCrossTR," +
+            s += "T,D,TP,DP,TI,N,Targets,FixationCrossTA,FixationCrossTR," +
                 "CoolDownPostCrossTA,CoolDownPostCrossTR,StimuliTA,StimuliTR," +
                 "MaskTA,MaskTR,CoolDownPostTrialTA,CoolDownPostTrialTR" + "\n";
             return s;
@@ -317,17 +327,17 @@ public class Experiment : MonoBehaviour {
         s += currentTimeInterval + ",";
         s += trialsSoFar + ",";
 
+        foreach (GameObject target in  array.targets)
+        {
+            s += target.name[0];
+        }
+        s += ",";
 
-        //s += array.targets
         s += Math.Round(fixCrossState.timer.estimatedTotalTime * 1000, 3) + "," + Math.Round(fixCrossState.timer.realTotalTime * 1000, 3) + ",";
         s += Math.Round(coolDownPostCrossState.timer.estimatedTotalTime * 1000, 3) + "," + Math.Round(coolDownPostCrossState.timer.realTotalTime * 1000, 3) + ",";
         s += Math.Round(stimuliState.timer.estimatedTotalTime * 1000,3) + "," + Math.Round(stimuliState.timer.realTotalTime * 1000,3) + ",";
         s += Math.Round(maskState.timer.estimatedTotalTime * 1000, 3) + "," + Math.Round(maskState.timer.realTotalTime * 1000, 3) + ",";
         s += Math.Round(coolDownPostTrialState.timer.estimatedTotalTime * 1000, 3) + "," + Math.Round(coolDownPostTrialState.timer.realTotalTime * 1000, 3);
-        s += "\n";
-        s += "\n";
-        s += "\n";
-        s += "\n";
         s += "\n";
         return s;
     }
@@ -336,13 +346,12 @@ public class Experiment : MonoBehaviour {
     {
         path = "C:/Users/hccco/Desktop/Mariusz_Uffe_BachelorProject/BachelorProj/Assets";
         path = "BLAH.txt";
+        path = Path.Combine(Application.persistentDataPath) + "/BLAH.txt";
         FileStream stream = new FileStream(path, FileMode.OpenOrCreate);
         using (var w = new StreamWriter(stream))
             {
                 w.WriteLine(loggedData);
-                //w.Flush();
             }
-        //Debug.Log("Data Logged");
     }
 
 
