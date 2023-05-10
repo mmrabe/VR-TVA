@@ -8,10 +8,13 @@ public class CircleArray : MonoBehaviour {
     public List<GameObject> targets;
     public List<GameObject> distractors;
     private GameObject patternMask;
+    private GameObject receptiveField;
     private GameObject[] patternMasks;
+    private GameObject[] receptiveFields;
     private GameObject FixationCrossObject;
     public GameObject stimuliContainer;
     public GameObject maskContainer;
+    public GameObject receptiveFieldContainer;
     private Transform canvasTransform;
     private Transform canvasUpTrans;
     private Transform canvasRightTrans;
@@ -23,6 +26,7 @@ public class CircleArray : MonoBehaviour {
     private bool targetsPushed = false;
     private bool distractorsPushed = false;
     public bool patternMaskEnabled { get; private set; } = false;
+    public bool ReceptiveFieldEnabled { get; private set; } = false;
     public bool stimuliEnabled { get; private set; } = false;
    
     public CircleArray() {
@@ -46,7 +50,9 @@ public class CircleArray : MonoBehaviour {
         this.canvasRightTrans = GameObject.Find("right").transform;
         this.canvasUpTrans = GameObject.Find("up").transform;
         this.patternMask = GameObject.Find("PatternMask");
+        this.receptiveField = GameObject.Find("ReceptiveField");
         this.patternMasks = new GameObject[numbOfSlots];
+        this.receptiveFields = new GameObject[numbOfSlots];
         
         float angleStep = 360 / NumbOfSlots;
         float currAngle = 0f;
@@ -58,6 +64,7 @@ public class CircleArray : MonoBehaviour {
             currAngle += angleStep;
         }
         CreatePatternMask();
+        CreateReceptiveField();
     }
 
     public void CreatePatternMask() {
@@ -68,6 +75,26 @@ public class CircleArray : MonoBehaviour {
             patternMasks[i] = clone;
         }
         HidePatternMask();
+    }
+
+    public void CreateReceptiveField() {
+        for (int i = 0; i < slots.Length; i++) {
+            GameObject clone = GameObject.Instantiate(receptiveField);
+            clone.transform.position = canvasTransform.position + slots[i];
+            clone.transform.SetParent(receptiveFieldContainer.transform);
+            receptiveFields[i] = clone;
+        }
+        HideReceptiveField();
+    }
+
+    public void ShowReceptiveField() {
+        receptiveFieldContainer.SetActive(true);
+        patternMaskEnabled = true;
+    }
+
+    public void HideReceptiveField() {
+        receptiveFieldContainer.SetActive(false);
+        patternMaskEnabled = false;
     }
 
     public void ShowPatternMask() {
@@ -95,6 +122,8 @@ public class CircleArray : MonoBehaviour {
         this.targets = Targets;
 
         List<int> found = new List<int>();
+        
+
         System.Random rnd = new System.Random();
         float initialScale = GameObject.Find("PatternMask").transform.localScale.x;
         int c = rnd.Next(0, numbOfSlots);
@@ -104,7 +133,7 @@ public class CircleArray : MonoBehaviour {
                 c = rnd.Next(0, numbOfSlots); 
             }
             found.Add(c);
-
+            //usedStimuli.Add(targets[i].name);
             Vector3 offsetUp = (FixationCrossObject.transform.position - canvasUpTrans.position).normalized * slots[c].y;
             Vector3 offsetRight = (FixationCrossObject.transform.position - canvasRightTrans.position).normalized * slots[c].x;
 

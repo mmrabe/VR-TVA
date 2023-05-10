@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: GREEN
+  m_Name: Blue
   m_Shader: {fileID: 20, guid: 0000000000000000f000000000000000, type: 0}
   m_ShaderKeywords: _EMISSION
   m_LightmapFlags: 2
@@ -94,8 +94,8 @@ Material:
     - _UseUIAlphaClip: 0
     - _ZWrite: 1
     m_Colors:
-    - _Color: {r: 0.013624566, g: 0.2647059, b: 0.09847277, a: 1}
+    - _Color: {r: 0.2392157, g: 0.26666668, b: 0.854902, a: 1}
     - _EmissionColor: {r: 0.5808823, g: 0.5464182, b: 0.081152685, a: 1}
-    - _ReflectColor: {r: 0.44852942, g: 0.44852942, b: 0.44852942, a: 0.5}
+    - _ReflectColor: {r: 0.11764703, g: 0.36054593, b: 0.6039216, a: 0.5}
     - _SpecColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
   m_BuildTextureStacks: []

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
@@ -60,10 +61,10 @@ public class Experiment : MonoBehaviour {
     public string trialInfo { get; private set; }
 
     public Experiment() {
-        this.trialAmount = 3;
-        this.patternMaskDuration = 0.5f;
-        this.fixationCrossDuration = 1f;
-        this.timeIntervals = new List<float> { 0.01f, 0.02f, 0.05f, 0.1f, 0.15f, 0.2f };
+        //this.trialAmount = 3;
+        //this.patternMaskDuration = 0.5f;
+        //this.fixationCrossDuration = 1f;
+        this.timeIntervals = new List<float> { 0.05f, 0.1f, 0.15f, 0.2f }; // 0.01f, 0.02f ?
         this.randomTrials = this.GetRandomTrials(this.timeIntervals, this.trialAmount);
         List<float> partialReportTime = new List<float> {0.15f};
 
@@ -77,7 +78,7 @@ public class Experiment : MonoBehaviour {
         //ExperimentSetting calibration = new ExperimentSetting(4, 4, false, false, 1, timeIntervals);
         //settings = new List<ExperimentSetting>() { wholeReportClose, wholeReportFar, partialReportFF, partialReportFT, partialReportTF, partialReportTT };
         
-        ExperimentSetting setting1 = new ExperimentSetting(3, 5, false, false, 1, this.timeIntervals);
+        ExperimentSetting setting1 = new ExperimentSetting(4, 4, false, true, 1, this.randomTrials);
         settings = new List<ExperimentSetting>() { setting1 };
         currentSetting = settings[currentSettingNumber];
         currentTimeInterval = currentSetting.timeIntervals[currentTimeIntervalNumber];
@@ -90,7 +91,6 @@ public class Experiment : MonoBehaviour {
 
     // Start is called before the first frame update
     void Start() {
-        //Debug.Log(this.randomTrials[0] + " " + this.randomTrials[1] + " " + this.randomTrials[2] + " " + this.randomTrials[3]);
         this.canvasCenter = canvas.gameObject.GetComponent<RectTransform>().transform;
         this.symbolsT = LoadSymbols("Letters");
         this.symbolsD = LoadSymbols("Digits");
@@ -133,6 +133,7 @@ public class Experiment : MonoBehaviour {
         }
 
         InputHandler();
+        
 
         // If current state is finished, go to next state and execute it.
         if (states[(int)currentState].IsFinished()) {
@@ -144,7 +145,7 @@ public class Experiment : MonoBehaviour {
                 array.Clear();
                 var ret = GenerateSymbols(currentSetting.numbOfTargets, currentSetting.numbOfDistractors, this.symbolsT, this.symbolsD);
                 array.PutIntoSlots(ret.Item1, ret.Item2, currentSetting.depth);
-                Debug.Log(this.currentTimeInterval);
+                //Debug.Log(this.currentTimeInterval);
                 states[(int)States.Stimuli].Initialize(this.currentTimeInterval);
             }
             currentState = stateMachine.NextState();
@@ -228,7 +229,7 @@ public class Experiment : MonoBehaviour {
         }
 
         c = rnd.Next(0, symbolsD.Count);
-        usedIndex = new List<int>();
+        //usedIndex = new List<int>();
 
         for (int i = 0; i < numbOfDistractors; i++) {
             while (usedIndex.Contains(c)) {
@@ -310,14 +311,17 @@ public class Experiment : MonoBehaviour {
     }
 
     public List<float> GetRandomTrials(List<float> intervals, int trialCount) {
-        List<float> trials = new List<float>();
-        int total = trialCount * intervals.Count;
         System.Random random = new System.Random();
+        List<float> intervalsClone = intervals;
+        List<float> randomizedTimeIntervals = new List<float>();
 
-        for(int i = 0; i < total; i++) {    
-            trials.Add(intervals[random.Next(1, intervals.Count)]);
+        for (int i = intervals.Count; i > 0; i--) {
+            int j = random.Next(i);
+            randomizedTimeIntervals.Add(intervals[j]);
+            intervalsClone.RemoveAt(j);
         }
-        return trials;
+
+        return randomizedTimeIntervals;
     }
 }
 
