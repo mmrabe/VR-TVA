@@ -119,6 +119,7 @@ public class Experiment : MonoBehaviour {
         states[(int)States.Stimuli].Initialize(this.currentTimeInterval);
 
         // Set distance to stimuli
+        // CHANGED !!!
         array.PushBack(stimuliDistance, true);
         array.PushBack(stimuliDistance, false);
     }
@@ -133,7 +134,6 @@ public class Experiment : MonoBehaviour {
         }
 
         InputHandler();
-        
 
         // If current state is finished, go to next state and execute it.
         if (states[(int)currentState].IsFinished()) {
@@ -159,9 +159,8 @@ public class Experiment : MonoBehaviour {
         }
     }
 
-    public int getTrialsSoFar() {
-        return this.trialsSoFar;
-    }
+    public int getTrialsSoFar() => this.trialsSoFar;
+
 
     public void ShowFixationCross() {
         isFixCrossShown = true;
@@ -229,7 +228,6 @@ public class Experiment : MonoBehaviour {
         }
 
         c = rnd.Next(0, symbolsD.Count);
-        //usedIndex = new List<int>();
 
         for (int i = 0; i < numbOfDistractors; i++) {
             while (usedIndex.Contains(c)) {
