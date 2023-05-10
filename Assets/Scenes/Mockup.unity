@@ -4577,7 +4577,7 @@ MonoBehaviour:
   fixationCrossDuration: 0.2
   coolDownPostTrialDuration: 1
   coolDownPostCrossDuration: 0.1
-  stimuliDistance: 1
+  stimuliDistance: 0
   array: {fileID: 959163863}
 --- !u!1 &1893674562
 GameObject:

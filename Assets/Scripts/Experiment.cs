@@ -77,7 +77,7 @@ public class Experiment : MonoBehaviour {
         //ExperimentSetting calibration = new ExperimentSetting(4, 4, false, false, 1, timeIntervals);
         //settings = new List<ExperimentSetting>() { wholeReportClose, wholeReportFar, partialReportFF, partialReportFT, partialReportTF, partialReportTT };
         
-        ExperimentSetting setting1 = new ExperimentSetting(3, 5, false, false, 1, partialReportTime);
+        ExperimentSetting setting1 = new ExperimentSetting(3, 5, false, false, 1, this.timeIntervals);
         settings = new List<ExperimentSetting>() { setting1 };
         currentSetting = settings[currentSettingNumber];
         currentTimeInterval = currentSetting.timeIntervals[currentTimeIntervalNumber];
