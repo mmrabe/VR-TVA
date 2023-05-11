@@ -303,8 +303,8 @@ public class Experiment : MonoBehaviour {
 
     public void WriteLoggedData(string path) {
         path = "C:/Users/hccco/Desktop/Mariusz_Uffe_BachelorProject/BachelorProj/Assets";
-        path = "BLAH.txt";
-        path = Path.Combine(Application.persistentDataPath) + "/BLAH.txt";
+        path += "/BLAH.txt";
+        //path = Path.Combine(Application.persistentDataPath) + "/BLAH.txt";
         FileStream stream = new FileStream(path, FileMode.OpenOrCreate);
         using (var w = new StreamWriter(stream)) {
                 w.WriteLine(loggedData);

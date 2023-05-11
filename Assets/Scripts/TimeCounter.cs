@@ -41,7 +41,15 @@ public class TimeCounter: MonoBehaviour {
             secondsLeft -= Time.deltaTime;
         }
 
-        if( isRunning &&  (secondsLeft - Time.deltaTime) < 0) {
+        //if (isRunning && secondsLeft < 2 * frameDur) {
+        //    //
+        //    //isRunning = false;
+        //    estimatedTotalTime = secondsLeft - Time.deltaTime;
+
+        //    Debug.Log("Delta: " + Time.deltaTime + "at time " + Time.realtimeSinceStartup);
+        //}
+
+        if ( isRunning &&  (secondsLeft - Time.deltaTime) < 0) {
             isRunning = false;
             estimatedTotalTime = secondsLeft - Time.deltaTime;
             //Debug.Log("Estimated Time: " + estimatedTotalTime);
