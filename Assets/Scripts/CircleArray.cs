@@ -23,8 +23,8 @@ public class CircleArray : MonoBehaviour {
     private Vector3[] slots;
     private int numbOfSlots;
     private float radius;
-    private bool targetsPushed = false;
-    private bool distractorsPushed = false;
+    // private bool targetsPushed = false;
+    // private bool distractorsPushed = false;
     public bool patternMaskEnabled { get; private set; } = false;
     public bool receptiveFieldEnabled { get; private set; } = false;
     public bool stimuliEnabled { get; private set; } = false;
@@ -41,7 +41,7 @@ public class CircleArray : MonoBehaviour {
 
     }
 
-    public void Init(float radius, int NumbOfSlots, GameObject FixationCrossObject, Transform canvasTransform = null) {
+    public void Init(float radius, int NumbOfSlots, GameObject FixationCrossObject, float distance, Transform canvasTransform = null) {
         this.radius = radius;
         this.numbOfSlots = NumbOfSlots;
         this.canvasTransform = canvasTransform;
@@ -60,11 +60,14 @@ public class CircleArray : MonoBehaviour {
         for (int i = 0; i < NumbOfSlots; i++) {
             float x = (float)(radius * Math.Cos(currAngle * (Math.PI / 180)));
             float y = (float)(radius * Math.Sin(currAngle * (Math.PI / 180)));
-            slots[i] = new Vector3(x, y, 0);
+            slots[i] = new Vector3(x, y, distance);
             currAngle += angleStep;
         }
+        RadiusToScaleBoxes();
         CreatePatternMask();
         CreateReceptiveField();
+
+        
     }
 
     public void CreatePatternMask() {
@@ -139,15 +142,15 @@ public class CircleArray : MonoBehaviour {
         stimuliEnabled = false;
     }
 
-    public void PutIntoSlots(List<GameObject> Targets, List<GameObject> Distractors, float depth) {
+    public void PutIntoSlots(List<GameObject> Targets, List<GameObject> Distractors, bool targetsAway, bool distractorsAway, float depth) {
         this.distractors = Distractors;
         this.targets = Targets;
-
+        
         List<int> found = new List<int>();
         
 
         System.Random rnd = new System.Random();
-        float initialScale = GameObject.Find("PatternMask").transform.localScale.x;
+        float initialScale = GameObject.Find("A").transform.localScale.x;
         int c = rnd.Next(0, numbOfSlots);
 
         for (int i = 0; i < targets.Count; i++) {
@@ -179,10 +182,10 @@ public class CircleArray : MonoBehaviour {
             
         }
 
-        if (targetsPushed) { 
-            PushBack(depth, true); 
-        } else if (distractorsPushed) { 
-            PushBack(depth, false); 
+        if (targetsAway) { 
+            PushBack(depth, "T"); 
+        } else if (distractorsAway) { 
+            PushBack(depth, "D"); 
         }
 
         for(int i = 0; i < patternMasks.Length; i++) {
@@ -193,16 +196,14 @@ public class CircleArray : MonoBehaviour {
 
     }
 
-    public void PushBack(float depth, bool pushTargets) {
-        this.targetsPushed = pushTargets;
-        this.distractorsPushed = !pushTargets;
+    public void PushBack(float depth, String TorD) {
         Vector3 v = new Vector3(0, 0, depth);
 
-        if (pushTargets) {
+        if (TorD == "T") {
             for (int i = 0; i < targets.Count; i++) {
                 targets[i].transform.position -= v;
             }
-        } else {
+        } else if (TorD == "D") {
             for (int i = 0; i < distractors.Count; i++) {
                 distractors[i].transform.position -= v;
             }
@@ -217,24 +218,40 @@ public class CircleArray : MonoBehaviour {
         //}
     }
 
-    public void ChangeSymbolsSize(int scale) {
-        float s = scale / 10;
+    public void ChangeSymbolsSize(float s) {
+        Debug.Log("Scale Factor = "+s);
+        GameObject maskPrefab = GameObject.Find("PatternMask");
+        Vector3 maskPrefabScale = maskPrefab.transform.localScale;
+        maskPrefab.transform.localScale = new Vector3(maskPrefabScale.x*s,maskPrefabScale.y*s,maskPrefabScale.z*s);
 
-        for (int i = 0; i < targets.Count; i++) {
-            targets[i].transform.localScale += new Vector3(s, s, s);
-        }
-        
-        for (int i = 0; i < distractors.Count; i++) {
-            distractors[i].transform.localScale += new Vector3(s, s, s);
+        GameObject boxPrefab = GameObject.Find("ReceptiveField");
+        Vector3 boxPrefabScale = boxPrefab.transform.localScale;
+        boxPrefab.transform.localScale = new Vector3(boxPrefabScale.x*s,boxPrefabScale.y*s,boxPrefabScale.z*s);
+
+        GameObject lettersRedContainer = GameObject.Find("LettersRed");
+        for(int i = 0; i < lettersRedContainer.transform.childCount; i++)
+        {
+            GameObject lettersRedPrefab = lettersRedContainer.transform.GetChild(i).gameObject;
+            Vector3 lettersRedPrefabScale = lettersRedPrefab.transform.localScale;
+            lettersRedPrefab.transform.localScale = new Vector3(lettersRedPrefabScale.x*s,lettersRedPrefabScale.y*s,lettersRedPrefabScale.z*s);            
         }
 
-        FixationCrossObject.transform.localScale += new Vector3(s, s, s);
+        GameObject lettersBlueContainer = GameObject.Find("LettersBlue");
+        for(int i = 0; i < lettersRedContainer.transform.childCount; i++) 
+        {
+            GameObject lettersBluePrefab = lettersBlueContainer.transform.GetChild(i).gameObject;
+            Vector3 lettersBluePrefabScale = lettersBluePrefab.transform.localScale;
+            lettersBluePrefab.transform.localScale = new Vector3(lettersBluePrefabScale.x*s,lettersBluePrefabScale.y*s,lettersBluePrefabScale.z*s);
+        }
+
+        Vector3 local = FixationCrossObject.transform.localScale;
+        FixationCrossObject.transform.localScale = new Vector3(local.x*s,local.y*s,local.z*s);
     }
 
     public void ChangeRadius(int incr) {
         this.radius += incr / 10;
         
-        Init(this.radius, numbOfSlots, FixationCrossObject);
+        Init(this.radius, numbOfSlots, FixationCrossObject,0f);
         
         for (int i = 0; i < targets.Count; i++) {
             targets[i].transform.position = this.transform.position + slots[i];
@@ -246,7 +263,8 @@ public class CircleArray : MonoBehaviour {
     }
 
     public void ChangeDepth(int incr) {
-        PushBack(incr / 10, targetsPushed);
+        PushBack(incr / 10, "T");
+        PushBack(incr / 10, "D");
     }
 
     public void ChangeDistance(int incr) {
@@ -262,4 +280,14 @@ public class CircleArray : MonoBehaviour {
             Destroy(distractors[i]);
         }
     }
+
+    public void RadiusToScaleBoxes()
+    {
+        float O = (float) (2f *Math.PI * radius);
+        Debug.Log("Omkreds = "+O);
+        float s = (2*O) / (3*8);
+        Debug.Log("target size  = "+s);
+        float scale = s / GameObject.Find("PatternMask").transform.localScale.x ;
+        ChangeSymbolsSize(scale);
+    } 
 }

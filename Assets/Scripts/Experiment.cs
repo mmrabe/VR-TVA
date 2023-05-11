@@ -12,6 +12,7 @@ public class Experiment : MonoBehaviour {
     private StateMachine stateMachine;
     private States currentState;
     private List<ExperimentState> states;
+    public float arrayRadius;
 
     public StimuliState stimuliState;
     public PatternMaskState maskState;
@@ -64,7 +65,7 @@ public class Experiment : MonoBehaviour {
         //this.trialAmount = 3;
         //this.patternMaskDuration = 0.5f;
         //this.fixationCrossDuration = 1f;
-        this.timeIntervals = new List<float> { 0.05f, 0.1f, 0.15f, 0.2f }; // 0.01f, 0.02f ?
+        this.timeIntervals = new List<float> { 2.5f }; // 0.01f, 0.02f ?
         this.randomTrials = this.GetRandomTrials(this.timeIntervals, this.trialAmount);
         List<float> partialReportTime = new List<float> {0.15f};
 
@@ -78,7 +79,7 @@ public class Experiment : MonoBehaviour {
         //ExperimentSetting calibration = new ExperimentSetting(4, 4, false, false, 1, timeIntervals);
         //settings = new List<ExperimentSetting>() { wholeReportClose, wholeReportFar, partialReportFF, partialReportFT, partialReportTF, partialReportTT };
         
-        ExperimentSetting setting1 = new ExperimentSetting(4, 4, false, true, 1, this.randomTrials);
+        ExperimentSetting setting1 = new ExperimentSetting(4, 4, false, false, 1, this.randomTrials);
         settings = new List<ExperimentSetting>() { setting1 };
         currentSetting = settings[currentSettingNumber];
         currentTimeInterval = currentSetting.timeIntervals[currentTimeIntervalNumber];
@@ -92,8 +93,8 @@ public class Experiment : MonoBehaviour {
     // Start is called before the first frame update
     void Start() {
         this.canvasCenter = canvas.gameObject.GetComponent<RectTransform>().transform;
-        this.symbolsT = LoadSymbols("Letters");
-        this.symbolsD = LoadSymbols("Digits");
+        this.symbolsT = LoadSymbols("LettersRed");
+        this.symbolsD = LoadSymbols("LettersBlue");
         this.stateMachine = new StateMachine();
         this.states = new List<ExperimentState>() { awaitState, fixCrossState,
                                                coolDownPostCrossState, stimuliState,
@@ -102,9 +103,9 @@ public class Experiment : MonoBehaviour {
         // Find FixationCross and hide it
         FixationCrossObject = GameObject.Find("FixationCross");
         HideFixationCross();
-
+        //canvas.planeDistance = stimuliDistance;
         // Initialize circular array and set it's position.
-        array.Init(2f, 8, FixationCrossObject, canvasCenter);
+        array.Init(arrayRadius, 8, FixationCrossObject, stimuliDistance, canvasCenter);
         array.transform.position = canvasCenter.position;
         
         // Initialize states with their durations
@@ -115,13 +116,13 @@ public class Experiment : MonoBehaviour {
         
         // Generate stimuli, spawn them and set the given time
         var ret = GenerateSymbols(currentSetting.numbOfTargets, currentSetting.numbOfDistractors, this.symbolsT, this.symbolsD);
-        array.PutIntoSlots(ret.Item1, ret.Item2, currentSetting.depth);
+        array.PutIntoSlots(ret.Item1, ret.Item2, currentSetting.targetsFarAway, currentSetting.distractorsFarAway, currentSetting.depth);
         states[(int)States.Stimuli].Initialize(this.currentTimeInterval);
 
         // Set distance to stimuli
         // CHANGED !!!
-        array.PushBack(stimuliDistance, true);
-        array.PushBack(stimuliDistance, false);
+        // array.PushBack(stimuliDistance, true);
+        // array.PushBack(stimuliDistance, false);
     }
 
     void Update() {
@@ -144,7 +145,7 @@ public class Experiment : MonoBehaviour {
                 this.isTrialDataLogged = false;
                 array.Clear();
                 var ret = GenerateSymbols(currentSetting.numbOfTargets, currentSetting.numbOfDistractors, this.symbolsT, this.symbolsD);
-                array.PutIntoSlots(ret.Item1, ret.Item2, currentSetting.depth);
+                array.PutIntoSlots(ret.Item1, ret.Item2, currentSetting.targetsFarAway, currentSetting.distractorsFarAway, currentSetting.depth);
                 //Debug.Log(this.currentTimeInterval);
                 states[(int)States.Stimuli].Initialize(this.currentTimeInterval);
             }
