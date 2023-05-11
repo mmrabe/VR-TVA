@@ -12,7 +12,6 @@ public class Experiment : MonoBehaviour {
     private StateMachine stateMachine;
     private States currentState;
     private List<ExperimentState> states;
-    public float arrayRadius;
 
     public StimuliState stimuliState;
     public PatternMaskState maskState;
@@ -45,6 +44,7 @@ public class Experiment : MonoBehaviour {
     private List<float> timeIntervals;
     private List<float> randomTrials;
     private int trialsSoFar = 0;
+    public int numbOfSlots;
     public int trialAmount;
     private int currentSettingNumber;
     private int currentTimeIntervalNumber;
@@ -54,6 +54,7 @@ public class Experiment : MonoBehaviour {
     public float coolDownPostTrialDuration;
     public float coolDownPostCrossDuration;
     public int stimuliDistance;
+    public float DistanceToArraySizeRatio;
 
     // Utility
     public CircleArray array;
@@ -105,7 +106,8 @@ public class Experiment : MonoBehaviour {
         HideFixationCross();
         //canvas.planeDistance = stimuliDistance;
         // Initialize circular array and set it's position.
-        array.Init(arrayRadius, 8, FixationCrossObject, stimuliDistance, canvasCenter);
+        float radius = canvas.planeDistance * DistanceToArraySizeRatio;
+        array.Init(radius, numbOfSlots, FixationCrossObject, stimuliDistance, canvasCenter);
         array.transform.position = canvasCenter.position;
         
         // Initialize states with their durations
