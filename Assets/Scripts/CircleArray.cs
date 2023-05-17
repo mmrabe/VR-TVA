@@ -24,8 +24,6 @@ public class CircleArray : MonoBehaviour {
     private Vector3[] slots;
     private int numbOfSlots;
     private float radius;
-    // private bool targetsPushed = false;
-    // private bool distractorsPushed = false;
     public bool patternMaskEnabled { get; private set; } = false;
     public bool receptiveFieldEnabled { get; private set; } = false;
     public bool stimuliEnabled { get; private set; } = false;
@@ -89,18 +87,7 @@ public class CircleArray : MonoBehaviour {
             clone.transform.SetParent(receptiveFieldContainer.transform);
             receptiveFields[i] = clone;
         }
-        //HideReceptiveField();
     }
-
-    //public void ShowReceptiveField() {
-    //    receptiveFieldContainer.SetActive(true);
-    //    receptiveFieldEnabled = true;
-    //}
-
-    //public void HideReceptiveField() {
-    //    receptiveFieldContainer.SetActive(false);
-    //    receptiveFieldEnabled = false;
-    //}
 
     public void ShowPatternMask()
     {
@@ -177,16 +164,13 @@ public class CircleArray : MonoBehaviour {
         }
 
         Vector3 backVec = (FixationCrossObject.transform.position - canvasBackTrans.position).normalized;
-
         float initialScale = GameObject.Find("ReceptiveField").transform.localScale.z;
+
         for (int i = 0; i < patternMasks.Length; i++) {
             patternMasks[i].transform.position = stimuliContainer.transform.GetChild(i).transform.position;
             receptiveFields[i].transform.position = stimuliContainer.transform.GetChild(i).transform.position;// + (0.1f*backVec);
             stimuliContainer.transform.GetChild(i).transform.position += backVec * (initialScale / 2);
         }
-
-        
-
     }
 
     public void PushBack(float depth, String TorD) {
@@ -201,18 +185,10 @@ public class CircleArray : MonoBehaviour {
                 distractors[i].transform.position -= v;
             }
         }
-
-        //float mask_depth = Math.Max(targets[0].transform.position.z, distractors[0].transform.position.z);
-
-        //for (int i = 0; i < patternMasks.Length; i++) {
-        //    patternMasks[i].transform.position = new Vector3(patternMasks[i].transform.position.x,
-        //                                                     patternMasks[i].transform.position.y,
-        //                                                     mask_depth);
-        //}
     }
 
     public void ChangeSymbolsSize(float s) {
-        Debug.Log("Scale Factor = "+s);
+        //Debug.Log("Scale Factor = "+s);
         GameObject maskPrefab = GameObject.Find("PatternMask");
         Vector3 maskPrefabScale = maskPrefab.transform.localScale;
         maskPrefab.transform.localScale = new Vector3(maskPrefabScale.x*s,maskPrefabScale.y*s,maskPrefabScale.z*s);
@@ -274,16 +250,39 @@ public class CircleArray : MonoBehaviour {
         }
 
         stimuliContainer.transform.DetachChildren();
-        Debug.Log("Cleared");
     }
 
     public void RadiusToScaleBoxes()
     {
         float O = (float) (2f *Math.PI * radius);
-        Debug.Log("Omkreds = "+O);
+       //Debug.Log("Omkreds = "+O);
         float s = (2*O) / (3*8);
-        Debug.Log("target size  = "+s);
+        //Debug.Log("target size  = "+s);
         float scale = s / GameObject.Find("PatternMask").transform.localScale.x;
         ChangeSymbolsSize(scale);
     } 
 }
+
+// REMOVED, REMOVE
+
+        //float mask_depth = Math.Max(targets[0].transform.position.z, distractors[0].transform.position.z);
+
+        //for (int i = 0; i < patternMasks.Length; i++) {
+        //    patternMasks[i].transform.position = new Vector3(patternMasks[i].transform.position.x,
+        //                                                     patternMasks[i].transform.position.y,
+        //                                                     mask_depth);
+        //}
+
+            //public void ShowReceptiveField() {
+    //    receptiveFieldContainer.SetActive(true);
+    //    receptiveFieldEnabled = true;
+    //}
+
+    //public void HideReceptiveField() {
+    //    receptiveFieldContainer.SetActive(false);
+    //    receptiveFieldEnabled = false;
+    //}
+
+    //HideReceptiveField();
+    // private bool targetsPushed = false;
+    // private bool distractorsPushed = false;
