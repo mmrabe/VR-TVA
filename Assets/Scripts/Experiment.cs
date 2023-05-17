@@ -16,9 +16,9 @@ public class Experiment : MonoBehaviour {
     public StimuliState stimuliState;
     public PatternMaskState maskState;
     public AwaitInputState awaitState;
-    public ExperimentState coolDownPostCrossState;
+    //public ExperimentState coolDownPostCrossState;
     public ExperimentState coolDownPostTrialState;
-    public FixationCrossState fixCrossState;
+    //public FixationCrossState fixCrossState;
     
     // GameObjects
     public Canvas canvas;
@@ -31,8 +31,7 @@ public class Experiment : MonoBehaviour {
     // Booleans
     private bool isFinished = false;
     private bool isDebugEnabled;
-    private bool isCurrentTrialFinished = true;
-    private bool isFixCrossShown = false;
+    //private bool isFixCrossShown = false;
     private bool isFirstLoggedFinished = false;
     private bool isTrialDataLogged = false;
     public bool isPractice;
@@ -50,9 +49,9 @@ public class Experiment : MonoBehaviour {
     private int currentTimeIntervalNumber;
     private float currentTimeInterval;
     public float patternMaskDuration;
-    public float fixationCrossDuration;
+    //public float fixationCrossDuration;
     public float coolDownPostTrialDuration;
-    public float coolDownPostCrossDuration;
+    //public float coolDownPostCrossDuration;
     public int stimuliDistance;
     public float DistanceToArraySizeRatio;
 
@@ -63,10 +62,8 @@ public class Experiment : MonoBehaviour {
     public string trialInfo { get; private set; }
 
     public Experiment() {
-        //this.trialAmount = 3;
-        //this.patternMaskDuration = 0.5f;
-        //this.fixationCrossDuration = 1f;
-        this.timeIntervals = new List<float> { 2.5f }; // 0.01f, 0.02f ?
+
+        this.timeIntervals = new List<float> { 2.5f }; 
         this.randomTrials = this.GetRandomTrials(this.timeIntervals, this.trialAmount);
         List<float> partialReportTime = new List<float> {0.15f};
 
@@ -80,13 +77,13 @@ public class Experiment : MonoBehaviour {
         //ExperimentSetting calibration = new ExperimentSetting(4, 4, false, false, 1, timeIntervals);
         //settings = new List<ExperimentSetting>() { wholeReportClose, wholeReportFar, partialReportFF, partialReportFT, partialReportTF, partialReportTT };
         
-        ExperimentSetting setting1 = new ExperimentSetting(4, 4, false, false, 1, this.randomTrials);
+        ExperimentSetting setting1 = new ExperimentSetting(4, 4, true, false, 0.2f, this.randomTrials);
         settings = new List<ExperimentSetting>() { setting1 };
         currentSetting = settings[currentSettingNumber];
         currentTimeInterval = currentSetting.timeIntervals[currentTimeIntervalNumber];
 
         if(isPractice) {
-            ExperimentSetting settingPractice = new ExperimentSetting(4, 4, false, false, 1, new List<float> { 1f, 2f, 5f, 10f });
+            ExperimentSetting settingPractice = new ExperimentSetting(4, 4, false, false, 0.2f, new List<float> { 1f, 2f, 5f, 10f });
             settings = new List<ExperimentSetting> { settingPractice };
         }
     }
@@ -97,22 +94,23 @@ public class Experiment : MonoBehaviour {
         this.symbolsT = LoadSymbols("LettersRed");
         this.symbolsD = LoadSymbols("LettersBlue");
         this.stateMachine = new StateMachine();
-        this.states = new List<ExperimentState>() { awaitState, fixCrossState,
-                                               coolDownPostCrossState, stimuliState,
-                                               maskState, coolDownPostTrialState  };
+        this.states = new List<ExperimentState>() { awaitState, stimuliState, maskState, coolDownPostTrialState  };
+        //this.states = new List<ExperimentState>() { awaitState, fixCrossState,
+        //                                       coolDownPostCrossState, stimuliState,
+        //                                       maskState, coolDownPostTrialState  };
         
         // Find FixationCross and hide it
         FixationCrossObject = GameObject.Find("FixationCross");
-        HideFixationCross();
-        //canvas.planeDistance = stimuliDistance;
+        //HideFixationCross();
+        
         // Initialize circular array and set it's position.
         float radius = canvas.planeDistance * DistanceToArraySizeRatio;
         array.Init(radius, numbOfSlots, FixationCrossObject, stimuliDistance, canvasCenter);
         array.transform.position = canvasCenter.position;
         
         // Initialize states with their durations
-        fixCrossState.Initialize(this.fixationCrossDuration);
-        coolDownPostCrossState.Initialize(this.coolDownPostCrossDuration);
+        //fixCrossState.Initialize(this.fixationCrossDuration);
+        //coolDownPostCrossState.Initialize(this.coolDownPostCrossDuration);
         maskState.Initialize(this.patternMaskDuration);
         coolDownPostTrialState.Initialize(this.coolDownPostTrialDuration);
         
@@ -121,10 +119,6 @@ public class Experiment : MonoBehaviour {
         array.PutIntoSlots(ret.Item1, ret.Item2, currentSetting.targetsFarAway, currentSetting.distractorsFarAway, currentSetting.depth);
         states[(int)States.Stimuli].Initialize(this.currentTimeInterval);
 
-        // Set distance to stimuli
-        // CHANGED !!!
-        // array.PushBack(stimuliDistance, true);
-        // array.PushBack(stimuliDistance, false);
     }
 
     void Update() {
@@ -147,8 +141,7 @@ public class Experiment : MonoBehaviour {
                 this.isTrialDataLogged = false;
                 array.Clear();
                 var ret = GenerateSymbols(currentSetting.numbOfTargets, currentSetting.numbOfDistractors, this.symbolsT, this.symbolsD);
-                array.PutIntoSlots(ret.Item1, ret.Item2, currentSetting.targetsFarAway, currentSetting.distractorsFarAway, currentSetting.depth);
-                //Debug.Log(this.currentTimeInterval);
+                array.PutIntoSlots(ret.Item1, ret.Item2, currentSetting.targetsFarAway, currentSetting.distractorsFarAway, currentSetting.depth); 
                 states[(int)States.Stimuli].Initialize(this.currentTimeInterval);
             }
             currentState = stateMachine.NextState();
@@ -165,15 +158,15 @@ public class Experiment : MonoBehaviour {
     public int getTrialsSoFar() => this.trialsSoFar;
 
 
-    public void ShowFixationCross() {
-        isFixCrossShown = true;
-        FixationCrossObject.SetActive(true);
-    }
+    //public void ShowFixationCross() {
+    //    isFixCrossShown = true;
+    //    FixationCrossObject.SetActive(true);
+    //}
 
-    public void HideFixationCross() {
-        isFixCrossShown = false;
-        FixationCrossObject.SetActive(false);
-    }
+    //public void HideFixationCross() {
+    //    isFixCrossShown = false;
+    //    FixationCrossObject.SetActive(false);
+    //}
 
     public void InputHandler() {
         if (OVRInput.Get(OVRInput.Button.SecondaryThumbstickDown) &&
@@ -292,10 +285,10 @@ public class Experiment : MonoBehaviour {
         }
 
         s += ",";
-        s += Math.Round(fixCrossState.timer.estimatedTotalTime * 1000, 3) + "," + Math.Round(fixCrossState.timer.realTotalTime * 1000, 3) + ",";
-        s += Math.Round(coolDownPostCrossState.timer.estimatedTotalTime * 1000, 3) + "," + Math.Round(coolDownPostCrossState.timer.realTotalTime * 1000, 3) + ",";
+        //s += Math.Round(fixCrossState.timer.estimatedTotalTime * 1000, 3) + "," + Math.Round(fixCrossState.timer.realTotalTime * 1000, 3) + ",";
+        //s += Math.Round(coolDownPostCrossState.timer.estimatedTotalTime * 1000, 3) + "," + Math.Round(coolDownPostCrossState.timer.realTotalTime * 1000, 3) + ",";
         s += Math.Round(stimuliState.timer.estimatedTotalTime * 1000,3) + "," + Math.Round(stimuliState.timer.realTotalTime * 1000,3) + ",";
-        s += Math.Round(maskState.timer.estimatedTotalTime * 1000, 3) + "," + Math.Round(maskState.timer.realTotalTime * 1000, 3) + ",";
+        //s += Math.Round(maskState.timer.estimatedTotalTime * 1000, 3) + "," + Math.Round(maskState.timer.realTotalTime * 1000, 3) + ",";
         s += Math.Round(coolDownPostTrialState.timer.estimatedTotalTime * 1000, 3) + "," + Math.Round(coolDownPostTrialState.timer.realTotalTime * 1000, 3);
         s += "\n";
         return s;

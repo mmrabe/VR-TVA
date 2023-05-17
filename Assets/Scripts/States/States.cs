@@ -2,10 +2,9 @@
 public enum States
 {
     WaitingForInput,
-    FixationCross,
-    AfterCrossCoolDown,
+    //FixationCross,
+    //AfterCrossCoolDown,
     Stimuli,
     PatternMask,
     AfterTrialCoolDown
-    
 }

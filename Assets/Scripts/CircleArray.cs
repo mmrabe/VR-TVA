@@ -18,6 +18,7 @@ public class CircleArray : MonoBehaviour {
     private Transform canvasTransform;
     private Transform canvasUpTrans;
     private Transform canvasRightTrans;
+    private Transform canvasBackTrans;
 
     // Utility
     private Vector3[] slots;
@@ -49,6 +50,7 @@ public class CircleArray : MonoBehaviour {
         this.slots = new Vector3[NumbOfSlots];
         this.canvasRightTrans = GameObject.Find("right").transform;
         this.canvasUpTrans = GameObject.Find("up").transform;
+        this.canvasBackTrans = GameObject.Find("back").transform;
         this.patternMask = GameObject.Find("PatternMask");
         this.receptiveField = GameObject.Find("ReceptiveField");
         this.patternMasks = new GameObject[numbOfSlots];
@@ -72,30 +74,10 @@ public class CircleArray : MonoBehaviour {
     public void CreatePatternMask() {
         for (int i = 0; i < slots.Length; i++) {
             GameObject clone = GameObject.Instantiate(patternMask);
-            //clone.transform.position = canvasTransform.position + slots[i];
             clone.transform.SetParent(maskContainer.transform);
             patternMasks[i] = clone;
         }
-        //for (int i = 0; i < targets.Count; i++) 
-        //{
-        //    GameObject clone = GameObject.Instantiate(patternMask);
-        //    clone.transform.position = targets[i].transform.position;
-        //    clone.transform.SetParent(maskContainer.transform);
-        //    patternMasks[i] = clone;
-
-        //}
-        //for (int i = 0; i < distractors.Count; i++) {
-        //    GameObject clone = GameObject.Instantiate(patternMask);
-        //    clone.transform.position = distractors[i].transform.position;
-        //    clone.transform.SetParent(maskContainer.transform);
-        //    patternMasks[i+targets.Count] = clone;
-        //}
-            //for (int i = 0; i < slots.Length; i++) {
-            //    GameObject clone = GameObject.Instantiate(patternMask);
-            //    clone.transform.position = canvasTransform.position + slots[i];
-            //    clone.transform.SetParent(maskContainer.transform);
-            //    patternMasks[i] = clone;
-            //}
+        
         HidePatternMask();
     }
 
@@ -104,29 +86,30 @@ public class CircleArray : MonoBehaviour {
     public void CreateReceptiveField() {
         for (int i = 0; i < slots.Length; i++) {
             GameObject clone = GameObject.Instantiate(receptiveField);
-            //clone.transform.position = canvasTransform.position + slots[i];
             clone.transform.SetParent(receptiveFieldContainer.transform);
             receptiveFields[i] = clone;
         }
-        HideReceptiveField();
+        //HideReceptiveField();
     }
 
-    public void ShowReceptiveField() {
-        receptiveFieldContainer.SetActive(true);
-        receptiveFieldEnabled = true;
-    }
+    //public void ShowReceptiveField() {
+    //    receptiveFieldContainer.SetActive(true);
+    //    receptiveFieldEnabled = true;
+    //}
 
-    public void HideReceptiveField() {
-        receptiveFieldContainer.SetActive(false);
-        receptiveFieldEnabled = false;
-    }
+    //public void HideReceptiveField() {
+    //    receptiveFieldContainer.SetActive(false);
+    //    receptiveFieldEnabled = false;
+    //}
 
-    public void ShowPatternMask() {
+    public void ShowPatternMask()
+    {
         maskContainer.SetActive(true);
         patternMaskEnabled = true;
     }
 
-    public void HidePatternMask() {
+    public void HidePatternMask()
+    {
         maskContainer.SetActive(false);
         patternMaskEnabled = false;
     }
@@ -142,6 +125,7 @@ public class CircleArray : MonoBehaviour {
     }
 
     public void PutIntoSlots(List<GameObject> Targets, List<GameObject> Distractors, bool targetsAway, bool distractorsAway, float depth) {
+        
         this.distractors = Distractors;
         this.targets = Targets;
         
@@ -149,22 +133,21 @@ public class CircleArray : MonoBehaviour {
 
        
         System.Random rnd = new System.Random();
-        float initialScale = GameObject.Find("PatternMask").transform.localScale.x;
-        Vector3 centeringOffset = new Vector3();//0.25f * initialScale, -0.5f * initialScale, 0);
+        
         int c = rnd.Next(0, numbOfSlots);
 
+        
 
         for (int i = 0; i < targets.Count; i++) {
             while (found.Contains(c)){ 
                 c = rnd.Next(0, numbOfSlots); 
             }
             found.Add(c);
-            //usedStimuli.Add(targets[i].name);
             Vector3 offsetUp = (FixationCrossObject.transform.position - canvasUpTrans.position).normalized * slots[c].y;
             Vector3 offsetRight = (FixationCrossObject.transform.position - canvasRightTrans.position).normalized * slots[c].x;
-            
 
-            targets[i].transform.position = canvasTransform.position + offsetUp + offsetRight + centeringOffset;
+
+            targets[i].transform.position = canvasTransform.position + offsetUp + offsetRight;
             targets[i].transform.rotation = FixationCrossObject.transform.rotation;
             targets[i].transform.SetParent(stimuliContainer.transform);
             
@@ -178,23 +161,31 @@ public class CircleArray : MonoBehaviour {
             Vector3 offsetUp = (FixationCrossObject.transform.position - canvasUpTrans.position).normalized * slots[c].y;
             Vector3 offsetRight = (FixationCrossObject.transform.position - canvasRightTrans.position).normalized * slots[c].x;
 
-            distractors[i].transform.position = canvasTransform.position + offsetUp + offsetRight + centeringOffset;
+            distractors[i].transform.position = canvasTransform.position + offsetUp + offsetRight;
             distractors[i].transform.rotation = FixationCrossObject.transform.rotation;
             distractors[i].transform.SetParent(stimuliContainer.transform);
             
         }
 
-        if (targetsAway) { 
-            PushBack(depth, "T"); 
-        } else if (distractorsAway) { 
-            PushBack(depth, "D"); 
+        if (targetsAway)
+        {
+            PushBack(depth, "T");
+        }
+        else if (distractorsAway)
+        {
+            PushBack(depth, "D");
         }
 
-        for(int i = 0; i < patternMasks.Length; i++) {
-            Debug.Log("INDEX: " + i);
-            patternMasks[i].transform.position = stimuliContainer.transform.GetChild(i).transform.position - centeringOffset;
-            receptiveFields[i].transform.position = stimuliContainer.transform.GetChild(i).transform.position - centeringOffset;
+        Vector3 backVec = (FixationCrossObject.transform.position - canvasBackTrans.position).normalized;
+
+        float initialScale = GameObject.Find("ReceptiveField").transform.localScale.z;
+        for (int i = 0; i < patternMasks.Length; i++) {
+            patternMasks[i].transform.position = stimuliContainer.transform.GetChild(i).transform.position;
+            receptiveFields[i].transform.position = stimuliContainer.transform.GetChild(i).transform.position;// + (0.1f*backVec);
+            stimuliContainer.transform.GetChild(i).transform.position += backVec * (initialScale / 2);
         }
+
+        
 
     }
 
@@ -281,6 +272,9 @@ public class CircleArray : MonoBehaviour {
         for (int i = 0; i < distractors.Count; i++) {
             Destroy(distractors[i]);
         }
+
+        stimuliContainer.transform.DetachChildren();
+        Debug.Log("Cleared");
     }
 
     public void RadiusToScaleBoxes()
