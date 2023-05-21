@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class ExperimentSettingContainer {
-    private List<ExperimentSetting> settings;
+    private List<IExperimentSetting> settings;
     private int trialAmount;
     private List<Trial> trials;
 
-    public ExperimentSettingContainer(List<ExperimentSetting> settings, int TrialAmount) {
+    public ExperimentSettingContainer(List<IExperimentSetting> settings, int TrialAmount) {
         this.settings = settings;
         this.trialAmount = TrialAmount;
         this.trials = new List<Trial>();

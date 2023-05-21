@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ExperimentSetting {
+public class ExperimentSetting : IExperimentSetting {
     public int numbOfTargets { private set; get; }
     public int numbOfDistractors { private set; get; }
     public float depth { private set; get; }
@@ -25,5 +25,9 @@ public class ExperimentSetting {
         this.targetsFarAway = targetsFarAway;
         this.distractorsFarAway = distractorsFarAway;
         this.depth = Depth;
+    }
+
+    public override string ToString() {
+      return numbOfTargets.ToString() + ", " + numbOfDistractors.ToString() + ", " + depth.ToString() + ", " + targetsFarAway.ToString() + ", " + distractorsFarAway.ToString() + ", " +  timeIntervals.ToString();
     }
 }

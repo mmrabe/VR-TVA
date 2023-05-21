@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Trial {
+public class Trial : ITrial {
     public int numbOfTargets { private set; get; }
     public int numbOfDistractors { private set; get; }
     public float depth { private set; get; }

@@ -31,7 +31,7 @@ public class Experiment : MonoBehaviour {
     private bool isTrialDataLogged = false;
 
     // ExperimentSettings
-    private List<ExperimentSetting> settings;
+    private List<IExperimentSetting> settings;
     private List<float> timeIntervals;
     private List<Trial> trials;
     private Trial currentTrial;
@@ -61,7 +61,7 @@ public class Experiment : MonoBehaviour {
         ExperimentSetting partialReportTF = new ExperimentSetting(4, 4, true, false, 1, partialReportTime);
         ExperimentSetting partialReportFT = new ExperimentSetting(4, 4, false, true, 1, partialReportTime);
         ExperimentSetting partialReportTT = new ExperimentSetting(4, 4, true, true, 1, partialReportTime);
-        settings = new List<ExperimentSetting>() { wholeReportClose, wholeReportFar, partialReportFF, partialReportFT, partialReportTF, partialReportTT };
+        settings = new List<IExperimentSetting>() { wholeReportClose, wholeReportFar, partialReportFF, partialReportFT, partialReportTF, partialReportTT };
 
         ExperimentSettingContainer esc = new ExperimentSettingContainer(settings, trialAmount);
         esc.Populate();
