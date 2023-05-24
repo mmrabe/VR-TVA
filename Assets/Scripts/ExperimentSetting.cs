@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class ExperimentSetting : IExperimentSetting {
+    public int id { private set; get; }
     public int numbOfTargets { private set; get; }
     public int numbOfDistractors { private set; get; }
     public float depth { private set; get; }
@@ -10,7 +11,8 @@ public class ExperimentSetting : IExperimentSetting {
     public bool distractorsFarAway { private set; get; }
     public List<float> timeIntervals { private set; get; } = new List<float>() { 2.0f, 5.0f, 10.0f };
 
-    public ExperimentSetting(int NumbOftargets, int NumbOfdistractors, bool targetsFarAway, bool distractorsFarAway, float Depth, List<float> TimeIntervals) {
+    public ExperimentSetting(int id, int NumbOftargets, int NumbOfdistractors, bool targetsFarAway, bool distractorsFarAway, float Depth, List<float> TimeIntervals) {
+        this.id = id;
         this.numbOfTargets = NumbOftargets;
         this.numbOfDistractors = NumbOfdistractors;
         this.targetsFarAway = targetsFarAway;
@@ -19,7 +21,8 @@ public class ExperimentSetting : IExperimentSetting {
         this.timeIntervals = TimeIntervals;
     }
 
-    public ExperimentSetting(int NumbOftargets, int NumbOfdistractors, bool targetsFarAway, bool distractorsFarAway, float Depth) {
+    public ExperimentSetting(int id, int NumbOftargets, int NumbOfdistractors, bool targetsFarAway, bool distractorsFarAway, float Depth) {
+        this.id = id;
         this.numbOfTargets = NumbOftargets;
         this.numbOfDistractors = NumbOfdistractors;
         this.targetsFarAway = targetsFarAway;

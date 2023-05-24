@@ -5,7 +5,7 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/MockupPractice.unity
     guid: 8282230f748ae5e45b4af96b51c72239
   - enabled: 1

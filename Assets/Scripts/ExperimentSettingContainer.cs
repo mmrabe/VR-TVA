@@ -17,7 +17,7 @@ public class ExperimentSettingContainer {
         foreach(ExperimentSetting eS in settings) {
             foreach (float timeInterval in eS.timeIntervals) {
                 for (int i = 0; i < this.trialAmount; i++) {
-                    Trial currentTrial = new Trial(eS.numbOfTargets, eS.numbOfDistractors, eS.depth, eS.targetsFarAway, eS.distractorsFarAway, timeInterval);
+                    Trial currentTrial = new Trial(eS.id, eS.numbOfTargets, eS.numbOfDistractors, eS.depth, eS.targetsFarAway, eS.distractorsFarAway, timeInterval);
                     if (currentTrial != null) {
                         trials.Add(currentTrial);
                     }

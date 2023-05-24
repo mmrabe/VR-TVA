@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Trial : ITrial {
+    public int settingID { private set; get; }
     public int numbOfTargets { private set; get; }
     public int numbOfDistractors { private set; get; }
     public float depth { private set; get; }
@@ -10,7 +11,8 @@ public class Trial : ITrial {
     public bool distractorsFarAway { private set; get; }
     public float timeInterval;
 
-    public Trial(int nT, int nD, float d, bool tP, bool dP, float tI) {
+    public Trial(int settingID, int nT, int nD, float d, bool tP, bool dP, float tI) {
+        this.settingID = settingID;
         this.numbOfTargets = nT;
         this.numbOfDistractors = nD;
         this.depth = d;

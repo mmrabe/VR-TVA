@@ -17,9 +17,10 @@ public class TimeCounter: MonoBehaviour {
     public float realTotalTime;
     public float estimatedTotalTime;
     public float startTime;
+    private float frameDur = 1f/120f;
     
     public void StartCounting(float secondsToWait) {
-        secondsLeft = secondsToWait;
+        secondsLeft  = secondsToWait;
         isRunning = true;
         isFirstFrame = true;
         //calibrationCount += 1;
@@ -37,27 +38,32 @@ public class TimeCounter: MonoBehaviour {
             return;
         }
 
-        if( isRunning && !isPaused) {
+        if (isRunning && !isPaused) {
             secondsLeft -= Time.deltaTime;
         }
 
-        //if (isRunning && secondsLeft < 2 * frameDur) {
-        //    //
-        //    //isRunning = false;
-        //    estimatedTotalTime = secondsLeft - Time.deltaTime;
-
-        //    Debug.Log("Delta: " + Time.deltaTime + "at time " + Time.realtimeSinceStartup);
-        //}
-
-        if ( isRunning &&  (secondsLeft - Time.deltaTime) < 0) {
+        if (isRunning && secondsLeft < 2 * frameDur) {
             isRunning = false;
-            estimatedTotalTime = secondsLeft - Time.deltaTime;
-            //Debug.Log("Estimated Time: " + estimatedTotalTime);
-        } else if (!isRunning && !isExtraFrameLogged) {
-            isExtraFrameLogged = true;
-            realTotalTime = secondsLeft - Time.deltaTime ;
-            //Debug.Log("Real Time: " + realTotalTime);
+            float toWait = secondsLeft - frameDur;
+            float stamp = Time.realtimeSinceStartup;
+            while(Time.realtimeSinceStartup - stamp < toWait) {  }
+            estimatedTotalTime = secondsLeft - frameDur - toWait;
+            secondsLeft -= toWait;
         }
+        
+
+        if (!isRunning && !isExtraFrameLogged) {
+            isExtraFrameLogged = true;
+            realTotalTime = secondsLeft - Time.deltaTime;
+
+            Debug.Log("Estimated Time: " + estimatedTotalTime*1000 +" Real Time: " + realTotalTime*1000);
+        }
+
+        //if ( isRunning &&  (secondsLeft - Time.deltaTime) < 0) {
+        //    isRunning = false;
+        //    estimatedTotalTime = secondsLeft - Time.deltaTime;
+        //    //Debug.Log("Estimated Time: " + estimatedTotalTime);
+        //} 
     }
 
     public void PauseTimer(bool pause) {

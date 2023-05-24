@@ -55,12 +55,12 @@ public class Experiment : MonoBehaviour {
         this.timeIntervals = new List<float> { 0.01f, 0.02f, 0.05f, 0.1f, 0.15f, 0.2f };
         List<float> partialReportTime = new List<float> { 0.15f };
 
-        ExperimentSetting wholeReportClose = new ExperimentSetting(8, 0, false, false, 0, this.timeIntervals);
-        ExperimentSetting wholeReportFar = new ExperimentSetting(8, 0, true, false, 1, this.timeIntervals);
-        ExperimentSetting partialReportFF = new ExperimentSetting(4, 4, false, false, 0, partialReportTime);
-        ExperimentSetting partialReportTF = new ExperimentSetting(4, 4, true, false, 1, partialReportTime);
-        ExperimentSetting partialReportFT = new ExperimentSetting(4, 4, false, true, 1, partialReportTime);
-        ExperimentSetting partialReportTT = new ExperimentSetting(4, 4, true, true, 1, partialReportTime);
+        ExperimentSetting wholeReportClose =    new ExperimentSetting(1, 8, 0, false, false, 0, this.timeIntervals);
+        ExperimentSetting wholeReportFar =      new ExperimentSetting(2, 8, 0, true, false, 1, this.timeIntervals);
+        ExperimentSetting partialReportFF =     new ExperimentSetting(3, 4, 4, false, false, 0, partialReportTime);
+        ExperimentSetting partialReportTF =     new ExperimentSetting(4, 4, 4, true, false, 1, partialReportTime);
+        ExperimentSetting partialReportFT =     new ExperimentSetting(5, 4, 4, false, true, 1, partialReportTime);
+        ExperimentSetting partialReportTT =     new ExperimentSetting(6, 4, 4, true, true, 1, partialReportTime);
         settings = new List<IExperimentSetting>() { wholeReportClose, wholeReportFar, partialReportFF, partialReportFT, partialReportTF, partialReportTT };
 
         ExperimentSettingContainer esc = new ExperimentSettingContainer(settings, trialAmount);
@@ -71,6 +71,9 @@ public class Experiment : MonoBehaviour {
 
     // Start is called before the first frame update
     void Start() {
+        //Application.targetFrameRate = 120;
+        //QualitySettings.vSyncCount = 1;
+
         this.canvasCenter = canvas.gameObject.GetComponent<RectTransform>().transform;
         this.symbolsT = LoadSymbols("LettersRed");
         this.symbolsD = LoadSymbols("LettersBlue");
@@ -118,7 +121,7 @@ public class Experiment : MonoBehaviour {
                     states[(int)States.Stimuli].Initialize(currentTrial.timeInterval);
                 } else {
                     isFinished = true;
-                    WriteLoggedData("data");
+                    WriteLoggedData();
                 }
             }
             currentState = stateMachine.NextState();
@@ -172,15 +175,14 @@ public class Experiment : MonoBehaviour {
 
     public string TrialInfo() {
         string s = "";
-
         if (!isFirstLoggedFinished) {
             isFirstLoggedFinished = true;
-            s += "T,D,TP,DP,TI,N,Targets," +
+            s += "settingID, T,D,TP,DP,TI,N,Targets," +
                 "StimuliTA,StimuliTR," +
                 "CoolDownPostTrialTA,CoolDownPostTrialTR" + "\n";
             return s;
         }
-
+        s += currentTrial.settingID + ",";
         s += currentTrial.numbOfTargets + ",";
         s += currentTrial.numbOfDistractors + ",";
         s += Convert.ToInt32(currentTrial.targetsFarAway).ToString() + ",";
@@ -193,17 +195,17 @@ public class Experiment : MonoBehaviour {
         }
 
         s += ",";
-        s += Math.Round(stimuliState.timer.estimatedTotalTime * 1000,3) + "," + Math.Round(stimuliState.timer.realTotalTime * 1000,3) + ",";
-        s += Math.Round(coolDownPostTrialState.timer.estimatedTotalTime * 1000, 3) + "," + Math.Round(coolDownPostTrialState.timer.realTotalTime * 1000, 3);
+        s += Math.Round(stimuliState.timer.realTotalTime * 1000,3) + ",";
+        s += Math.Round(coolDownPostTrialState.timer.realTotalTime * 1000, 3);
         s += "\n";
 
         return s;
     }
 
-    public void WriteLoggedData(string path) {
-        //path = "C:/Users/hccco/Desktop/Mariusz_Uffe_BachelorProject/BachelorProj/Assets";
-        //path += "/BLAH.txt";
-        path = Path.Combine(Application.persistentDataPath) + "/new.txt";
+    public void WriteLoggedData() {
+        string path = "C:/Users/hccco/Desktop/Mariusz_Uffe_BachelorProject/BachelorProj/Assets";
+        path += "/BLAH.txt";
+        //path = Path.Combine(Application.persistentDataPath) + "/new.txt";
         FileStream stream = new FileStream(path, FileMode.OpenOrCreate);
         using (var w = new StreamWriter(stream)) {
                 w.WriteLine(loggedData);
