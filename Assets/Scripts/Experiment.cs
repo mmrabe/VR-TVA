@@ -16,7 +16,10 @@ public class Experiment : MonoBehaviour {
     public PatternMaskState maskState;
     public AwaitInputState awaitState;
     public ExperimentState coolDownPostTrialState;
-    
+
+    public float patternMaskDuration;
+    public float coolDownPostTrialDuration;
+
     // GameObjects
     public Canvas canvas;
     private Transform canvasCenter;
@@ -40,8 +43,7 @@ public class Experiment : MonoBehaviour {
     private int totalTrials;
     public int stimuliDistance;
     public int numbOfSlots;
-    public float patternMaskDuration;
-    public float coolDownPostTrialDuration;
+    
     public float DistanceToArraySizeRatio;
 
     // Utility
@@ -61,7 +63,7 @@ public class Experiment : MonoBehaviour {
         ExperimentSetting partialReportTF =     new ExperimentSetting(4, 4, 4, true, false, 1, partialReportTime);
         ExperimentSetting partialReportFT =     new ExperimentSetting(5, 4, 4, false, true, 1, partialReportTime);
         ExperimentSetting partialReportTT =     new ExperimentSetting(6, 4, 4, true, true, 1, partialReportTime);
-        settings = new List<IExperimentSetting>() { wholeReportClose, wholeReportFar, partialReportFF, partialReportFT, partialReportTF, partialReportTT };
+        settings = new List<IExperimentSetting>() { wholeReportClose };//, wholeReportFar, partialReportFF, partialReportFT, partialReportTF, partialReportTT };
 
         ExperimentSettingContainer esc = new ExperimentSettingContainer(settings, trialAmount);
         esc.Populate();
@@ -71,7 +73,7 @@ public class Experiment : MonoBehaviour {
 
     // Start is called before the first frame update
     void Start() {
-        //Application.targetFrameRate = 120;
+        Application.targetFrameRate = 120;
         //QualitySettings.vSyncCount = 1;
 
         this.canvasCenter = canvas.gameObject.GetComponent<RectTransform>().transform;
@@ -83,9 +85,10 @@ public class Experiment : MonoBehaviour {
 
         // Find FixationCross
         FixationCrossObject = GameObject.Find("FixationCross");
-        
+        FixationCrossObject.transform.position = new Vector3(FixationCrossObject.transform.position.x, FixationCrossObject.transform.position.y, -stimuliDistance);
         // Initialize circular array and set it's position.
-        float radius = canvas.planeDistance * DistanceToArraySizeRatio;
+        //float radius = canvas.planeDistance * DistanceToArraySizeRatio;
+        float radius = stimuliDistance * DistanceToArraySizeRatio;
         array.Init(radius, numbOfSlots, FixationCrossObject, stimuliDistance, canvasCenter);
         array.transform.position = canvasCenter.position;
         
@@ -177,9 +180,8 @@ public class Experiment : MonoBehaviour {
         string s = "";
         if (!isFirstLoggedFinished) {
             isFirstLoggedFinished = true;
-            s += "settingID, T,D,TP,DP,TI,N,Targets," +
-                "StimuliTA,StimuliTR," +
-                "CoolDownPostTrialTA,CoolDownPostTrialTR" + "\n";
+            s += "settingID, T,D,Tfar,Dfar,Depth,time,trialNumb,TargetsPresented," +
+                "StimuliErr," +"MaskErr" + "\n";
             return s;
         }
         s += currentTrial.settingID + ",";
@@ -187,6 +189,7 @@ public class Experiment : MonoBehaviour {
         s += currentTrial.numbOfDistractors + ",";
         s += Convert.ToInt32(currentTrial.targetsFarAway).ToString() + ",";
         s += Convert.ToInt32(currentTrial.distractorsFarAway).ToString() + ",";
+        s += currentTrial.depth + ","; 
         s += currentTrial.timeInterval + ",";
         s += trialsSoFar + ",";
 
@@ -196,16 +199,17 @@ public class Experiment : MonoBehaviour {
 
         s += ",";
         s += Math.Round(stimuliState.timer.realTotalTime * 1000,3) + ",";
-        s += Math.Round(coolDownPostTrialState.timer.realTotalTime * 1000, 3);
+        s += Math.Round(maskState.timer.realTotalTime * 1000, 3);
         s += "\n";
 
         return s;
     }
 
     public void WriteLoggedData() {
-        string path = "C:/Users/hccco/Desktop/Mariusz_Uffe_BachelorProject/BachelorProj/Assets";
-        path += "/BLAH.txt";
-        //path = Path.Combine(Application.persistentDataPath) + "/new.txt";
+        string path;
+        //path = "C:/Users/hccco/Desktop/Mariusz_Uffe_BachelorProject/BachelorMain/BachelorProj/Assets";
+        //path += "/BLAH.txt";
+        path = Path.Combine(Application.persistentDataPath) + "/new.txt";
         FileStream stream = new FileStream(path, FileMode.OpenOrCreate);
         using (var w = new StreamWriter(stream)) {
                 w.WriteLine(loggedData);

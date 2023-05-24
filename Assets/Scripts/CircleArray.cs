@@ -19,11 +19,13 @@ public class CircleArray : MonoBehaviour {
     private Transform canvasUpTrans;
     private Transform canvasRightTrans;
     private Transform canvasBackTrans;
+    private Transform canvasCenterTrans;
 
     // Utility
     private Vector3[] slots;
     private int numbOfSlots;
     private float radius;
+    private float distance;
     public bool patternMaskEnabled { get; private set; } = false;
     public bool receptiveFieldEnabled { get; private set; } = false;
     public bool stimuliEnabled { get; private set; } = false;
@@ -49,11 +51,12 @@ public class CircleArray : MonoBehaviour {
         this.canvasRightTrans = GameObject.Find("right").transform;
         this.canvasUpTrans = GameObject.Find("up").transform;
         this.canvasBackTrans = GameObject.Find("back").transform;
+        this.canvasCenterTrans = GameObject.Find("center").transform;
         this.patternMask = GameObject.Find("PatternMask");
         this.receptiveField = GameObject.Find("ReceptiveField");
         this.patternMasks = new GameObject[numbOfSlots];
         this.receptiveFields = new GameObject[numbOfSlots];
-        
+        this.distance = distance;
         float angleStep = 360 / NumbOfSlots;
         float currAngle = 0f;
         
@@ -112,77 +115,78 @@ public class CircleArray : MonoBehaviour {
     }
 
     public void PutIntoSlots(List<GameObject> Targets, List<GameObject> Distractors, bool targetsAway, bool distractorsAway, float depth) {
-        
+
         this.distractors = Distractors;
         this.targets = Targets;
-        
+
         List<int> found = new List<int>();
 
-       
+
         System.Random rnd = new System.Random();
-        
+
         int c = rnd.Next(0, numbOfSlots);
 
-        
+
 
         for (int i = 0; i < targets.Count; i++) {
-            while (found.Contains(c)){ 
-                c = rnd.Next(0, numbOfSlots); 
+            while (found.Contains(c)) {
+                c = rnd.Next(0, numbOfSlots);
             }
             found.Add(c);
-            Vector3 offsetUp = (FixationCrossObject.transform.position - canvasUpTrans.position).normalized * slots[c].y;
-            Vector3 offsetRight = (FixationCrossObject.transform.position - canvasRightTrans.position).normalized * slots[c].x;
+
+            Vector3 offsetUp = (canvasCenterTrans.transform.position - canvasUpTrans.position).normalized * slots[c].y;
+            Vector3 offsetRight = (canvasCenterTrans.transform.position - canvasRightTrans.position).normalized * slots[c].x;
+            Vector3 offsetBack = (canvasCenterTrans.transform.position - canvasBackTrans.position).normalized * slots[c].z;
 
 
-            targets[i].transform.position = canvasTransform.position + offsetUp + offsetRight;
-            targets[i].transform.rotation = FixationCrossObject.transform.rotation;
+            targets[i].transform.position = canvasTransform.position + offsetUp + offsetRight + offsetBack;
+            targets[i].transform.rotation = canvasCenterTrans.transform.rotation;
             targets[i].transform.SetParent(stimuliContainer.transform);
-            
+
         }
         for (int i = 0; i < distractors.Count; i++) {
-            while (found.Contains(c)) { 
-                c = rnd.Next(0, numbOfSlots); 
+            while (found.Contains(c)) {
+                c = rnd.Next(0, numbOfSlots);
             }
             found.Add(c);
 
-            Vector3 offsetUp = (FixationCrossObject.transform.position - canvasUpTrans.position).normalized * slots[c].y;
-            Vector3 offsetRight = (FixationCrossObject.transform.position - canvasRightTrans.position).normalized * slots[c].x;
+            Vector3 offsetUp = (canvasCenterTrans.transform.position - canvasUpTrans.position).normalized * slots[c].y;
+            Vector3 offsetRight = (canvasCenterTrans.transform.position - canvasRightTrans.position).normalized * slots[c].x;
+            Vector3 offsetBack = (canvasCenterTrans.transform.position - canvasBackTrans.position).normalized * slots[c].z;
 
-            distractors[i].transform.position = canvasTransform.position + offsetUp + offsetRight;
-            distractors[i].transform.rotation = FixationCrossObject.transform.rotation;
+            distractors[i].transform.position = canvasTransform.position + offsetUp + offsetRight + offsetBack;
+            distractors[i].transform.rotation = canvasCenterTrans.transform.rotation;
             distractors[i].transform.SetParent(stimuliContainer.transform);
-            
+
         }
 
-        if (targetsAway)
-        {
-            PushBack(depth, "T");
-        }
-        else if (distractorsAway)
-        {
-            PushBack(depth, "D");
+        Vector3 forward = (canvasCenterTrans.transform.position - canvasBackTrans.position).normalized;
+
+        if (targetsAway) {
+            Push(depth* patternMasks[0].transform.lossyScale.x, forward, "T");
+        } else if (distractorsAway) {
+            Push(depth * patternMasks[0].transform.lossyScale.x, forward, "D");
         }
 
-        Vector3 backVec = (FixationCrossObject.transform.position - canvasBackTrans.position).normalized;
+        Vector3 backVec = (canvasCenterTrans.transform.position - canvasBackTrans.position).normalized;
         float initialScale = GameObject.Find("ReceptiveField").transform.localScale.z;
 
         for (int i = 0; i < patternMasks.Length; i++) {
             patternMasks[i].transform.position = stimuliContainer.transform.GetChild(i).transform.position;
             receptiveFields[i].transform.position = stimuliContainer.transform.GetChild(i).transform.position;// + (0.1f*backVec);
-            stimuliContainer.transform.GetChild(i).transform.position += backVec * (initialScale / 2);
+            stimuliContainer.transform.GetChild(i).transform.position -= backVec * (initialScale / 2);
         }
     }
 
-    public void PushBack(float depth, String TorD) {
-        Vector3 v = new Vector3(0, 0, depth);
+    public void Push(float depth, Vector3 direction, String TorD) {
 
         if (TorD == "T") {
             for (int i = 0; i < targets.Count; i++) {
-                targets[i].transform.position -= v;
+                targets[i].transform.position -= depth * direction;
             }
         } else if (TorD == "D") {
             for (int i = 0; i < distractors.Count; i++) {
-                distractors[i].transform.position -= v;
+                distractors[i].transform.position -= depth * direction;
             }
         }
     }
@@ -232,8 +236,8 @@ public class CircleArray : MonoBehaviour {
     }
 
     public void ChangeDepth(int incr) {
-        PushBack(incr / 10, "T");
-        PushBack(incr / 10, "D");
+        //PushBack(incr / 10, "T");
+        //PushBack(incr / 10, "D");
     }
 
     public void ChangeDistance(int incr) {

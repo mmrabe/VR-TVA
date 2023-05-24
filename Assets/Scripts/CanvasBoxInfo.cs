@@ -20,11 +20,11 @@ public class CanvasBoxInfo : MonoBehaviour
     void Update() {
         //info.text = Application.dataPath;
         //info.text += Application.persistentDataPath;
-        info.text = experiment.TrialInfo();
-        info.text += "Refresh rate: "+ XRDevice.refreshRate;
-        info.text += "\n";
-        info.text += experiment.getTrialsSoFar().ToString();
-        info.text += "\n";
-        info.text += "\n";
+        //info.text = experiment.TrialInfo();
+        //info.text += "Refresh rate: "+ XRDevice.refreshRate;
+        //info.text += "\n";
+        info.text = experiment.getTrialsSoFar().ToString();
+        //info.text += "\n";
+        //info.text += "\n";
     }
 }
