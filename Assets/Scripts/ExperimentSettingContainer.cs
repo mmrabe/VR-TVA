@@ -14,12 +14,13 @@ public class ExperimentSettingContainer {
     }
 
     public void Populate() {
-        foreach(ExperimentSetting eS in settings) {
+        foreach (ExperimentSetting eS in settings) {
             foreach (float timeInterval in eS.timeIntervals) {
                 for (int i = 0; i < this.trialAmount; i++) {
                     Trial currentTrial = new Trial(eS.id, eS.numbOfTargets, eS.numbOfDistractors, eS.depth, eS.targetsFarAway, eS.distractorsFarAway, timeInterval);
                     if (currentTrial != null) {
                         trials.Add(currentTrial);
+                        
                     }
                 }
             }
@@ -37,5 +38,24 @@ public class ExperimentSettingContainer {
             trialsClone.RemoveAt(j);
         }
         return randomizedTrials;
+    }
+
+    public string LogData(List<Trial> shuffledTrials) {
+        
+        string s = "";
+        s += "settingID, T,D,Tfar,Dfar,Depth,time,trialNumb\n";
+        for (int i=0; i < shuffledTrials.Count ; i++) 
+        {
+            s += shuffledTrials[i].settingID+",";
+            s += shuffledTrials[i].numbOfTargets + ",";
+            s += shuffledTrials[i].numbOfDistractors + ",";
+            s += shuffledTrials[i].targetsFarAway + ",";
+            s += shuffledTrials[i].distractorsFarAway + ",";
+            s += shuffledTrials[i].depth + ",";
+            s += shuffledTrials[i].timeInterval + ",";
+            s += i + "\n";
+        }
+        return s;
+
     }
 }

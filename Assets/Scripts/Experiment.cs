@@ -43,8 +43,9 @@ public class Experiment : MonoBehaviour {
     private int totalTrials;
     public int stimuliDistance;
     public int numbOfSlots;
-    
     public float DistanceToArraySizeRatio;
+
+    ExperimentSettingContainer esc;
 
     // Utility
     public CircleArray array;
@@ -58,21 +59,26 @@ public class Experiment : MonoBehaviour {
         List<float> partialReportTime = new List<float> { 0.15f };
 
         ExperimentSetting wholeReportClose =    new ExperimentSetting(1, 8, 0, false, false, 0, this.timeIntervals);
-        ExperimentSetting wholeReportFar =      new ExperimentSetting(2, 8, 0, true, false, 1, this.timeIntervals);
+        ExperimentSetting wholeReportFar =      new ExperimentSetting(2, 8, 0, true, false, 2f, this.timeIntervals);
         ExperimentSetting partialReportFF =     new ExperimentSetting(3, 4, 4, false, false, 0, partialReportTime);
-        ExperimentSetting partialReportTF =     new ExperimentSetting(4, 4, 4, true, false, 1, partialReportTime);
-        ExperimentSetting partialReportFT =     new ExperimentSetting(5, 4, 4, false, true, 1, partialReportTime);
-        ExperimentSetting partialReportTT =     new ExperimentSetting(6, 4, 4, true, true, 1, partialReportTime);
-        settings = new List<IExperimentSetting>() { wholeReportClose };//, wholeReportFar, partialReportFF, partialReportFT, partialReportTF, partialReportTT };
+        ExperimentSetting partialReportTF =     new ExperimentSetting(4, 4, 4, true, false, 2f, partialReportTime);
+        ExperimentSetting partialReportFT =     new ExperimentSetting(5, 4, 4, false, true, 2f, partialReportTime);
+        ExperimentSetting partialReportTT =     new ExperimentSetting(6, 4, 4, true, true, 2f, partialReportTime);
+        settings = new List<IExperimentSetting>() { wholeReportClose, wholeReportFar, partialReportFF, partialReportFT, partialReportTF, partialReportTT };//{ partialReportFF, partialReportFT, partialReportTF, partialReportTT };
 
-        ExperimentSettingContainer esc = new ExperimentSettingContainer(settings, trialAmount);
+
+        esc = new ExperimentSettingContainer(settings, trialAmount);
         esc.Populate();
         this.trials = esc.Shuffle();
         this.totalTrials = trials.Count;
+        
     }
 
     // Start is called before the first frame update
     void Start() {
+        string preData = esc.LogData(this.trials);
+        Debug.Log(preData);
+        WriteLoggedData(preData, "RECIPE");
         Application.targetFrameRate = 120;
         //QualitySettings.vSyncCount = 1;
 
@@ -124,7 +130,6 @@ public class Experiment : MonoBehaviour {
                     states[(int)States.Stimuli].Initialize(currentTrial.timeInterval);
                 } else {
                     isFinished = true;
-                    WriteLoggedData();
                 }
             }
             currentState = stateMachine.NextState();
@@ -134,6 +139,7 @@ public class Experiment : MonoBehaviour {
         if (currentState == States.WaitingForInput && !isTrialDataLogged &&
             states[(int)States.AfterTrialCoolDown].timer.isExtraFrameLogged) {
             loggedData += TrialInfo();
+            WriteLoggedData(loggedData, "data");
             isTrialDataLogged = true;
         }
     }
@@ -180,7 +186,7 @@ public class Experiment : MonoBehaviour {
         string s = "";
         if (!isFirstLoggedFinished) {
             isFirstLoggedFinished = true;
-            s += "settingID, T,D,Tfar,Dfar,Depth,time,trialNumb,TargetsPresented," +
+            s += "settingID, T,D,Tfar,Dfar,Depth,time,trialNumb,TargetsPresented,DistractorsPresented," +
                 "StimuliErr," +"MaskErr" + "\n";
             return s;
         }
@@ -192,11 +198,16 @@ public class Experiment : MonoBehaviour {
         s += currentTrial.depth + ","; 
         s += currentTrial.timeInterval + ",";
         s += trialsSoFar + ",";
-
         foreach (GameObject target in  array.targets) {
             s += target.name[0];
         }
-
+        s += ",";
+        if (array.distractors.Count == 0) { s += "!"; } 
+        else {
+            foreach (GameObject distractor in array.distractors) {
+                s += distractor.name[0];
+            }
+        }
         s += ",";
         s += Math.Round(stimuliState.timer.realTotalTime * 1000,3) + ",";
         s += Math.Round(maskState.timer.realTotalTime * 1000, 3);
@@ -205,16 +216,26 @@ public class Experiment : MonoBehaviour {
         return s;
     }
 
-    public void WriteLoggedData() {
+    public void WriteLoggedData(string data, string fileName) {
         string path;
-        //path = "C:/Users/hccco/Desktop/Mariusz_Uffe_BachelorProject/BachelorMain/BachelorProj/Assets";
-        //path += "/BLAH.txt";
-        path = Path.Combine(Application.persistentDataPath) + "/new.txt";
-        FileStream stream = new FileStream(path, FileMode.OpenOrCreate);
-        using (var w = new StreamWriter(stream)) {
-                w.WriteLine(loggedData);
+        //path = "C:/Users/hccco/Desktop/Mariusz_Uffe_BachelorProject/BachelorMain/BachelorProj/Assets/" + fileName + ".txt";
+        //FileStream streamPC = new FileStream(path, FileMode.OpenOrCreate);
+        //using (var w = new StreamWriter(streamPC)) {
+        //    w.WriteLine(data);
+        //}
+        //streamPC.Close();
+        path = Path.Combine(Application.persistentDataPath) + fileName + ".txt";
+        FileStream streamVr = new FileStream(path, FileMode.OpenOrCreate);
+        using (var w = new StreamWriter(streamVr)) {
+            w.WriteLine(data);
         }
+        streamVr.Close();
     }
+
+    //public List<Trial> TrialsFromTxt(string path1, string path2) 
+    //{
+
+    //}
 }
 
 /// REMOVED, REMOVE
