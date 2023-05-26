@@ -1,3 +1,7 @@
+
+
+
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -7,7 +11,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-public class Experiment : MonoBehaviour {
+public class Experiment : MonoBehaviour
+{
     // States
     private StateMachine stateMachine;
     private States currentState;
@@ -53,29 +58,31 @@ public class Experiment : MonoBehaviour {
     private string loggedData;
     public string trialInfo { get; private set; }
 
-    public Experiment() {
+    public Experiment()
+    {
         this.trialAmount = 1;
         this.timeIntervals = new List<float> { 0.01f, 0.02f, 0.05f, 0.1f, 0.15f, 0.2f };
         List<float> partialReportTime = new List<float> { 0.15f };
 
-        ExperimentSetting wholeReportClose =    new ExperimentSetting(1, 8, 0, false, false, 0, this.timeIntervals);
-        ExperimentSetting wholeReportFar =      new ExperimentSetting(2, 8, 0, true, false, 2f, this.timeIntervals);
-        ExperimentSetting partialReportFF =     new ExperimentSetting(3, 4, 4, false, false, 0, partialReportTime);
-        ExperimentSetting partialReportTF =     new ExperimentSetting(4, 4, 4, true, false, 2f, partialReportTime);
-        ExperimentSetting partialReportFT =     new ExperimentSetting(5, 4, 4, false, true, 2f, partialReportTime);
-        ExperimentSetting partialReportTT =     new ExperimentSetting(6, 4, 4, true, true, 2f, partialReportTime);
-        settings = new List<IExperimentSetting>() { wholeReportClose, wholeReportFar, partialReportFF, partialReportFT, partialReportTF, partialReportTT };//{ partialReportFF, partialReportFT, partialReportTF, partialReportTT };
+        ExperimentSetting wholeReportClose = new ExperimentSetting(1, 8, 0, false, false, 0, this.timeIntervals);
+        ExperimentSetting wholeReportFar = new ExperimentSetting(2, 8, 0, true, false, 2f, this.timeIntervals);
+        ExperimentSetting partialReportFF = new ExperimentSetting(3, 4, 4, false, false, 0, partialReportTime);
+        ExperimentSetting partialReportTF = new ExperimentSetting(4, 4, 4, true, false, 2f, partialReportTime);
+        ExperimentSetting partialReportFT = new ExperimentSetting(5, 4, 4, false, true, 2f, partialReportTime);
+        ExperimentSetting partialReportTT = new ExperimentSetting(6, 4, 4, true, true, 2f, partialReportTime);
+        settings = new List<IExperimentSetting>() { partialReportFF, partialReportFT, partialReportTF, partialReportTT };//{ wholeReportClose, wholeReportFar, partialReportFF, partialReportFT, partialReportTF, partialReportTT };
 
 
         esc = new ExperimentSettingContainer(settings, trialAmount);
         esc.Populate();
         this.trials = esc.Shuffle();
         this.totalTrials = trials.Count;
-        
+
     }
 
     // Start is called before the first frame update
-    void Start() {
+    void Start()
+    {
         string preData = esc.LogData(this.trials);
         Debug.Log(preData);
         WriteLoggedData(preData, "RECIPE");
@@ -86,7 +93,7 @@ public class Experiment : MonoBehaviour {
         this.symbolsT = LoadSymbols("LettersRed");
         this.symbolsD = LoadSymbols("LettersBlue");
         this.stateMachine = new StateMachine();
-        this.states = new List<ExperimentState>() { awaitState, stimuliState, maskState, coolDownPostTrialState  };
+        this.states = new List<ExperimentState>() { awaitState, stimuliState, maskState, coolDownPostTrialState };
         this.currentTrial = trials[trialsSoFar];
 
         // Find FixationCross
@@ -97,28 +104,34 @@ public class Experiment : MonoBehaviour {
         float radius = stimuliDistance * DistanceToArraySizeRatio;
         array.Init(radius, numbOfSlots, FixationCrossObject, stimuliDistance, canvasCenter);
         array.transform.position = canvasCenter.position;
-        
+
         // Initialize states with their durations
         maskState.Initialize(this.patternMaskDuration);
         coolDownPostTrialState.Initialize(this.coolDownPostTrialDuration);
-        
+
         // Generate stimuli, spawn them and set the given time
         var ret = GenerateSymbols(currentTrial.numbOfTargets, currentTrial.numbOfDistractors, this.symbolsT, this.symbolsD);
         array.PutIntoSlots(ret.Item1, ret.Item2, currentTrial.targetsFarAway, currentTrial.distractorsFarAway, currentTrial.depth);
+        //loggedData += array.currentPositions;
         states[(int)States.Stimuli].Initialize(currentTrial.timeInterval);
     }
 
-    void Update() {
-        if (isFinished) { 
+    void Update()
+    {
+        if (isFinished)
+        {
             return;
         }
 
         // If current state is finished, go to next state and execute it.
-        if (states[(int)currentState].IsFinished()) {
+        if (states[(int)currentState].IsFinished())
+        {
 
             // If current trial is over, initialize new trial.
-            if (currentState == States.AfterTrialCoolDown) {
-                if (trialsSoFar <= this.totalTrials-1) {
+            if (currentState == States.AfterTrialCoolDown)
+            {
+                if (trialsSoFar <= this.totalTrials - 1)
+                {
                     this.currentTrial = trials[trialsSoFar];
                     this.trialsSoFar += 1;
                     this.isTrialDataLogged = false;
@@ -127,8 +140,19 @@ public class Experiment : MonoBehaviour {
                     array.Clear();
                     var ret = GenerateSymbols(currentTrial.numbOfTargets, currentTrial.numbOfDistractors, this.symbolsT, this.symbolsD);
                     array.PutIntoSlots(ret.Item1, ret.Item2, currentTrial.targetsFarAway, currentTrial.distractorsFarAway, currentTrial.depth);
+                    //// HUBA BUBA
+                    //string s = "Positioning";
+                    //foreach (string name in array.sorenPositions)
+                    //{
+                    //    if (name != null) { s += name[0]; }
+                    //    else { s += 0; }
+                    //}
+                    //Debug.Log(s);
+                    //loggedData += array.currentPositions;
                     states[(int)States.Stimuli].Initialize(currentTrial.timeInterval);
-                } else {
+                }
+                else
+                {
                     isFinished = true;
                 }
             }
@@ -137,7 +161,8 @@ public class Experiment : MonoBehaviour {
         }
 
         if (currentState == States.WaitingForInput && !isTrialDataLogged &&
-            states[(int)States.AfterTrialCoolDown].timer.isExtraFrameLogged) {
+            states[(int)States.AfterTrialCoolDown].timer.isExtraFrameLogged)
+        {
             loggedData += TrialInfo();
             WriteLoggedData(loggedData, "data");
             isTrialDataLogged = true;
@@ -146,15 +171,18 @@ public class Experiment : MonoBehaviour {
 
     public int getTrialsSoFar() => this.trialsSoFar;
 
-    public (List<GameObject>, List<GameObject>) GenerateSymbols(int numbOfTargets, int numbOfDistractors, List<GameObject> symbolsT, List<GameObject> symbolsD) {
+    public (List<GameObject>, List<GameObject>) GenerateSymbols(int numbOfTargets, int numbOfDistractors, List<GameObject> symbolsT, List<GameObject> symbolsD)
+    {
         List<GameObject> targets = new List<GameObject>();
-        List<GameObject> distractors = new List<GameObject>(); 
+        List<GameObject> distractors = new List<GameObject>();
         System.Random rnd = new System.Random();
         List<int> usedIndex = new List<int>();
         int c = rnd.Next(0, symbolsT.Count);
 
-        for (int i = 0; i < numbOfTargets; i++) {
-            while(usedIndex.Contains(c)) {
+        for (int i = 0; i < numbOfTargets; i++)
+        {
+            while (usedIndex.Contains(c))
+            {
                 c = rnd.Next(0, symbolsT.Count);
             }
             usedIndex.Add(c);
@@ -163,8 +191,10 @@ public class Experiment : MonoBehaviour {
 
         c = rnd.Next(0, symbolsD.Count);
 
-        for (int i = 0; i < numbOfDistractors; i++) {
-            while (usedIndex.Contains(c)) {
+        for (int i = 0; i < numbOfDistractors; i++)
+        {
+            while (usedIndex.Contains(c))
+            {
                 c = rnd.Next(0, symbolsD.Count);
             }
             usedIndex.Add(c);
@@ -173,21 +203,25 @@ public class Experiment : MonoBehaviour {
         return (targets, distractors);
     }
 
-    public List<GameObject> LoadSymbols(string parentName) {
+    public List<GameObject> LoadSymbols(string parentName)
+    {
         List<GameObject> retLst = new List<GameObject>();
         GameObject parent = GameObject.Find(parentName);
-        for (int i = 0; i< parent.transform.childCount; i++) {
+        for (int i = 0; i < parent.transform.childCount; i++)
+        {
             retLst.Add(parent.transform.GetChild(i).gameObject);
         }
         return retLst;
     }
 
-    public string TrialInfo() {
+    public string TrialInfo()
+    {
         string s = "";
-        if (!isFirstLoggedFinished) {
+        if (!isFirstLoggedFinished)
+        {
             isFirstLoggedFinished = true;
-            s += "settingID, T,D,Tfar,Dfar,Depth,time,trialNumb,TargetsPresented,DistractorsPresented," +
-                "StimuliErr," +"MaskErr" + "\n";
+            s += "settingID, T,D,Tfar,Dfar,Depth,time,trialNumb,TargetsPresented,DistractorsPresented," +"TPos"+"DPos"+ "SorenPositions" +
+                "StimuliErr," + "MaskErr" + "\n";
             return s;
         }
         s += currentTrial.settingID + ",";
@@ -195,174 +229,62 @@ public class Experiment : MonoBehaviour {
         s += currentTrial.numbOfDistractors + ",";
         s += Convert.ToInt32(currentTrial.targetsFarAway).ToString() + ",";
         s += Convert.ToInt32(currentTrial.distractorsFarAway).ToString() + ",";
-        s += currentTrial.depth + ","; 
+        s += currentTrial.depth + ",";
         s += currentTrial.timeInterval + ",";
         s += trialsSoFar + ",";
-        foreach (GameObject target in  array.targets) {
+        foreach (GameObject target in array.targets)
+        {
             s += target.name[0];
         }
         s += ",";
-        if (array.distractors.Count == 0) { s += "!"; } 
-        else {
-            foreach (GameObject distractor in array.distractors) {
+        if (array.distractors.Count == 0) { s += "!"; }
+        else
+        {
+            foreach (GameObject distractor in array.distractors)
+            {
                 s += distractor.name[0];
             }
         }
         s += ",";
-        s += Math.Round(stimuliState.timer.realTotalTime * 1000,3) + ",";
+        for (int i = 0; i < currentTrial.numbOfTargets; i++)
+        {
+            s += array.currentPositions[i];
+        }
+        s += ",";
+        for (int i = 0; i < currentTrial.numbOfDistractors; i++)
+        {
+            s += array.currentPositions[i+currentTrial.numbOfTargets];
+        }
+        s += ",";
+        foreach (string name in array.sorenPositions) 
+        {
+            if (name != null) { s += name[0]; }
+            else { s += 0; }
+        }
+        s += ",";
+        s += Math.Round(stimuliState.timer.realTotalTime * 1000, 3) + ",";
         s += Math.Round(maskState.timer.realTotalTime * 1000, 3);
         s += "\n";
-
         return s;
     }
 
-    public void WriteLoggedData(string data, string fileName) {
+    public void WriteLoggedData(string data, string fileName)
+    {
         string path;
-        //path = "C:/Users/hccco/Desktop/Mariusz_Uffe_BachelorProject/BachelorMain/BachelorProj/Assets/" + fileName + ".txt";
-        //FileStream streamPC = new FileStream(path, FileMode.OpenOrCreate);
-        //using (var w = new StreamWriter(streamPC)) {
-        //    w.WriteLine(data);
-        //}
-        //streamPC.Close();
+        path = "C:/KU/Bachelor/BachelorProjNew/Assets/" + fileName + ".txt";
+        FileStream streamPC = new FileStream(path, FileMode.OpenOrCreate);
+        using (var w = new StreamWriter(streamPC))
+        {
+            w.WriteLine(data);
+        }
+        streamPC.Close();
         path = Path.Combine(Application.persistentDataPath) + fileName + ".txt";
         FileStream streamVr = new FileStream(path, FileMode.OpenOrCreate);
-        using (var w = new StreamWriter(streamVr)) {
+        using (var w = new StreamWriter(streamVr))
+        {
             w.WriteLine(data);
         }
         streamVr.Close();
     }
 
-    //public List<Trial> TrialsFromTxt(string path1, string path2) 
-    //{
-
-    //}
 }
-
-/// REMOVED, REMOVE
-
-    //public ExperimentState coolDownPostCrossState;
-    //public FixationCrossState fixCrossState;
-    //private bool isFixCrossShown = false;
-    //private bool isDebugEnabled;
-    //public bool isPractice;
-    //public float coolDownPostCrossDuration;
-    //public float fixationCrossDuration;
-    //private int currentSettingNumber;
-    //private int currentTimeIntervalNumber;
-    //private float currentTimeInterval;
-    //private List<float> randomTrials;
-    //private int trialsSoFar = 0;
-    //private ExperimentSetting currentSetting;
-
-    /*public void TryToUpdateSetting() {
-        if(trialsSoFar == trialAmount) {
-            if(currentTimeIntervalNumber != currentSetting.timeIntervals.Count-1) {
-                currentTimeIntervalNumber += 1;
-                currentTimeInterval = currentSetting.timeIntervals[currentTimeIntervalNumber];
-            } else {
-                if(currentSettingNumber != settings.Count -1) {
-                    currentSettingNumber += 1;
-                    currentSetting = settings[currentSettingNumber];
-                } else {
-                    isFinished = true;
-                    WriteLoggedData("data");
-                }
-            }
-            trialsSoFar = 0;
-        }
-        trialsSoFar += 1;
-    }*/
-
-    //s += Math.Round(fixCrossState.timer.estimatedTotalTime * 1000, 3) + "," + Math.Round(fixCrossState.timer.realTotalTime * 1000, 3) + ",";
-    //s += Math.Round(coolDownPostCrossState.timer.estimatedTotalTime * 1000, 3) + "," + Math.Round(coolDownPostCrossState.timer.realTotalTime * 1000, 3) + ",";
-    //s += Math.Round(maskState.timer.estimatedTotalTime * 1000, 3) + "," + Math.Round(maskState.timer.realTotalTime * 1000, 3) + ",";
-
-
-    //public void ShowFixationCross() {
-    //    isFixCrossShown = true;
-    //    FixationCrossObject.SetActive(true);
-    //}
-
-    //public void HideFixationCross() {
-    //    isFixCrossShown = false;
-    //    FixationCrossObject.SetActive(false);
-    //}
-
-    /*public void InputHandler() {
-        if (OVRInput.Get(OVRInput.Button.SecondaryThumbstickDown) &&
-                OVRInput.Get(OVRInput.Button.PrimaryThumbstickDown)) {
-            if (!isDebugEnabled) {
-                isDebugEnabled = true;
-                timer.PauseTimer(isDebugEnabled);
-                foreach (GameObject t in array.targets) {
-                    t.GetComponent<Renderer>().material.color = new Color(255, 0, 0);
-                }
-            }
-        }
-
-        if (isDebugEnabled) {
-            if (OVRInput.Get(OVRInput.Button.One)) {
-                array.ChangeRadius(-1);
-            }
-            else if (OVRInput.Get(OVRInput.Button.Two)) {
-                array.ChangeRadius(1);
-            }
-            else if (OVRInput.Get(OVRInput.Button.Three)){
-                array.ChangeDepth(-1);
-            }
-            else if (OVRInput.Get(OVRInput.Button.Four)) {
-                array.ChangeDepth(1);
-            }
-            else if (OVRInput.Get(OVRInput.Button.PrimaryHandTrigger)) {
-                array.ChangeSymbolsSize(1);
-            }
-            else if (OVRInput.Get(OVRInput.Button.SecondaryHandTrigger)) {
-                array.ChangeSymbolsSize(-1);
-            }
-            else if (OVRInput.Get(OVRInput.Button.PrimaryIndexTrigger)) {
-                array.ChangeDistance(1);
-            }
-            else if (OVRInput.Get(OVRInput.Button.SecondaryIndexTrigger)) {
-                array.ChangeDistance(-1);
-            }
-        }
-    }*/
-
-
-    //InputHandler();
-
-
-    /*if(isPractice) { 
-        SceneManager.LoadScene("mockup"); 
-    }*/
-
-
-
-    /*var ret = GenerateSymbols(currentSetting.numbOfTargets, currentSetting.numbOfDistractors, this.symbolsT, this.symbolsD);
-    array.PutIntoSlots(ret.Item1, ret.Item2, currentSetting.targetsFarAway, currentSetting.distractorsFarAway, currentSetting.depth);
-    states[(int)States.Stimuli].Initialize(this.currentTimeInterval);*/
-
-    //fixCrossState.Initialize(this.fixationCrossDuration);
-    //coolDownPostCrossState.Initialize(this.coolDownPostCrossDuration);
-
-
-    //this.states = new List<ExperimentState>() { awaitState, fixCrossState,
-    //                                       coolDownPostCrossState, stimuliState,
-    //                                       maskState, coolDownPostTrialState  };
-
-
-    //HideFixationCross();
-
-    
-    //ExperimentSetting calibration = new ExperimentSetting(4, 4, false, false, 1, timeIntervals);
-    //settings = new List<ExperimentSetting>() { wholeReportClose, wholeReportFar, partialReportFF, partialReportFT, partialReportTF, partialReportTT };
-    
-    /*ExperimentSetting setting1 = new ExperimentSetting(4, 4, true, false, 0.2f, this.timeIntervals);
-    settings = new List<ExperimentSetting>() { setting1 };
-    currentSetting = settings[currentSettingNumber];
-    currentTimeInterval = currentSetting.timeIntervals[currentTimeIntervalNumber];
-
-    if(isPractice) {
-        ExperimentSetting settingPractice = new ExperimentSetting(4, 4, false, false, 0.2f, new List<float> { 1f, 2f, 5f, 10f });
-        settings = new List<ExperimentSetting> { settingPractice };
-    }*/

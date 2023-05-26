@@ -29,7 +29,11 @@ public class CircleArray : MonoBehaviour {
     public bool patternMaskEnabled { get; private set; } = false;
     public bool receptiveFieldEnabled { get; private set; } = false;
     public bool stimuliEnabled { get; private set; } = false;
-   
+
+    public List<int> currentPositions { get; private set; }
+
+    public string[] sorenPositions { get; private set; }
+
     public CircleArray() {
 
     }
@@ -119,7 +123,7 @@ public class CircleArray : MonoBehaviour {
         this.distractors = Distractors;
         this.targets = Targets;
 
-        List<int> found = new List<int>();
+        currentPositions = new List<int>();
 
 
         System.Random rnd = new System.Random();
@@ -129,10 +133,10 @@ public class CircleArray : MonoBehaviour {
 
 
         for (int i = 0; i < targets.Count; i++) {
-            while (found.Contains(c)) {
+            while (currentPositions.Contains(c)) {
                 c = rnd.Next(0, numbOfSlots);
             }
-            found.Add(c);
+            currentPositions.Add(c);
 
             Vector3 offsetUp = (canvasCenterTrans.transform.position - canvasUpTrans.position).normalized * slots[c].y;
             Vector3 offsetRight = (canvasCenterTrans.transform.position - canvasRightTrans.position).normalized * slots[c].x;
@@ -145,10 +149,10 @@ public class CircleArray : MonoBehaviour {
 
         }
         for (int i = 0; i < distractors.Count; i++) {
-            while (found.Contains(c)) {
+            while (currentPositions.Contains(c)) {
                 c = rnd.Next(0, numbOfSlots);
             }
-            found.Add(c);
+            currentPositions.Add(c);
 
             Vector3 offsetUp = (canvasCenterTrans.transform.position - canvasUpTrans.position).normalized * slots[c].y;
             Vector3 offsetRight = (canvasCenterTrans.transform.position - canvasRightTrans.position).normalized * slots[c].x;
@@ -176,6 +180,33 @@ public class CircleArray : MonoBehaviour {
             receptiveFields[i].transform.position = stimuliContainer.transform.GetChild(i).transform.position;// + (0.1f*backVec);
             stimuliContainer.transform.GetChild(i).transform.position -= backVec * (initialScale / 2);
         }
+
+
+        // LOG POSITIONS 
+        CreateSorenData(targetsAway,distractorsAway);
+    }
+
+    public void CreateSorenData(bool targetsAway, bool distractorsAway)
+    {
+        string[] positions = new string[numbOfSlots*2];
+        int tDepth = this.numbOfSlots * Convert.ToInt32(targetsAway);
+        int dDepth = this.numbOfSlots * Convert.ToInt32(distractorsAway);
+        string name;
+        Debug.Log("tD: " + tDepth + " dD: " + dDepth + " currPos: "+currentPositions);
+        for (int i = 0; i < targets.Count; i++)
+        {
+            name = targets[i].name;
+            positions[currentPositions[i] + tDepth] = name ;
+        }
+
+        for (int i = 0; i < distractors.Count; i++)
+        {
+            name = distractors[i].name;
+            positions[currentPositions[i + targets.Count] + dDepth] = name;
+        }
+
+        sorenPositions = positions;
+
     }
 
     public void Push(float depth, Vector3 direction, String TorD) {

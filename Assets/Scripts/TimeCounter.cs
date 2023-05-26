@@ -55,8 +55,6 @@ public class TimeCounter: MonoBehaviour {
         if (!isRunning && !isExtraFrameLogged) {
             isExtraFrameLogged = true;
             realTotalTime = secondsLeft - Time.deltaTime;
-
-            Debug.Log("Estimated Time: " + estimatedTotalTime*1000 +" Real Time: " + realTotalTime*1000);
         }
 
         //if ( isRunning &&  (secondsLeft - Time.deltaTime) < 0) {
