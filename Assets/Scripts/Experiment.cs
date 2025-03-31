@@ -10,28 +10,21 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using System.Threading;
+using System.Threading.Tasks;
 
 public class Experiment : MonoBehaviour
 {
-    // States
-    private StateMachine stateMachine;
-    private States currentState;
-    private List<ExperimentState> states;
-    public StimuliState stimuliState;
-    public PatternMaskState maskState;
-    public AwaitInputState awaitState;
-    public ExperimentState coolDownPostTrialState;
-
-    public float patternMaskDuration;
-    public float coolDownPostTrialDuration;
 
     // GameObjects
     public Canvas canvas;
-    private Transform canvasCenter;
+    public Transform canvasCenter;
     public OVRCameraRig camRig;
-    private List<GameObject> symbolsT;
-    private List<GameObject> symbolsD;
-    private GameObject FixationCrossObject;
+    public Dictionary<(string, string), GameObject> symbols = new Dictionary<(string,string), GameObject>();
+    public GameObject FixationCrossObject;
+
+    public List<TextAsset> Recipes;
+    private int currentRecipe = 0;
 
     // Booleans
     private bool isFinished = false;
@@ -39,252 +32,177 @@ public class Experiment : MonoBehaviour
     private bool isTrialDataLogged = false;
 
     // ExperimentSettings
-    private List<IExperimentSetting> settings;
-    private List<float> timeIntervals;
-    private List<Trial> trials;
-    private Trial currentTrial;
-    private int trialsSoFar = 0;
-    private int trialAmount;
-    private int totalTrials;
     public int stimuliDistance;
     public int numbOfSlots;
     public float DistanceToArraySizeRatio;
+    public string ProcedureFilePath;
 
-    ExperimentSettingContainer esc;
+    public OVRPassthroughLayer passthroughLayer;
 
     // Utility
     public CircleArray array;
-    private TimeCounter timer = new TimeCounter();
-    private string loggedData;
-    public string trialInfo { get; private set; }
+
+    public Text textBox;
+    public Text textBoxTop;
+    public Text textBoxBottom;
+
+    public InputField inputField;
+
+
+
+    public ExperimentRoot Procedure;
 
     public Experiment()
     {
-        this.trialAmount = 1;
-        this.timeIntervals = new List<float> { 0.01f, 0.02f, 0.05f, 0.1f, 0.15f, 0.2f };
-        List<float> partialReportTime = new List<float> { 0.15f };
-
-        ExperimentSetting wholeReportClose = new ExperimentSetting(1, 8, 0, false, false, 0, this.timeIntervals);
-        ExperimentSetting wholeReportFar = new ExperimentSetting(2, 8, 0, true, false, 2f, this.timeIntervals);
-        ExperimentSetting partialReportFF = new ExperimentSetting(3, 4, 4, false, false, 0, partialReportTime);
-        ExperimentSetting partialReportTF = new ExperimentSetting(4, 4, 4, true, false, 2f, partialReportTime);
-        ExperimentSetting partialReportFT = new ExperimentSetting(5, 4, 4, false, true, 2f, partialReportTime);
-        ExperimentSetting partialReportTT = new ExperimentSetting(6, 4, 4, true, true, 2f, partialReportTime);
-        settings = new List<IExperimentSetting>() { partialReportFF, partialReportFT, partialReportTF, partialReportTT };//{ wholeReportClose, wholeReportFar, partialReportFF, partialReportFT, partialReportTF, partialReportTT };
 
 
-        esc = new ExperimentSettingContainer(settings, trialAmount);
-        esc.Populate();
-        this.trials = esc.Shuffle();
-        this.totalTrials = trials.Count;
 
     }
 
-    // Start is called before the first frame update
-    void Start()
+    public float CurrentFrameRate { get => OVRPlugin.systemDisplayFrequency != null && OVRPlugin.systemDisplayFrequency >= 1f ? OVRPlugin.systemDisplayFrequency : Application.targetFrameRate ;}
+
+    
+    private void DisplayRefreshRateChanged (float fromRefreshRate, float ToRefreshRate)
     {
-        string preData = esc.LogData(this.trials);
-        Debug.Log(preData);
-        WriteLoggedData(preData, "RECIPE");
+        // Handle display refresh rate changes
+        Debug.Log(string.Format("Refresh rate changed from {0} to {1}", fromRefreshRate, ToRefreshRate));
+    }
+
+    private TouchScreenKeyboard subjectNumberKeyboard;
+
+    void Start() 
+    {
+        
+
+        passthroughLayer.enabled = false;
+
+        Debug.Log("Starting experiment...");
+        OVRManager.DisplayRefreshRateChanged += DisplayRefreshRateChanged;
+        
         Application.targetFrameRate = 120;
-        //QualitySettings.vSyncCount = 1;
+        OVRPlugin.systemDisplayFrequency = 120.0f;
+        try {
+            UnityEngine.Debug.Log("Current fps: "+OVRPlugin.systemDisplayFrequency+", available fps: " +  OVRPlugin.systemDisplayFrequenciesAvailable);
+        } catch(NullReferenceException e) {
+            UnityEngine.Debug.Log("Could not determine supported fps!");
+        }
+
+
+
+
 
         this.canvasCenter = canvas.gameObject.GetComponent<RectTransform>().transform;
-        this.symbolsT = LoadSymbols("LettersRed");
-        this.symbolsD = LoadSymbols("LettersBlue");
-        this.stateMachine = new StateMachine();
-        this.states = new List<ExperimentState>() { awaitState, stimuliState, maskState, coolDownPostTrialState };
-        this.currentTrial = trials[trialsSoFar];
+
+        string[] letters = new string[]{"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"};
+        string[] colors = new string[]{"red","blue"};
+        foreach(string color in colors) {
+            GameObject parent = GameObject.Find(color + "Letters");
+            foreach(string letter in letters) {
+                symbols[(color,letter)] = GameObject.Find($"{color}Letters/{letter}").gameObject;
+            }
+        }
 
         // Find FixationCross
         FixationCrossObject = GameObject.Find("FixationCross");
+        FixationCrossObject.SetActive(false);
         FixationCrossObject.transform.position = new Vector3(FixationCrossObject.transform.position.x, FixationCrossObject.transform.position.y, -stimuliDistance);
         // Initialize circular array and set it's position.
         //float radius = canvas.planeDistance * DistanceToArraySizeRatio;
+        
         float radius = stimuliDistance * DistanceToArraySizeRatio;
         array.Init(radius, numbOfSlots, FixationCrossObject, stimuliDistance, canvasCenter);
         array.transform.position = canvasCenter.position;
 
-        // Initialize states with their durations
-        maskState.Initialize(this.patternMaskDuration);
-        coolDownPostTrialState.Initialize(this.coolDownPostTrialDuration);
+        textBox.transform.position = FixationCrossObject.transform.position;
+        textBoxTop.transform.position = FixationCrossObject.transform.position;
+        textBoxBottom.transform.position = FixationCrossObject.transform.position;
 
-        // Generate stimuli, spawn them and set the given time
-        var ret = GenerateSymbols(currentTrial.numbOfTargets, currentTrial.numbOfDistractors, this.symbolsT, this.symbolsD);
-        array.PutIntoSlots(ret.Item1, ret.Item2, currentTrial.targetsFarAway, currentTrial.distractorsFarAway, currentTrial.depth);
-        //loggedData += array.currentPositions;
-        states[(int)States.Stimuli].Initialize(currentTrial.timeInterval);
+        textBoxTop.gameObject.SetActive(true);
+        textBoxTop.text = "Enter subject number:";
+        textBox.text = "";
+        textBox.gameObject.SetActive(true);
+
+        subjectNumberKeyboard = TouchScreenKeyboard.Open("", TouchScreenKeyboardType.NumberPad, false);
+
+        //Procedure.Prepare();
+        //Procedure.Start();
+
+    }
+
+
+    private void RunBackgroundTasks() {
+        while(ScheduledBackgroundTasks.Count > 0) ScheduledBackgroundTasks.Dequeue()();
+    }
+
+    public List<Stopclock> CurrentTimers {get;} = new List<Stopclock>();
+
+    private Queue<Action> TaskOnNextFrame = new Queue<Action>();
+
+    private Queue<Action> ScheduledBackgroundTasks = new Queue<Action>();
+
+    private Task? BackgroundTaskWorker = null;
+    private object BackgroundTaskWorkerLock = new object();
+
+    public void EnqueueTaskOnNextFrame(Action a) {
+        TaskOnNextFrame.Enqueue(a);
+    }
+
+    public void EnqueueBackgroundTask(Action a) {
+        ScheduledBackgroundTasks.Enqueue(a);
     }
 
     void Update()
     {
-        if (isFinished)
-        {
+
+
+
+        // calculate time in ms since last frame
+        float deltaTime = Time.deltaTime*1000f;
+
+        // increment all active timers by that duration
+        foreach(var item in CurrentTimers) {
+            item.Increment(deltaTime);
+        }
+
+        // execute queued time-critical tasks if any (e.g., record trial display duration)
+        while(TaskOnNextFrame.Count > 0) TaskOnNextFrame.Dequeue()();
+
+        // execute queued non-critical tasks if any (e.g., write to output file)
+        if(ScheduledBackgroundTasks.Count > 0) {
+            lock(BackgroundTaskWorkerLock) {
+                if(BackgroundTaskWorker == null || BackgroundTaskWorker.Status != TaskStatus.Running) {
+                    BackgroundTaskWorker = Task.Run(this.RunBackgroundTasks);
+                }
+            }
+        }
+
+        // if there is an unfinished experimental procedure, propagate update signal to active trial
+        
+        if (Procedure != null && Procedure.IsFinished) {
             return;
-        }
-
-        // If current state is finished, go to next state and execute it.
-        if (states[(int)currentState].IsFinished())
-        {
-
-            // If current trial is over, initialize new trial.
-            if (currentState == States.AfterTrialCoolDown)
-            {
-                if (trialsSoFar <= this.totalTrials - 1)
-                {
-                    this.currentTrial = trials[trialsSoFar];
-                    this.trialsSoFar += 1;
-                    this.isTrialDataLogged = false;
-                    //Debug.Log(currentTrial.ToString());
-
-                    array.Clear();
-                    var ret = GenerateSymbols(currentTrial.numbOfTargets, currentTrial.numbOfDistractors, this.symbolsT, this.symbolsD);
-                    array.PutIntoSlots(ret.Item1, ret.Item2, currentTrial.targetsFarAway, currentTrial.distractorsFarAway, currentTrial.depth);
-                    //// HUBA BUBA
-                    //string s = "Positioning";
-                    //foreach (string name in array.sorenPositions)
-                    //{
-                    //    if (name != null) { s += name[0]; }
-                    //    else { s += 0; }
-                    //}
-                    //Debug.Log(s);
-                    //loggedData += array.currentPositions;
-                    states[(int)States.Stimuli].Initialize(currentTrial.timeInterval);
-                }
-                else
-                {
-                    isFinished = true;
-                }
+        } else if(Procedure != null &&Procedure.State >= TrialType.TrialState.Started) {
+            Procedure.Update();
+        } else {
+            textBox.text = "Subject: " + subjectNumberKeyboard.text + "\r\nProcedure: "+Recipes[currentRecipe].name;
+            if(OVRInput.GetUp(OVRInput.Button.Two)) {
+                currentRecipe++;
+                if(currentRecipe >= Recipes.Count()) currentRecipe = 0;
+                Debug.Log("Change recipe: " + currentRecipe.ToString());
             }
-            currentState = stateMachine.NextState();
-            states[(int)currentState].Run();
-        }
-
-        if (currentState == States.WaitingForInput && !isTrialDataLogged &&
-            states[(int)States.AfterTrialCoolDown].timer.isExtraFrameLogged)
-        {
-            loggedData += TrialInfo();
-            WriteLoggedData(loggedData, "data");
-            isTrialDataLogged = true;
-        }
-    }
-
-    public int getTrialsSoFar() => this.trialsSoFar;
-
-    public (List<GameObject>, List<GameObject>) GenerateSymbols(int numbOfTargets, int numbOfDistractors, List<GameObject> symbolsT, List<GameObject> symbolsD)
-    {
-        List<GameObject> targets = new List<GameObject>();
-        List<GameObject> distractors = new List<GameObject>();
-        System.Random rnd = new System.Random();
-        List<int> usedIndex = new List<int>();
-        int c = rnd.Next(0, symbolsT.Count);
-
-        for (int i = 0; i < numbOfTargets; i++)
-        {
-            while (usedIndex.Contains(c))
-            {
-                c = rnd.Next(0, symbolsT.Count);
-            }
-            usedIndex.Add(c);
-            targets.Add(Instantiate(symbolsT[c]));
-        }
-
-        c = rnd.Next(0, symbolsD.Count);
-
-        for (int i = 0; i < numbOfDistractors; i++)
-        {
-            while (usedIndex.Contains(c))
-            {
-                c = rnd.Next(0, symbolsD.Count);
-            }
-            usedIndex.Add(c);
-            distractors.Add(Instantiate(symbolsD[c]));
-        }
-        return (targets, distractors);
-    }
-
-    public List<GameObject> LoadSymbols(string parentName)
-    {
-        List<GameObject> retLst = new List<GameObject>();
-        GameObject parent = GameObject.Find(parentName);
-        for (int i = 0; i < parent.transform.childCount; i++)
-        {
-            retLst.Add(parent.transform.GetChild(i).gameObject);
-        }
-        return retLst;
-    }
-
-    public string TrialInfo()
-    {
-        string s = "";
-        if (!isFirstLoggedFinished)
-        {
-            isFirstLoggedFinished = true;
-            s += "settingID, T,D,Tfar,Dfar,Depth,time,trialNumb,TargetsPresented,DistractorsPresented," +"TPos"+"DPos"+ "SorenPositions" +
-                "StimuliErr," + "MaskErr" + "\n";
-            return s;
-        }
-        s += currentTrial.settingID + ",";
-        s += currentTrial.numbOfTargets + ",";
-        s += currentTrial.numbOfDistractors + ",";
-        s += Convert.ToInt32(currentTrial.targetsFarAway).ToString() + ",";
-        s += Convert.ToInt32(currentTrial.distractorsFarAway).ToString() + ",";
-        s += currentTrial.depth + ",";
-        s += currentTrial.timeInterval + ",";
-        s += trialsSoFar + ",";
-        foreach (GameObject target in array.targets)
-        {
-            s += target.name[0];
-        }
-        s += ",";
-        if (array.distractors.Count == 0) { s += "!"; }
-        else
-        {
-            foreach (GameObject distractor in array.distractors)
-            {
-                s += distractor.name[0];
+            if((subjectNumberKeyboard.status == TouchScreenKeyboard.Status.Done && OVRInput.GetUp(OVRInput.Button.One)) || Input.GetKeyUp(KeyCode.Return)) {
+                Procedure = ExperimentRoot.Load(Recipes[currentRecipe], this);
+                Debug.Log(Procedure.ToString());
+                Debug.Log("Entered subject number: "+subjectNumberKeyboard.text);
+                Procedure.OutputFilePath = "Output_" + subjectNumberKeyboard.text + ".csv";
+                textBox.gameObject.SetActive(false);
+                textBoxTop.gameObject.SetActive(false);
+                Procedure.Prepare();
+                Procedure.Start();
             }
         }
-        s += ",";
-        for (int i = 0; i < currentTrial.numbOfTargets; i++)
-        {
-            s += array.currentPositions[i];
-        }
-        s += ",";
-        for (int i = 0; i < currentTrial.numbOfDistractors; i++)
-        {
-            s += array.currentPositions[i+currentTrial.numbOfTargets];
-        }
-        s += ",";
-        foreach (string name in array.sorenPositions) 
-        {
-            if (name != null) { s += name[0]; }
-            else { s += 0; }
-        }
-        s += ",";
-        s += Math.Round(stimuliState.timer.realTotalTime * 1000, 3) + ",";
-        s += Math.Round(maskState.timer.realTotalTime * 1000, 3);
-        s += "\n";
-        return s;
+
+
     }
 
-    public void WriteLoggedData(string data, string fileName)
-    {
-        string path;
-        path = "C:/KU/Bachelor/BachelorProjNew/Assets/" + fileName + ".txt";
-        FileStream streamPC = new FileStream(path, FileMode.OpenOrCreate);
-        using (var w = new StreamWriter(streamPC))
-        {
-            w.WriteLine(data);
-        }
-        streamPC.Close();
-        path = Path.Combine(Application.persistentDataPath) + fileName + ".txt";
-        FileStream streamVr = new FileStream(path, FileMode.OpenOrCreate);
-        using (var w = new StreamWriter(streamVr))
-        {
-            w.WriteLine(data);
-        }
-        streamVr.Close();
-    }
 
 }

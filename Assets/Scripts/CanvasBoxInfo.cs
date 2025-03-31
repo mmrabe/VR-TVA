@@ -13,7 +13,6 @@ public class CanvasBoxInfo : MonoBehaviour
     // Start is called before the first frame update
     void Start() {
         info = this.GetComponent<Text>();
-        OVRPlugin.systemDisplayFrequency = 120.0f;
     }
 
     // Update is called once per frame
@@ -23,7 +22,14 @@ public class CanvasBoxInfo : MonoBehaviour
         //info.text = experiment.TrialInfo();
         //info.text += "Refresh rate: "+ XRDevice.refreshRate;
         //info.text += "\n";
-        info.text = experiment.getTrialsSoFar().ToString();
+        if(experiment.Procedure != null) {
+            TrialType? currentTrial = experiment.Procedure.CurrentDisplayTrial;
+            if(currentTrial != null) {
+                info.text = $"{experiment.Procedure.CurrentDisplayTrial.ReadableType} {experiment.Procedure.CurrentDisplayTrialID} ({(int) experiment.Procedure.CurrentProgressPercent}%)";
+            } else {
+                info.text = null;
+            }
+        }
         //info.text += "\n";
         //info.text += "\n";
     }
