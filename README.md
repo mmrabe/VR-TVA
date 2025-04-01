@@ -16,9 +16,9 @@ This experiment is programmed in C# in the [Unity](https://unity.com/)
 framework. At present, due to a few outdated dependencies, the project
 only runs with **Unity Editor 2020.3.6f1**. After installing Unity Hub,
 you can install the editor by [clicking
-here](unityhub://2020.3.6f1/338bb68529b2). Do not attempt to open the
-project in a different editor version as this will likely break the
-code!
+here](https://unity.com/releases/editor/whats-new/2020.3.6). Do not
+attempt to open the project in a different editor version as this will
+likely break the code!
 
 ### Hardware
 
