@@ -37,7 +37,8 @@ Hub (remember to select the appropriate Unity version).
 
 The experiment will be packaged as an Android APK file. You can directly
 build and run from within Unity (Files menu, may require further setup)
-or copy the build APK from the `Builds` folder to your device.
+or copy the build APK from `Builds/` (or by [clicking
+here](raw/refs/heads/main/Builds/VRCTVA.apk)) to your device.
 
 ## Running the experiment(s)
 
