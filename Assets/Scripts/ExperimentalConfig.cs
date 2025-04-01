@@ -453,6 +453,8 @@ public class TimedTrialType : TrialType
         public override void Finish()
         {
             base.Finish();
+            Trial.Experiment.textBoxTop.gameObject.SetActive(false);
+            Trial.Experiment.textBoxBottom.gameObject.SetActive(false);
             Trial.Experiment.textBox.gameObject.SetActive(false);
             Trial.Experiment.FixationCrossObject.SetActive(true);
             Trial.Experiment.array.ShowStimuli();
