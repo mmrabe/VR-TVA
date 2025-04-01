@@ -513,7 +513,7 @@
                 </PartialReport>
               </Procedure>
             </Block>
-            <BlockFeedback Message="You have completed block 1 of 3.&#13;&#10;&#13;&#10;In this block, you scored: [block_score]%&#13;&#10;&#13;&#10;Press A when you are ready to continue"/>
+            <BlockFeedback Message="You have completed block 1 of 2.&#13;&#10;&#13;&#10;In this block, you scored: [block_score]%&#13;&#10;&#13;&#10;Press A when you are ready to continue"/>
           </Procedure>
         </Block>
         <Block>
@@ -883,7 +883,7 @@
                 </PartialReport>
               </Procedure>
             </Block>
-            <BlockFeedback Message="You have completed block 2 of 3.&#13;&#10;&#13;&#10;In this block, you scored: [block_score]%&#13;&#10;&#13;&#10;Press A when you are ready to continue"/>
+            <BlockFeedback Message="You have completed block 2 of 2.&#13;&#10;&#13;&#10;In this block, you scored: [block_score]%&#13;&#10;&#13;&#10;Press A when you are ready to continue"/>
           </Procedure>
         </Block>
       </Procedure>

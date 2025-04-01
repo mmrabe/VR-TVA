@@ -513,7 +513,7 @@
                 </PartialReport>
               </Procedure>
             </Block>
-            <BlockFeedback Message="Du har gennemført blok 1 af 3.&#10;&#10;I denne blok opnåede du: [block_score]%&#10;&#10;Tryk på A, når du er klar til at fortsætte"/>
+            <BlockFeedback Message="Du har gennemført blok 1 af 2.&#10;&#10;I denne blok opnåede du: [block_score]%&#10;&#10;Tryk på A, når du er klar til at fortsætte"/>
           </Procedure>
         </Block>
         <Block>
@@ -883,7 +883,7 @@
                 </PartialReport>
               </Procedure>
             </Block>
-            <BlockFeedback Message="Du har gennemført blok 2 af 3.&#10;&#10;I denne blok opnåede du: [block_score]%&#10;&#10;Tryk på A, når du er klar til at fortsætte"/>
+            <BlockFeedback Message="Du har gennemført blok 2 af 2.&#10;&#10;I denne blok opnåede du: [block_score]%&#10;&#10;Tryk på A, når du er klar til at fortsætte"/>
           </Procedure>
         </Block>
       </Procedure>
