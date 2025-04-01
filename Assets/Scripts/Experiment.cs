@@ -176,20 +176,24 @@ public class Experiment : MonoBehaviour
             }
         }
 
-        // if there is an unfinished experimental procedure, propagate update signal to active trial
+        
         
         if (Procedure != null && Procedure.IsFinished) {
             return;
         } else if(Procedure != null &&Procedure.State >= TrialType.TrialState.Started) {
+            // if there is an unfinished experimental procedure, propagate update signal to active trial
             Procedure.Update();
         } else {
             textBox.text = "Subject: " + subjectNumberKeyboard.text + "\r\nProcedure: "+Recipes[currentRecipe].name;
-            if(OVRInput.GetUp(OVRInput.Button.Two)) {
+            if(OVRInput.GetUp(OVRInput.Button.One) || Input.GetKeyUp(KeyCode.RightArrow)) {
                 currentRecipe++;
                 if(currentRecipe >= Recipes.Count()) currentRecipe = 0;
-                Debug.Log("Change recipe: " + currentRecipe.ToString());
             }
-            if((subjectNumberKeyboard.status == TouchScreenKeyboard.Status.Done && OVRInput.GetUp(OVRInput.Button.One)) || Input.GetKeyUp(KeyCode.Return)) {
+            if(OVRInput.GetUp(OVRInput.Button.Two) || Input.GetKeyUp(KeyCode.LeftArrow)) {
+                currentRecipe--;
+                if(currentRecipe < 0) currentRecipe = Recipes.Count() - 1;
+            }
+            if(OVRInput.GetUp(OVRInput.Button.SecondaryIndexTrigger) || Input.GetKeyUp(KeyCode.Return)) {
                 Procedure = ExperimentRoot.Load(Recipes[currentRecipe], this);
                 Debug.Log(Procedure.ToString());
                 Debug.Log("Entered subject number: "+subjectNumberKeyboard.text);

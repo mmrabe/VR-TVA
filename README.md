@@ -53,9 +53,9 @@ Unity logo).
 The first screen will prompt a subject number to be input via the
 displayed virtual keyboard. You cannot reopen the keyboard, should focus
 be lost. In that case, restart the app. *After* closing/confirming the
-input, you can press the B button to rotate through a list of included
-experimental procedures. Once set, pressing A will start the selected
-experiment.
+input, you can press the A and B buttons to rotate through a list of
+included experimental procedures. Once set, pressing the trigger will
+start the selected experiment.
 
 ### Introducing the participant
 
