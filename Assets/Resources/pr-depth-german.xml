@@ -148,7 +148,7 @@
         </Block>
         <Block>
           <Procedure>
-            <Instruction Message="Sie beginnen nun Block 1 von 2.&#10;&#10;Denken Sie daran, das Kreuz zu Beginn jedes Durchgangs zu fixieren und dass Sie gebeten werden, nur &lt;b&gt;nahe&lt;/b&gt; Buchstaben zu berichten und &lt;b&gt;ferne&lt;/b&gt; Buchstaben zu ignorieren, falls vorhanden. Sie erhalten nach jedem Durchgang kein Feedback, aber Sie sehen Ihre Punktzahl für diesen Block am Ende in % korrekt.&#10;&#10;Drücken Sie A, wenn Sie bereit sind, den ersten Durchgang zu starten"/>
+            <Instruction Message="Sie beginnen nun Block 1 von 2.&#10;&#10;Denken Sie daran, das Kreuz zu Beginn jedes Durchgangs zu fixieren und dass Sie gebeten werden, nur &lt;b&gt;nahe&lt;/b&gt; Buchstaben zu berichten und &lt;b&gt;ferne&lt;/b&gt; Buchstaben zu ignorieren, falls vorhanden. Sie erhalten kein Feedback nach den einzelnen Durchgängen, aber Sie sehen Ihre Punktzahl für diesen Block am Ende in % korrekt.&#10;&#10;Drücken Sie A, wenn Sie bereit sind, den ersten Durchgang zu starten"/>
             <Block Randomize="true">
               <Procedure>
                 <PartialReport Randomize="true" ReportQueryTop="An welche Buchstaben erinnern Sie sich?" ReportQueryBottom="Bitte geben Sie die Buchstaben ein und&#10;drücken Sie A, um den nächsten Durchgang zu starten" DisplayDuration="10" FixationCrossDuration="1000" MaskDuration="500">
@@ -518,7 +518,7 @@
         </Block>
         <Block>
           <Procedure>
-            <Instruction Message="Sie beginnen nun Block 2 von 2.&#10;&#10;Denken Sie daran, das Kreuz zu Beginn jedes Durchgangs zu fixieren und dass Sie gebeten werden, nur &lt;b&gt;nahe&lt;/b&gt; Buchstaben zu berichten und &lt;b&gt;ferne&lt;/b&gt; Buchstaben zu ignorieren, falls vorhanden. Sie erhalten nach jedem Durchgang kein Feedback, aber Sie sehen Ihre Punktzahl für diesen Block am Ende in % korrekt.&#10;&#10;Drücken Sie A, wenn Sie bereit sind, den ersten Durchgang zu starten"/>
+            <Instruction Message="Sie beginnen nun Block 2 von 2.&#10;&#10;Denken Sie daran, das Kreuz zu Beginn jedes Durchgangs zu fixieren und dass Sie gebeten werden, nur &lt;b&gt;nahe&lt;/b&gt; Buchstaben zu berichten und &lt;b&gt;ferne&lt;/b&gt; Buchstaben zu ignorieren, falls vorhanden. Sie erhalten kein Feedback nach den einzelnen Durchgängen, aber Sie sehen Ihre Punktzahl für diesen Block am Ende in % korrekt.&#10;&#10;Drücken Sie A, wenn Sie bereit sind, den ersten Durchgang zu starten"/>
             <Block Randomize="true">
               <Procedure>
                 <PartialReport Randomize="true" ReportQueryTop="An welche Buchstaben erinnern Sie sich?" ReportQueryBottom="Bitte geben Sie die Buchstaben ein und&#10;drücken Sie A, um den nächsten Durchgang zu starten" DisplayDuration="10" FixationCrossDuration="1000" MaskDuration="500">
