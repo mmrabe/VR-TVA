@@ -995,7 +995,7 @@ public class BlockTrialType : TrialType, Scorable
     public override void LogCSV(IEnumerable<string> Keys, StreamWriter Writer)
     {
         base.LogCSV(Keys, Writer);
-        foreach (TrialType i in Procedure) i.LogCSV(Keys, Writer);
+        //foreach (TrialType i in Procedure) i.LogCSV(Keys, Writer);
     }
     private bool IsValidTrialNumber(int Number) => Number >= 1 && Number <= Procedure.Count;
     public bool HasCurrentTrial { get => IsValidTrialNumber(CurrentTrialNumber); }
