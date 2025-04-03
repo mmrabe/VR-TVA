@@ -33,6 +33,8 @@ public class Experiment : MonoBehaviour
 
     // ExperimentSettings
     public int stimuliDistance;
+    public float radius;
+    public float stimsize;
     public int numbOfSlots;
     public float DistanceToArraySizeRatio;
     public string ProcedureFilePath;
@@ -109,8 +111,7 @@ public class Experiment : MonoBehaviour
         // Initialize circular array and set it's position.
         //float radius = canvas.planeDistance * DistanceToArraySizeRatio;
         
-        float radius = stimuliDistance * DistanceToArraySizeRatio;
-        array.Init(radius, numbOfSlots, FixationCrossObject, stimuliDistance, canvasCenter);
+        array.Init(radius, stimsize, numbOfSlots, FixationCrossObject, stimuliDistance, canvasCenter);
         array.transform.position = canvasCenter.position;
 
         textBox.transform.position = FixationCrossObject.transform.position;

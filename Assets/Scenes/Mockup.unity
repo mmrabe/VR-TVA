@@ -46263,8 +46263,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 847d8b0d968d4a14c89d7508f54c0db7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  EnableLinearMovement: 1
-  EnableRotation: 1
+  EnableLinearMovement: 0
+  EnableRotation: 0
   HMDRotatesPlayer: 0
   RotationEitherThumbstick: 0
   RotationAngle: 45
@@ -63161,7 +63161,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh41236
+  m_Name: pb_Mesh29450
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -67987,8 +67987,10 @@ MonoBehaviour:
   - {fileID: 4900000, guid: 335b40d95229b42ec9072b0691b0e07c, type: 3}
   - {fileID: 4900000, guid: 34c4a3c64605a481b9cd2c32d996b1a5, type: 3}
   stimuliDistance: 5
+  radius: 7.5
+  stimsize: 2.5
   numbOfSlots: 6
-  DistanceToArraySizeRatio: 0.22
+  DistanceToArraySizeRatio: 0.13
   ProcedureFilePath: Trials
   passthroughLayer: {fileID: 1192344812}
   array: {fileID: 959163863}

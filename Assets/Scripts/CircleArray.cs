@@ -27,6 +27,7 @@ public class CircleArray : MonoBehaviour {
     private Vector3[] slots;
     private int numbOfSlots;
     private float radius;
+    private float stimsize;
     private float distance;
     public bool patternMaskEnabled { get; private set; } = false;
     public bool receptiveFieldEnabled { get; private set; } = false;
@@ -48,8 +49,10 @@ public class CircleArray : MonoBehaviour {
 
     }
 
-    public void Init(float radius, int NumbOfSlots, GameObject FixationCrossObject, float distance, Transform canvasTransform = null) {
-        this.radius = radius;
+    public void Init(float radius, float stimsize, int NumbOfSlots, GameObject FixationCrossObject, float distance, Transform canvasTransform = null) {
+        this.radius = (float)(distance*Math.Tan(Math.PI*radius/180f));
+        this.stimsize = (float)(2f*(distance*Math.Tan(Math.PI*(radius+stimsize/2f)/180f)-this.radius));
+        Debug.Log("radius: "+this.radius+", stimsize: "+this.stimsize);
         this.numbOfSlots = NumbOfSlots;
         this.canvasTransform = canvasTransform;
         this.FixationCrossObject = FixationCrossObject;
@@ -68,8 +71,8 @@ public class CircleArray : MonoBehaviour {
         float angleStep = (float) (2.0f * Math.PI / NumbOfSlots);
         float currAngle = (NumbOfSlots+2)*(-0.25f)*angleStep;
         for (int i = 0; i < NumbOfSlots; i++) {
-            float x = (float)(radius * Math.Cos(currAngle));
-            float y = (float)(radius * Math.Sin(currAngle));
+            float x = (float)(this.radius * Math.Cos(currAngle));
+            float y = (float)(this.radius * Math.Sin(currAngle));
             slots[i] = new Vector3(x, y, distance);
             currAngle -= angleStep;
         }
@@ -233,9 +236,10 @@ public class CircleArray : MonoBehaviour {
 
     public void RadiusToScaleBoxes()
     {
-        float O = (float) (2f *Math.PI * radius);
+        //float O = (float) (2f *Math.PI * radius);
        //Debug.Log("Omkreds = "+O);
-        float s = (2*O) / (3*8);
+        //float s = (2*O) / (3*8);
+        float s = stimsize;
         //Debug.Log("target size  = "+s);
         float scale = s / GameObject.Find("PatternMask").transform.localScale.x;
         ChangeSymbolsSize(scale);
