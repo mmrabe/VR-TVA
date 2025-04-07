@@ -10,102 +10,102 @@
             <Instruction Message="To become familiar with the procedure, you are now going to perform a few practice trials. At the beginning of each trial, fixate on the cross in the center of the screen and try to memorize the letters that will appear briefly afterwards.&#13;&#10;&#13;&#10;You will notice that the trials differ in difficulty. Display durations are always short but some are even shorter than others. In this practice block, you will receive individual feedback after each trial. You will not receive such feedback in the following blocks.&#13;&#10;&#13;&#10;Press A when you are ready to start the first trial"/>
             <Block Randomize="true">
               <Procedure>
-                <PartialReport Randomize="true" ReportQueryTop="Which letters do you recall?" ReportQueryBottom="Please enter the letters and&#13;&#10;press A to continue to the next trial" DisplayDuration="16.66" FixationCrossDuration="1000" MaskDuration="500">
+                <PartialReport Randomize="true" ReportQueryTop="Which letters do you recall?&#13;&#10;Only report letters for which you are certain and refrain from guessing!" ReportQueryBottom="Please enter the letters and&#13;&#10;press A to continue to the next trial" DisplayDuration="16.66" FixationCrossDuration="1000" MaskDuration="500">
                   <Array>
-                    <Character Color="red" Depth="0"/>
-                    <Character Color="red" Depth="0"/>
-                    <Character Color="red" Depth="0"/>
-                    <Character Color="red" Depth="0"/>
-                    <Character Color="red" Depth="0"/>
-                    <Character Color="red" Depth="0"/>
+                    <Character Target="true" Color="red" Depth="0"/>
+                    <Character Target="true" Color="red" Depth="0"/>
+                    <Character Target="true" Color="red" Depth="0"/>
+                    <Character Target="true" Color="red" Depth="0"/>
+                    <Character Target="true" Color="red" Depth="0"/>
+                    <Character Target="true" Color="red" Depth="0"/>
                   </Array>
                   <TrialFeedback MessageTop="You recalled [score] of [targets] &lt;color=red&gt;red&lt;/color&gt; letters:" MessageBottom="Press A when you are ready to continue"/>
                 </PartialReport>
-                <PartialReport Randomize="true" ReportQueryTop="Which letters do you recall?" ReportQueryBottom="Please enter the letters and&#13;&#10;press A to continue to the next trial" DisplayDuration="33.33" FixationCrossDuration="1000" MaskDuration="500">
+                <PartialReport Randomize="true" ReportQueryTop="Which letters do you recall?&#13;&#10;Only report letters for which you are certain and refrain from guessing!" ReportQueryBottom="Please enter the letters and&#13;&#10;press A to continue to the next trial" DisplayDuration="33.33" FixationCrossDuration="1000" MaskDuration="500">
                   <Array>
-                    <Character Color="red" Depth="0"/>
-                    <Character Color="red" Depth="0"/>
-                    <Character Color="red" Depth="0"/>
-                    <Character Color="red" Depth="0"/>
-                    <Character Color="red" Depth="0"/>
-                    <Character Color="red" Depth="0"/>
+                    <Character Target="true" Color="red" Depth="0"/>
+                    <Character Target="true" Color="red" Depth="0"/>
+                    <Character Target="true" Color="red" Depth="0"/>
+                    <Character Target="true" Color="red" Depth="0"/>
+                    <Character Target="true" Color="red" Depth="0"/>
+                    <Character Target="true" Color="red" Depth="0"/>
                   </Array>
                   <TrialFeedback MessageTop="You recalled [score] of [targets] &lt;color=red&gt;red&lt;/color&gt; letters:" MessageBottom="Press A when you are ready to continue"/>
                 </PartialReport>
-                <PartialReport Randomize="true" ReportQueryTop="Which letters do you recall?" ReportQueryBottom="Please enter the letters and&#13;&#10;press A to continue to the next trial" DisplayDuration="50" FixationCrossDuration="1000" MaskDuration="500">
+                <PartialReport Randomize="true" ReportQueryTop="Which letters do you recall?&#13;&#10;Only report letters for which you are certain and refrain from guessing!" ReportQueryBottom="Please enter the letters and&#13;&#10;press A to continue to the next trial" DisplayDuration="50" FixationCrossDuration="1000" MaskDuration="500">
                   <Array>
-                    <Character Color="red" Depth="0"/>
-                    <Character Color="red" Depth="0"/>
-                    <Character Color="red" Depth="0"/>
-                    <Character Color="red" Depth="0"/>
-                    <Character Color="red" Depth="0"/>
-                    <Character Color="red" Depth="0"/>
+                    <Character Target="true" Color="red" Depth="0"/>
+                    <Character Target="true" Color="red" Depth="0"/>
+                    <Character Target="true" Color="red" Depth="0"/>
+                    <Character Target="true" Color="red" Depth="0"/>
+                    <Character Target="true" Color="red" Depth="0"/>
+                    <Character Target="true" Color="red" Depth="0"/>
                   </Array>
                   <TrialFeedback MessageTop="You recalled [score] of [targets] &lt;color=red&gt;red&lt;/color&gt; letters:" MessageBottom="Press A when you are ready to continue"/>
                 </PartialReport>
-                <PartialReport Randomize="true" ReportQueryTop="Which letters do you recall?" ReportQueryBottom="Please enter the letters and&#13;&#10;press A to continue to the next trial" DisplayDuration="100" FixationCrossDuration="1000" MaskDuration="500">
+                <PartialReport Randomize="true" ReportQueryTop="Which letters do you recall?&#13;&#10;Only report letters for which you are certain and refrain from guessing!" ReportQueryBottom="Please enter the letters and&#13;&#10;press A to continue to the next trial" DisplayDuration="100" FixationCrossDuration="1000" MaskDuration="500">
                   <Array>
-                    <Character Color="red" Depth="0"/>
-                    <Character Color="red" Depth="0"/>
-                    <Character Color="red" Depth="0"/>
-                    <Character Color="red" Depth="0"/>
-                    <Character Color="red" Depth="0"/>
-                    <Character Color="red" Depth="0"/>
+                    <Character Target="true" Color="red" Depth="0"/>
+                    <Character Target="true" Color="red" Depth="0"/>
+                    <Character Target="true" Color="red" Depth="0"/>
+                    <Character Target="true" Color="red" Depth="0"/>
+                    <Character Target="true" Color="red" Depth="0"/>
+                    <Character Target="true" Color="red" Depth="0"/>
                   </Array>
                   <TrialFeedback MessageTop="You recalled [score] of [targets] &lt;color=red&gt;red&lt;/color&gt; letters:" MessageBottom="Press A when you are ready to continue"/>
                 </PartialReport>
-                <PartialReport Randomize="true" ReportQueryTop="Which letters do you recall?" ReportQueryBottom="Please enter the letters and&#13;&#10;press A to continue to the next trial" DisplayDuration="150" FixationCrossDuration="1000" MaskDuration="500">
+                <PartialReport Randomize="true" ReportQueryTop="Which letters do you recall?&#13;&#10;Only report letters for which you are certain and refrain from guessing!" ReportQueryBottom="Please enter the letters and&#13;&#10;press A to continue to the next trial" DisplayDuration="150" FixationCrossDuration="1000" MaskDuration="500">
                   <Array>
-                    <Character Color="red" Depth="0"/>
-                    <Character Color="red" Depth="0"/>
-                    <Character Color="red" Depth="0"/>
-                    <Character Color="red" Depth="0"/>
-                    <Character Color="red" Depth="0"/>
-                    <Character Color="red" Depth="0"/>
+                    <Character Target="true" Color="red" Depth="0"/>
+                    <Character Target="true" Color="red" Depth="0"/>
+                    <Character Target="true" Color="red" Depth="0"/>
+                    <Character Target="true" Color="red" Depth="0"/>
+                    <Character Target="true" Color="red" Depth="0"/>
+                    <Character Target="true" Color="red" Depth="0"/>
                   </Array>
                   <TrialFeedback MessageTop="You recalled [score] of [targets] &lt;color=red&gt;red&lt;/color&gt; letters:" MessageBottom="Press A when you are ready to continue"/>
                 </PartialReport>
-                <PartialReport Randomize="true" ReportQueryTop="Which letters do you recall?" ReportQueryBottom="Please enter the letters and&#13;&#10;press A to continue to the next trial" DisplayDuration="150" FixationCrossDuration="1000" MaskDuration="500">
+                <PartialReport Randomize="true" ReportQueryTop="Which letters do you recall?&#13;&#10;Only report letters for which you are certain and refrain from guessing!" ReportQueryBottom="Please enter the letters and&#13;&#10;press A to continue to the next trial" DisplayDuration="150" FixationCrossDuration="1000" MaskDuration="500">
                   <Array>
-                    <Character Color="blue" Depth="0"/>
-                    <Character Color="blue" Depth="0"/>
-                    <Character Color="red" Depth="0"/>
-                    <Character Color="red" Depth="0"/>
-                    <Character Color="red" Depth="0"/>
-                    <Character Color="red" Depth="0"/>
+                    <Character Target="false" Color="blue" Depth="0"/>
+                    <Character Target="false" Color="blue" Depth="0"/>
+                    <Character Target="true" Color="red" Depth="0"/>
+                    <Character Target="true" Color="red" Depth="0"/>
+                    <Character Target="true" Color="red" Depth="0"/>
+                    <Character Target="true" Color="red" Depth="0"/>
                   </Array>
                   <TrialFeedback MessageTop="You recalled [score] of [targets] &lt;color=red&gt;red&lt;/color&gt; letters:" MessageBottom="Press A when you are ready to continue"/>
                 </PartialReport>
-                <PartialReport Randomize="true" ReportQueryTop="Which letters do you recall?" ReportQueryBottom="Please enter the letters and&#13;&#10;press A to continue to the next trial" DisplayDuration="150" FixationCrossDuration="1000" MaskDuration="500">
+                <PartialReport Randomize="true" ReportQueryTop="Which letters do you recall?&#13;&#10;Only report letters for which you are certain and refrain from guessing!" ReportQueryBottom="Please enter the letters and&#13;&#10;press A to continue to the next trial" DisplayDuration="150" FixationCrossDuration="1000" MaskDuration="500">
                   <Array>
-                    <Character Color="blue" Depth="0"/>
-                    <Character Color="blue" Depth="0"/>
-                    <Character Color="blue" Depth="0"/>
-                    <Character Color="red" Depth="0"/>
-                    <Character Color="red" Depth="0"/>
-                    <Character Color="red" Depth="0"/>
+                    <Character Target="false" Color="blue" Depth="0"/>
+                    <Character Target="false" Color="blue" Depth="0"/>
+                    <Character Target="false" Color="blue" Depth="0"/>
+                    <Character Target="true" Color="red" Depth="0"/>
+                    <Character Target="true" Color="red" Depth="0"/>
+                    <Character Target="true" Color="red" Depth="0"/>
                   </Array>
                   <TrialFeedback MessageTop="You recalled [score] of [targets] &lt;color=red&gt;red&lt;/color&gt; letters:" MessageBottom="Press A when you are ready to continue"/>
                 </PartialReport>
-                <PartialReport Randomize="true" ReportQueryTop="Which letters do you recall?" ReportQueryBottom="Please enter the letters and&#13;&#10;press A to continue to the next trial" DisplayDuration="150" FixationCrossDuration="1000" MaskDuration="500">
+                <PartialReport Randomize="true" ReportQueryTop="Which letters do you recall?&#13;&#10;Only report letters for which you are certain and refrain from guessing!" ReportQueryBottom="Please enter the letters and&#13;&#10;press A to continue to the next trial" DisplayDuration="150" FixationCrossDuration="1000" MaskDuration="500">
                   <Array>
-                    <Character Color="blue" Depth="0"/>
-                    <Character Color="blue" Depth="0"/>
-                    <Character Color="blue" Depth="0"/>
-                    <Character Color="blue" Depth="0"/>
-                    <Character Color="red" Depth="0"/>
-                    <Character Color="red" Depth="0"/>
+                    <Character Target="false" Color="blue" Depth="0"/>
+                    <Character Target="false" Color="blue" Depth="0"/>
+                    <Character Target="false" Color="blue" Depth="0"/>
+                    <Character Target="false" Color="blue" Depth="0"/>
+                    <Character Target="true" Color="red" Depth="0"/>
+                    <Character Target="true" Color="red" Depth="0"/>
                   </Array>
                   <TrialFeedback MessageTop="You recalled [score] of [targets] &lt;color=red&gt;red&lt;/color&gt; letters:" MessageBottom="Press A when you are ready to continue"/>
                 </PartialReport>
-                <PartialReport Randomize="true" ReportQueryTop="Which letters do you recall?" ReportQueryBottom="Please enter the letters and&#13;&#10;press A to continue to the next trial" DisplayDuration="200" FixationCrossDuration="1000" MaskDuration="500">
+                <PartialReport Randomize="true" ReportQueryTop="Which letters do you recall?&#13;&#10;Only report letters for which you are certain and refrain from guessing!" ReportQueryBottom="Please enter the letters and&#13;&#10;press A to continue to the next trial" DisplayDuration="200" FixationCrossDuration="1000" MaskDuration="500">
                   <Array>
-                    <Character Color="red" Depth="0"/>
-                    <Character Color="red" Depth="0"/>
-                    <Character Color="red" Depth="0"/>
-                    <Character Color="red" Depth="0"/>
-                    <Character Color="red" Depth="0"/>
-                    <Character Color="red" Depth="0"/>
+                    <Character Target="true" Color="red" Depth="0"/>
+                    <Character Target="true" Color="red" Depth="0"/>
+                    <Character Target="true" Color="red" Depth="0"/>
+                    <Character Target="true" Color="red" Depth="0"/>
+                    <Character Target="true" Color="red" Depth="0"/>
+                    <Character Target="true" Color="red" Depth="0"/>
                   </Array>
                   <TrialFeedback MessageTop="You recalled [score] of [targets] &lt;color=red&gt;red&lt;/color&gt; letters:" MessageBottom="Press A when you are ready to continue"/>
                 </PartialReport>
@@ -115,202 +115,202 @@
         </Block>
         <Block>
           <Procedure>
-            <Instruction Message="You are now starting trial block 1 of 2.&#13;&#10;&#13;&#10;Remember to fixate on the cross at the beginning of each trial and that you are asked to report only &lt;color=red&gt;red&lt;/color&gt; letters and ignore &lt;color=blue&gt;blue&lt;/color&gt; letters if any. You will not receive feedback after each trial but you will see your score for this block in % correct after the last trial.&#13;&#10;&#13;&#10;Press A when you are ready to start the first trial"/>
+            <Instruction Message="You are now starting trial block 1 of 2.&#13;&#10;&#13;&#10;Remember to fixate on the cross at the beginning of each trial and that you are asked to report only &lt;color=red&gt;red&lt;/color&gt; letters and ignore &lt;color=blue&gt;blue&lt;/color&gt; letters if any. You will not receive feedback after each trial but you will see your score for this block in % correct after the last trial. Please try to achieve approx. 80-90% correct!&#13;&#10;&#13;&#10;Press A when you are ready to start the first trial"/>
             <Block Randomize="true">
               <Procedure>
-                <PartialReport Randomize="true" ReportQueryTop="Which letters do you recall?" ReportQueryBottom="Please enter the letters and&#13;&#10;press A to continue to the next trial" DisplayDuration="16.66" FixationCrossDuration="1000" MaskDuration="500">
+                <PartialReport Randomize="true" ReportQueryTop="Which letters do you recall?&#13;&#10;Only report letters for which you are certain and refrain from guessing!" ReportQueryBottom="Please enter the letters and&#13;&#10;press A to continue to the next trial" DisplayDuration="16.66" FixationCrossDuration="1000" MaskDuration="500">
                   <Array>
-                    <Character Color="red" Depth="0"/>
-                    <Character Color="red" Depth="0"/>
-                    <Character Color="red" Depth="0"/>
-                    <Character Color="red" Depth="0"/>
-                    <Character Color="red" Depth="0"/>
-                    <Character Color="red" Depth="0"/>
+                    <Character Target="true" Color="red" Depth="0"/>
+                    <Character Target="true" Color="red" Depth="0"/>
+                    <Character Target="true" Color="red" Depth="0"/>
+                    <Character Target="true" Color="red" Depth="0"/>
+                    <Character Target="true" Color="red" Depth="0"/>
+                    <Character Target="true" Color="red" Depth="0"/>
                   </Array>
                 </PartialReport>
-                <PartialReport Randomize="true" ReportQueryTop="Which letters do you recall?" ReportQueryBottom="Please enter the letters and&#13;&#10;press A to continue to the next trial" DisplayDuration="33.33" FixationCrossDuration="1000" MaskDuration="500">
+                <PartialReport Randomize="true" ReportQueryTop="Which letters do you recall?&#13;&#10;Only report letters for which you are certain and refrain from guessing!" ReportQueryBottom="Please enter the letters and&#13;&#10;press A to continue to the next trial" DisplayDuration="33.33" FixationCrossDuration="1000" MaskDuration="500">
                   <Array>
-                    <Character Color="red" Depth="0"/>
-                    <Character Color="red" Depth="0"/>
-                    <Character Color="red" Depth="0"/>
-                    <Character Color="red" Depth="0"/>
-                    <Character Color="red" Depth="0"/>
-                    <Character Color="red" Depth="0"/>
+                    <Character Target="true" Color="red" Depth="0"/>
+                    <Character Target="true" Color="red" Depth="0"/>
+                    <Character Target="true" Color="red" Depth="0"/>
+                    <Character Target="true" Color="red" Depth="0"/>
+                    <Character Target="true" Color="red" Depth="0"/>
+                    <Character Target="true" Color="red" Depth="0"/>
                   </Array>
                 </PartialReport>
-                <PartialReport Randomize="true" ReportQueryTop="Which letters do you recall?" ReportQueryBottom="Please enter the letters and&#13;&#10;press A to continue to the next trial" DisplayDuration="50" FixationCrossDuration="1000" MaskDuration="500">
+                <PartialReport Randomize="true" ReportQueryTop="Which letters do you recall?&#13;&#10;Only report letters for which you are certain and refrain from guessing!" ReportQueryBottom="Please enter the letters and&#13;&#10;press A to continue to the next trial" DisplayDuration="50" FixationCrossDuration="1000" MaskDuration="500">
                   <Array>
-                    <Character Color="red" Depth="0"/>
-                    <Character Color="red" Depth="0"/>
-                    <Character Color="red" Depth="0"/>
-                    <Character Color="red" Depth="0"/>
-                    <Character Color="red" Depth="0"/>
-                    <Character Color="red" Depth="0"/>
+                    <Character Target="true" Color="red" Depth="0"/>
+                    <Character Target="true" Color="red" Depth="0"/>
+                    <Character Target="true" Color="red" Depth="0"/>
+                    <Character Target="true" Color="red" Depth="0"/>
+                    <Character Target="true" Color="red" Depth="0"/>
+                    <Character Target="true" Color="red" Depth="0"/>
                   </Array>
                 </PartialReport>
-                <PartialReport Randomize="true" ReportQueryTop="Which letters do you recall?" ReportQueryBottom="Please enter the letters and&#13;&#10;press A to continue to the next trial" DisplayDuration="100" FixationCrossDuration="1000" MaskDuration="500">
+                <PartialReport Randomize="true" ReportQueryTop="Which letters do you recall?&#13;&#10;Only report letters for which you are certain and refrain from guessing!" ReportQueryBottom="Please enter the letters and&#13;&#10;press A to continue to the next trial" DisplayDuration="100" FixationCrossDuration="1000" MaskDuration="500">
                   <Array>
-                    <Character Color="red" Depth="0"/>
-                    <Character Color="red" Depth="0"/>
-                    <Character Color="red" Depth="0"/>
-                    <Character Color="red" Depth="0"/>
-                    <Character Color="red" Depth="0"/>
-                    <Character Color="red" Depth="0"/>
+                    <Character Target="true" Color="red" Depth="0"/>
+                    <Character Target="true" Color="red" Depth="0"/>
+                    <Character Target="true" Color="red" Depth="0"/>
+                    <Character Target="true" Color="red" Depth="0"/>
+                    <Character Target="true" Color="red" Depth="0"/>
+                    <Character Target="true" Color="red" Depth="0"/>
                   </Array>
                 </PartialReport>
-                <PartialReport Randomize="true" ReportQueryTop="Which letters do you recall?" ReportQueryBottom="Please enter the letters and&#13;&#10;press A to continue to the next trial" DisplayDuration="150" FixationCrossDuration="1000" MaskDuration="500">
+                <PartialReport Randomize="true" ReportQueryTop="Which letters do you recall?&#13;&#10;Only report letters for which you are certain and refrain from guessing!" ReportQueryBottom="Please enter the letters and&#13;&#10;press A to continue to the next trial" DisplayDuration="150" FixationCrossDuration="1000" MaskDuration="500">
                   <Array>
-                    <Character Color="red" Depth="0"/>
-                    <Character Color="red" Depth="0"/>
-                    <Character Color="red" Depth="0"/>
-                    <Character Color="red" Depth="0"/>
-                    <Character Color="red" Depth="0"/>
-                    <Character Color="red" Depth="0"/>
+                    <Character Target="true" Color="red" Depth="0"/>
+                    <Character Target="true" Color="red" Depth="0"/>
+                    <Character Target="true" Color="red" Depth="0"/>
+                    <Character Target="true" Color="red" Depth="0"/>
+                    <Character Target="true" Color="red" Depth="0"/>
+                    <Character Target="true" Color="red" Depth="0"/>
                   </Array>
                 </PartialReport>
-                <PartialReport Randomize="true" ReportQueryTop="Which letters do you recall?" ReportQueryBottom="Please enter the letters and&#13;&#10;press A to continue to the next trial" DisplayDuration="150" FixationCrossDuration="1000" MaskDuration="500">
+                <PartialReport Randomize="true" ReportQueryTop="Which letters do you recall?&#13;&#10;Only report letters for which you are certain and refrain from guessing!" ReportQueryBottom="Please enter the letters and&#13;&#10;press A to continue to the next trial" DisplayDuration="150" FixationCrossDuration="1000" MaskDuration="500">
                   <Array>
-                    <Character Color="blue" Depth="0"/>
-                    <Character Color="blue" Depth="0"/>
-                    <Character Color="red" Depth="0"/>
-                    <Character Color="red" Depth="0"/>
-                    <Character Color="red" Depth="0"/>
-                    <Character Color="red" Depth="0"/>
+                    <Character Target="false" Color="blue" Depth="0"/>
+                    <Character Target="false" Color="blue" Depth="0"/>
+                    <Character Target="true" Color="red" Depth="0"/>
+                    <Character Target="true" Color="red" Depth="0"/>
+                    <Character Target="true" Color="red" Depth="0"/>
+                    <Character Target="true" Color="red" Depth="0"/>
                   </Array>
                 </PartialReport>
-                <PartialReport Randomize="true" ReportQueryTop="Which letters do you recall?" ReportQueryBottom="Please enter the letters and&#13;&#10;press A to continue to the next trial" DisplayDuration="150" FixationCrossDuration="1000" MaskDuration="500">
+                <PartialReport Randomize="true" ReportQueryTop="Which letters do you recall?&#13;&#10;Only report letters for which you are certain and refrain from guessing!" ReportQueryBottom="Please enter the letters and&#13;&#10;press A to continue to the next trial" DisplayDuration="150" FixationCrossDuration="1000" MaskDuration="500">
                   <Array>
-                    <Character Color="blue" Depth="0"/>
-                    <Character Color="blue" Depth="0"/>
-                    <Character Color="blue" Depth="0"/>
-                    <Character Color="red" Depth="0"/>
-                    <Character Color="red" Depth="0"/>
-                    <Character Color="red" Depth="0"/>
+                    <Character Target="false" Color="blue" Depth="0"/>
+                    <Character Target="false" Color="blue" Depth="0"/>
+                    <Character Target="false" Color="blue" Depth="0"/>
+                    <Character Target="true" Color="red" Depth="0"/>
+                    <Character Target="true" Color="red" Depth="0"/>
+                    <Character Target="true" Color="red" Depth="0"/>
                   </Array>
                 </PartialReport>
-                <PartialReport Randomize="true" ReportQueryTop="Which letters do you recall?" ReportQueryBottom="Please enter the letters and&#13;&#10;press A to continue to the next trial" DisplayDuration="150" FixationCrossDuration="1000" MaskDuration="500">
+                <PartialReport Randomize="true" ReportQueryTop="Which letters do you recall?&#13;&#10;Only report letters for which you are certain and refrain from guessing!" ReportQueryBottom="Please enter the letters and&#13;&#10;press A to continue to the next trial" DisplayDuration="150" FixationCrossDuration="1000" MaskDuration="500">
                   <Array>
-                    <Character Color="blue" Depth="0"/>
-                    <Character Color="blue" Depth="0"/>
-                    <Character Color="blue" Depth="0"/>
-                    <Character Color="blue" Depth="0"/>
-                    <Character Color="red" Depth="0"/>
-                    <Character Color="red" Depth="0"/>
+                    <Character Target="false" Color="blue" Depth="0"/>
+                    <Character Target="false" Color="blue" Depth="0"/>
+                    <Character Target="false" Color="blue" Depth="0"/>
+                    <Character Target="false" Color="blue" Depth="0"/>
+                    <Character Target="true" Color="red" Depth="0"/>
+                    <Character Target="true" Color="red" Depth="0"/>
                   </Array>
                 </PartialReport>
-                <PartialReport Randomize="true" ReportQueryTop="Which letters do you recall?" ReportQueryBottom="Please enter the letters and&#13;&#10;press A to continue to the next trial" DisplayDuration="200" FixationCrossDuration="1000" MaskDuration="500">
+                <PartialReport Randomize="true" ReportQueryTop="Which letters do you recall?&#13;&#10;Only report letters for which you are certain and refrain from guessing!" ReportQueryBottom="Please enter the letters and&#13;&#10;press A to continue to the next trial" DisplayDuration="200" FixationCrossDuration="1000" MaskDuration="500">
                   <Array>
-                    <Character Color="red" Depth="0"/>
-                    <Character Color="red" Depth="0"/>
-                    <Character Color="red" Depth="0"/>
-                    <Character Color="red" Depth="0"/>
-                    <Character Color="red" Depth="0"/>
-                    <Character Color="red" Depth="0"/>
+                    <Character Target="true" Color="red" Depth="0"/>
+                    <Character Target="true" Color="red" Depth="0"/>
+                    <Character Target="true" Color="red" Depth="0"/>
+                    <Character Target="true" Color="red" Depth="0"/>
+                    <Character Target="true" Color="red" Depth="0"/>
+                    <Character Target="true" Color="red" Depth="0"/>
                   </Array>
                 </PartialReport>
               </Procedure>
             </Block>
-            <BlockFeedback Message="You have completed block 1 of 2.&#13;&#10;&#13;&#10;In this block, you scored: [block_score]%&#13;&#10;&#13;&#10;Press A when you are ready to continue"/>
+            <BlockFeedback Message="You have completed block 1 of 2.&#13;&#10;&#13;&#10;In this block, you scored: [block_score]%&#13;&#10;&#13;&#10;Remember to try to achieve an average accuracy of 80-90%!&#13;&#10;&#13;&#10;Press A when you are ready to continue"/>
           </Procedure>
         </Block>
         <Block>
           <Procedure>
-            <Instruction Message="You are now starting trial block 2 of 2.&#13;&#10;&#13;&#10;Remember to fixate on the cross at the beginning of each trial and that you are asked to report only &lt;color=red&gt;red&lt;/color&gt; letters and ignore &lt;color=blue&gt;blue&lt;/color&gt; letters if any. You will not receive feedback after each trial but you will see your score for this block in % correct after the last trial.&#13;&#10;&#13;&#10;Press A when you are ready to start the first trial"/>
+            <Instruction Message="You are now starting trial block 2 of 2.&#13;&#10;&#13;&#10;Remember to fixate on the cross at the beginning of each trial and that you are asked to report only &lt;color=red&gt;red&lt;/color&gt; letters and ignore &lt;color=blue&gt;blue&lt;/color&gt; letters if any. You will not receive feedback after each trial but you will see your score for this block in % correct after the last trial. Please try to achieve approx. 80-90% correct!&#13;&#10;&#13;&#10;Press A when you are ready to start the first trial"/>
             <Block Randomize="true">
               <Procedure>
-                <PartialReport Randomize="true" ReportQueryTop="Which letters do you recall?" ReportQueryBottom="Please enter the letters and&#13;&#10;press A to continue to the next trial" DisplayDuration="16.66" FixationCrossDuration="1000" MaskDuration="500">
+                <PartialReport Randomize="true" ReportQueryTop="Which letters do you recall?&#13;&#10;Only report letters for which you are certain and refrain from guessing!" ReportQueryBottom="Please enter the letters and&#13;&#10;press A to continue to the next trial" DisplayDuration="16.66" FixationCrossDuration="1000" MaskDuration="500">
                   <Array>
-                    <Character Color="red" Depth="0"/>
-                    <Character Color="red" Depth="0"/>
-                    <Character Color="red" Depth="0"/>
-                    <Character Color="red" Depth="0"/>
-                    <Character Color="red" Depth="0"/>
-                    <Character Color="red" Depth="0"/>
+                    <Character Target="true" Color="red" Depth="0"/>
+                    <Character Target="true" Color="red" Depth="0"/>
+                    <Character Target="true" Color="red" Depth="0"/>
+                    <Character Target="true" Color="red" Depth="0"/>
+                    <Character Target="true" Color="red" Depth="0"/>
+                    <Character Target="true" Color="red" Depth="0"/>
                   </Array>
                 </PartialReport>
-                <PartialReport Randomize="true" ReportQueryTop="Which letters do you recall?" ReportQueryBottom="Please enter the letters and&#13;&#10;press A to continue to the next trial" DisplayDuration="33.33" FixationCrossDuration="1000" MaskDuration="500">
+                <PartialReport Randomize="true" ReportQueryTop="Which letters do you recall?&#13;&#10;Only report letters for which you are certain and refrain from guessing!" ReportQueryBottom="Please enter the letters and&#13;&#10;press A to continue to the next trial" DisplayDuration="33.33" FixationCrossDuration="1000" MaskDuration="500">
                   <Array>
-                    <Character Color="red" Depth="0"/>
-                    <Character Color="red" Depth="0"/>
-                    <Character Color="red" Depth="0"/>
-                    <Character Color="red" Depth="0"/>
-                    <Character Color="red" Depth="0"/>
-                    <Character Color="red" Depth="0"/>
+                    <Character Target="true" Color="red" Depth="0"/>
+                    <Character Target="true" Color="red" Depth="0"/>
+                    <Character Target="true" Color="red" Depth="0"/>
+                    <Character Target="true" Color="red" Depth="0"/>
+                    <Character Target="true" Color="red" Depth="0"/>
+                    <Character Target="true" Color="red" Depth="0"/>
                   </Array>
                 </PartialReport>
-                <PartialReport Randomize="true" ReportQueryTop="Which letters do you recall?" ReportQueryBottom="Please enter the letters and&#13;&#10;press A to continue to the next trial" DisplayDuration="50" FixationCrossDuration="1000" MaskDuration="500">
+                <PartialReport Randomize="true" ReportQueryTop="Which letters do you recall?&#13;&#10;Only report letters for which you are certain and refrain from guessing!" ReportQueryBottom="Please enter the letters and&#13;&#10;press A to continue to the next trial" DisplayDuration="50" FixationCrossDuration="1000" MaskDuration="500">
                   <Array>
-                    <Character Color="red" Depth="0"/>
-                    <Character Color="red" Depth="0"/>
-                    <Character Color="red" Depth="0"/>
-                    <Character Color="red" Depth="0"/>
-                    <Character Color="red" Depth="0"/>
-                    <Character Color="red" Depth="0"/>
+                    <Character Target="true" Color="red" Depth="0"/>
+                    <Character Target="true" Color="red" Depth="0"/>
+                    <Character Target="true" Color="red" Depth="0"/>
+                    <Character Target="true" Color="red" Depth="0"/>
+                    <Character Target="true" Color="red" Depth="0"/>
+                    <Character Target="true" Color="red" Depth="0"/>
                   </Array>
                 </PartialReport>
-                <PartialReport Randomize="true" ReportQueryTop="Which letters do you recall?" ReportQueryBottom="Please enter the letters and&#13;&#10;press A to continue to the next trial" DisplayDuration="100" FixationCrossDuration="1000" MaskDuration="500">
+                <PartialReport Randomize="true" ReportQueryTop="Which letters do you recall?&#13;&#10;Only report letters for which you are certain and refrain from guessing!" ReportQueryBottom="Please enter the letters and&#13;&#10;press A to continue to the next trial" DisplayDuration="100" FixationCrossDuration="1000" MaskDuration="500">
                   <Array>
-                    <Character Color="red" Depth="0"/>
-                    <Character Color="red" Depth="0"/>
-                    <Character Color="red" Depth="0"/>
-                    <Character Color="red" Depth="0"/>
-                    <Character Color="red" Depth="0"/>
-                    <Character Color="red" Depth="0"/>
+                    <Character Target="true" Color="red" Depth="0"/>
+                    <Character Target="true" Color="red" Depth="0"/>
+                    <Character Target="true" Color="red" Depth="0"/>
+                    <Character Target="true" Color="red" Depth="0"/>
+                    <Character Target="true" Color="red" Depth="0"/>
+                    <Character Target="true" Color="red" Depth="0"/>
                   </Array>
                 </PartialReport>
-                <PartialReport Randomize="true" ReportQueryTop="Which letters do you recall?" ReportQueryBottom="Please enter the letters and&#13;&#10;press A to continue to the next trial" DisplayDuration="150" FixationCrossDuration="1000" MaskDuration="500">
+                <PartialReport Randomize="true" ReportQueryTop="Which letters do you recall?&#13;&#10;Only report letters for which you are certain and refrain from guessing!" ReportQueryBottom="Please enter the letters and&#13;&#10;press A to continue to the next trial" DisplayDuration="150" FixationCrossDuration="1000" MaskDuration="500">
                   <Array>
-                    <Character Color="red" Depth="0"/>
-                    <Character Color="red" Depth="0"/>
-                    <Character Color="red" Depth="0"/>
-                    <Character Color="red" Depth="0"/>
-                    <Character Color="red" Depth="0"/>
-                    <Character Color="red" Depth="0"/>
+                    <Character Target="true" Color="red" Depth="0"/>
+                    <Character Target="true" Color="red" Depth="0"/>
+                    <Character Target="true" Color="red" Depth="0"/>
+                    <Character Target="true" Color="red" Depth="0"/>
+                    <Character Target="true" Color="red" Depth="0"/>
+                    <Character Target="true" Color="red" Depth="0"/>
                   </Array>
                 </PartialReport>
-                <PartialReport Randomize="true" ReportQueryTop="Which letters do you recall?" ReportQueryBottom="Please enter the letters and&#13;&#10;press A to continue to the next trial" DisplayDuration="150" FixationCrossDuration="1000" MaskDuration="500">
+                <PartialReport Randomize="true" ReportQueryTop="Which letters do you recall?&#13;&#10;Only report letters for which you are certain and refrain from guessing!" ReportQueryBottom="Please enter the letters and&#13;&#10;press A to continue to the next trial" DisplayDuration="150" FixationCrossDuration="1000" MaskDuration="500">
                   <Array>
-                    <Character Color="blue" Depth="0"/>
-                    <Character Color="blue" Depth="0"/>
-                    <Character Color="red" Depth="0"/>
-                    <Character Color="red" Depth="0"/>
-                    <Character Color="red" Depth="0"/>
-                    <Character Color="red" Depth="0"/>
+                    <Character Target="false" Color="blue" Depth="0"/>
+                    <Character Target="false" Color="blue" Depth="0"/>
+                    <Character Target="true" Color="red" Depth="0"/>
+                    <Character Target="true" Color="red" Depth="0"/>
+                    <Character Target="true" Color="red" Depth="0"/>
+                    <Character Target="true" Color="red" Depth="0"/>
                   </Array>
                 </PartialReport>
-                <PartialReport Randomize="true" ReportQueryTop="Which letters do you recall?" ReportQueryBottom="Please enter the letters and&#13;&#10;press A to continue to the next trial" DisplayDuration="150" FixationCrossDuration="1000" MaskDuration="500">
+                <PartialReport Randomize="true" ReportQueryTop="Which letters do you recall?&#13;&#10;Only report letters for which you are certain and refrain from guessing!" ReportQueryBottom="Please enter the letters and&#13;&#10;press A to continue to the next trial" DisplayDuration="150" FixationCrossDuration="1000" MaskDuration="500">
                   <Array>
-                    <Character Color="blue" Depth="0"/>
-                    <Character Color="blue" Depth="0"/>
-                    <Character Color="blue" Depth="0"/>
-                    <Character Color="red" Depth="0"/>
-                    <Character Color="red" Depth="0"/>
-                    <Character Color="red" Depth="0"/>
+                    <Character Target="false" Color="blue" Depth="0"/>
+                    <Character Target="false" Color="blue" Depth="0"/>
+                    <Character Target="false" Color="blue" Depth="0"/>
+                    <Character Target="true" Color="red" Depth="0"/>
+                    <Character Target="true" Color="red" Depth="0"/>
+                    <Character Target="true" Color="red" Depth="0"/>
                   </Array>
                 </PartialReport>
-                <PartialReport Randomize="true" ReportQueryTop="Which letters do you recall?" ReportQueryBottom="Please enter the letters and&#13;&#10;press A to continue to the next trial" DisplayDuration="150" FixationCrossDuration="1000" MaskDuration="500">
+                <PartialReport Randomize="true" ReportQueryTop="Which letters do you recall?&#13;&#10;Only report letters for which you are certain and refrain from guessing!" ReportQueryBottom="Please enter the letters and&#13;&#10;press A to continue to the next trial" DisplayDuration="150" FixationCrossDuration="1000" MaskDuration="500">
                   <Array>
-                    <Character Color="blue" Depth="0"/>
-                    <Character Color="blue" Depth="0"/>
-                    <Character Color="blue" Depth="0"/>
-                    <Character Color="blue" Depth="0"/>
-                    <Character Color="red" Depth="0"/>
-                    <Character Color="red" Depth="0"/>
+                    <Character Target="false" Color="blue" Depth="0"/>
+                    <Character Target="false" Color="blue" Depth="0"/>
+                    <Character Target="false" Color="blue" Depth="0"/>
+                    <Character Target="false" Color="blue" Depth="0"/>
+                    <Character Target="true" Color="red" Depth="0"/>
+                    <Character Target="true" Color="red" Depth="0"/>
                   </Array>
                 </PartialReport>
-                <PartialReport Randomize="true" ReportQueryTop="Which letters do you recall?" ReportQueryBottom="Please enter the letters and&#13;&#10;press A to continue to the next trial" DisplayDuration="200" FixationCrossDuration="1000" MaskDuration="500">
+                <PartialReport Randomize="true" ReportQueryTop="Which letters do you recall?&#13;&#10;Only report letters for which you are certain and refrain from guessing!" ReportQueryBottom="Please enter the letters and&#13;&#10;press A to continue to the next trial" DisplayDuration="200" FixationCrossDuration="1000" MaskDuration="500">
                   <Array>
-                    <Character Color="red" Depth="0"/>
-                    <Character Color="red" Depth="0"/>
-                    <Character Color="red" Depth="0"/>
-                    <Character Color="red" Depth="0"/>
-                    <Character Color="red" Depth="0"/>
-                    <Character Color="red" Depth="0"/>
+                    <Character Target="true" Color="red" Depth="0"/>
+                    <Character Target="true" Color="red" Depth="0"/>
+                    <Character Target="true" Color="red" Depth="0"/>
+                    <Character Target="true" Color="red" Depth="0"/>
+                    <Character Target="true" Color="red" Depth="0"/>
+                    <Character Target="true" Color="red" Depth="0"/>
                   </Array>
                 </PartialReport>
               </Procedure>
             </Block>
-            <BlockFeedback Message="You have completed block 2 of 2.&#13;&#10;&#13;&#10;In this block, you scored: [block_score]%&#13;&#10;&#13;&#10;Press A when you are ready to continue"/>
+            <BlockFeedback Message="You have completed block 2 of 2.&#13;&#10;&#13;&#10;In this block, you scored: [block_score]%&#13;&#10;&#13;&#10;Remember to try to achieve an average accuracy of 80-90%!&#13;&#10;&#13;&#10;Press A when you are ready to continue"/>
           </Procedure>
         </Block>
       </Procedure>

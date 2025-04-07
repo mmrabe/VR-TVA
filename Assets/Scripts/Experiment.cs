@@ -27,17 +27,14 @@ public class Experiment : MonoBehaviour
     private int currentRecipe = 0;
 
     // Booleans
-    private bool isFinished = false;
-    private bool isFirstLoggedFinished = false;
-    private bool isTrialDataLogged = false;
+
+    public bool UsePhysicalKeyboard = false;
 
     // ExperimentSettings
     public int stimuliDistance;
     public float radius;
     public float stimsize;
     public int numbOfSlots;
-    public float DistanceToArraySizeRatio;
-    public string ProcedureFilePath;
 
     public OVRPassthroughLayer passthroughLayer;
 
@@ -85,7 +82,7 @@ public class Experiment : MonoBehaviour
         OVRPlugin.systemDisplayFrequency = 120.0f;
         try {
             UnityEngine.Debug.Log("Current fps: "+OVRPlugin.systemDisplayFrequency+", available fps: " +  OVRPlugin.systemDisplayFrequenciesAvailable);
-        } catch(NullReferenceException e) {
+        } catch {
             UnityEngine.Debug.Log("Could not determine supported fps!");
         }
 
@@ -195,6 +192,7 @@ public class Experiment : MonoBehaviour
                 if(currentRecipe < 0) currentRecipe = Recipes.Count() - 1;
             }
             if(OVRInput.GetUp(OVRInput.Button.SecondaryIndexTrigger) || Input.GetKeyUp(KeyCode.Return)) {
+                if(Input.GetKeyUp(KeyCode.Return)) UsePhysicalKeyboard = true;
                 Procedure = ExperimentRoot.Load(Recipes[currentRecipe], this);
                 Debug.Log(Procedure.ToString());
                 Debug.Log("Entered subject number: "+subjectNumberKeyboard.text);

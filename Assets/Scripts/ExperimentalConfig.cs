@@ -58,6 +58,8 @@ public abstract class TVAObject
     [XmlAttribute]
     public float Depth;
     [XmlAttribute]
+    public bool Target = false;
+    [XmlAttribute]
     public int Position;
     public override string ToString() => $"Object at position {Position} and depth {Depth}";
     public virtual void LogTo(Dictionary<string, object> Log, string Prefix, int Index)
@@ -86,12 +88,14 @@ public class TVACharacter : TVAObject
     {
         base.LogTo(Log, Prefix, Index);
         Log[Prefix + "Color" + Index] = Color;
+        Log[Prefix + "Target" + Index] = Target;
         Log[Prefix + "Character" + Index] = Display;
     }
     public override ISet<string> LogKeys(string Prefix, int Index)
     {
         ISet<string> Keys = base.LogKeys(Prefix, Index);
         Keys.Add(Prefix + "Color" + Index);
+        Keys.Add(Prefix + "Target" + Index);
         Keys.Add(Prefix + "Character" + Index);
         return Keys;
     }
@@ -466,7 +470,7 @@ public class TimedTrialType : TrialType
             if (Trial.CurrentStage == this)
             {
                 bool LettersChanged = false;
-                if(input.status == TouchScreenKeyboard.Status.Visible && keysPressed != input.text) {
+                if(input.status == TouchScreenKeyboard.Status.Visible && keysPressed != input.text && !Trial.Experiment.UsePhysicalKeyboard) {
                     keysPressed = "";
                     foreach(char letter in input.text.ToCharArray()) {
                         if(!keysPressed.Contains(letter.ToString().ToUpper())) keysPressed += letter.ToString().ToUpper();
@@ -496,7 +500,7 @@ public class TimedTrialType : TrialType
                     }
                     Debug.Log("Letter input: " + (String.IsNullOrEmpty(keysPressed) ? "(empty)" : keysPressed));
                 }
-                if (input.status == TouchScreenKeyboard.Status.Done || Input.GetKeyUp(KeyCode.Return))
+                if ((input.status == TouchScreenKeyboard.Status.Done && !Trial.Experiment.UsePhysicalKeyboard) || Input.GetKeyUp(KeyCode.Return))
                 {
                     RequestFinish = true;
                 }
@@ -739,7 +743,7 @@ public abstract class TVAReportTrialType : TVATrialType, Scorable
     {
         base.Prepare();
         Stages.Add(InputStage);
-        targets = Array.Select(x => (TVACharacter) x).ToList().Where(x => x.Color.Equals("red")).Select(x => char.Parse(x.Display)).ToList();
+        targets = Array.Select(x => (TVACharacter) x).ToList().Where(x => x.Target).Select(x => char.Parse(x.Display)).ToList();
         if(TrialFeedback != null) {
             FeedbackStage = new TrialFeedbackStage("Feedback");
             Stages.Add(FeedbackStage);
