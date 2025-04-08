@@ -31,10 +31,6 @@ public class Experiment : MonoBehaviour
     public bool UsePhysicalKeyboard = false;
 
     // ExperimentSettings
-    public int stimuliDistance;
-    public float radius;
-    public float stimsize;
-    public int numbOfSlots;
 
     public OVRPassthroughLayer passthroughLayer;
 
@@ -45,7 +41,6 @@ public class Experiment : MonoBehaviour
     public Text textBoxTop;
     public Text textBoxBottom;
 
-    public InputField inputField;
 
 
 
@@ -93,7 +88,7 @@ public class Experiment : MonoBehaviour
         this.canvasCenter = canvas.gameObject.GetComponent<RectTransform>().transform;
 
         string[] letters = new string[]{"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"};
-        string[] colors = new string[]{"red","blue"};
+        string[] colors = new string[]{"red","blue","yellow","green"};
         foreach(string color in colors) {
             GameObject parent = GameObject.Find(color + "Letters");
             foreach(string letter in letters) {
@@ -104,16 +99,14 @@ public class Experiment : MonoBehaviour
         // Find FixationCross
         FixationCrossObject = GameObject.Find("FixationCross");
         FixationCrossObject.SetActive(false);
-        FixationCrossObject.transform.position = new Vector3(FixationCrossObject.transform.position.x, FixationCrossObject.transform.position.y, -stimuliDistance);
         // Initialize circular array and set it's position.
         //float radius = canvas.planeDistance * DistanceToArraySizeRatio;
         
-        array.Init(radius, stimsize, numbOfSlots, FixationCrossObject, stimuliDistance, canvasCenter);
-        array.transform.position = canvasCenter.position;
-
+        FixationCrossObject.transform.position = new Vector3(FixationCrossObject.transform.position.x, FixationCrossObject.transform.position.y, -5);
         textBox.transform.position = FixationCrossObject.transform.position;
         textBoxTop.transform.position = FixationCrossObject.transform.position;
         textBoxBottom.transform.position = FixationCrossObject.transform.position;
+
 
         textBoxTop.gameObject.SetActive(true);
         textBoxTop.text = "Enter subject number:";
@@ -194,6 +187,12 @@ public class Experiment : MonoBehaviour
             if(OVRInput.GetUp(OVRInput.Button.SecondaryIndexTrigger) || Input.GetKeyUp(KeyCode.Return)) {
                 if(Input.GetKeyUp(KeyCode.Return)) UsePhysicalKeyboard = true;
                 Procedure = ExperimentRoot.Load(Recipes[currentRecipe], this);
+                FixationCrossObject.transform.position = new Vector3(FixationCrossObject.transform.position.x, FixationCrossObject.transform.position.y, -Procedure.ArrayDistance);
+                textBox.transform.position = FixationCrossObject.transform.position;
+                textBoxTop.transform.position = FixationCrossObject.transform.position;
+                textBoxBottom.transform.position = FixationCrossObject.transform.position;
+                array.Init(Procedure.ArrayRadius, Procedure.StimulusSize, Procedure.NumberOfSlots, FixationCrossObject, Procedure.ArrayDistance, Procedure.WhichMask, this, canvasCenter);
+                array.transform.position = canvasCenter.position;
                 Debug.Log(Procedure.ToString());
                 Debug.Log("Entered subject number: "+subjectNumberKeyboard.text);
                 Procedure.OutputFilePath = "Output_" + subjectNumberKeyboard.text + ".csv";

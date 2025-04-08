@@ -33,9 +33,7 @@ public class CircleArray : MonoBehaviour {
     public bool receptiveFieldEnabled { get; private set; } = false;
     public bool stimuliEnabled { get; private set; } = false;
 
-    public List<int> currentPositions { get; private set; }
-
-    public string[] sorenPositions { get; private set; }
+    private Experiment e;
 
     public CircleArray() {
 
@@ -49,9 +47,10 @@ public class CircleArray : MonoBehaviour {
 
     }
 
-    public void Init(float radius, float stimsize, int NumbOfSlots, GameObject FixationCrossObject, float distance, Transform canvasTransform = null) {
+    public void Init(float radius, float stimsize, int NumbOfSlots, GameObject FixationCrossObject, float distance, string whichMask, Experiment e, Transform canvasTransform = null) {
         this.radius = (float)(distance*Math.Tan(Math.PI*radius/180f));
         this.stimsize = (float)(2f*(distance*Math.Tan(Math.PI*(radius+stimsize/2f)/180f)-this.radius));
+        this.e = e;
         Debug.Log("radius: "+this.radius+", stimsize: "+this.stimsize);
         this.numbOfSlots = NumbOfSlots;
         this.canvasTransform = canvasTransform;
@@ -61,7 +60,7 @@ public class CircleArray : MonoBehaviour {
         this.canvasUpTrans = GameObject.Find("up").transform;
         this.canvasBackTrans = GameObject.Find("back").transform;
         this.canvasCenterTrans = GameObject.Find("center").transform;
-        this.patternMask = GameObject.Find("PatternMask");
+        this.patternMask = GameObject.Find("PatternMask"+whichMask);
         this.receptiveField = GameObject.Find("ReceptiveField");
         this.highlight = GameObject.Find("Sphere");
         this.patternMasks = new GameObject[numbOfSlots];
@@ -194,7 +193,7 @@ public class CircleArray : MonoBehaviour {
 
     public void ChangeSymbolsSize(float s) {
         //Debug.Log("Scale Factor = "+s);
-        GameObject maskPrefab = GameObject.Find("PatternMask");
+        GameObject maskPrefab = patternMask;
         Vector3 maskPrefabScale = maskPrefab.transform.localScale;
         maskPrefab.transform.localScale = new Vector3(maskPrefabScale.x*s,maskPrefabScale.y*s,maskPrefabScale.z*s);
 
@@ -202,20 +201,10 @@ public class CircleArray : MonoBehaviour {
         Vector3 boxPrefabScale = boxPrefab.transform.localScale;
         boxPrefab.transform.localScale = new Vector3(boxPrefabScale.x*s,boxPrefabScale.y*s,boxPrefabScale.z*s);
 
-        GameObject lettersRedContainer = GameObject.Find("redLetters");
-        for(int i = 0; i < lettersRedContainer.transform.childCount; i++)
-        {
-            GameObject lettersRedPrefab = lettersRedContainer.transform.GetChild(i).gameObject;
-            Vector3 lettersRedPrefabScale = lettersRedPrefab.transform.localScale;
-            lettersRedPrefab.transform.localScale = new Vector3(lettersRedPrefabScale.x*s,lettersRedPrefabScale.y*s,lettersRedPrefabScale.z*s);            
-        }
 
-        GameObject lettersBlueContainer = GameObject.Find("blueLetters");
-        for(int i = 0; i < lettersRedContainer.transform.childCount; i++) 
-        {
-            GameObject lettersBluePrefab = lettersBlueContainer.transform.GetChild(i).gameObject;
-            Vector3 lettersBluePrefabScale = lettersBluePrefab.transform.localScale;
-            lettersBluePrefab.transform.localScale = new Vector3(lettersBluePrefabScale.x*s,lettersBluePrefabScale.y*s,lettersBluePrefabScale.z*s);
+        foreach(GameObject prefab in e.symbols.Values) {
+            Vector3 prefabScale = prefab.transform.localScale;
+            prefab.transform.localScale = new Vector3(prefabScale.x*s,prefabScale.y*s,prefabScale.z*s);
         }
 
         Vector3 local = FixationCrossObject.transform.localScale;
@@ -241,7 +230,7 @@ public class CircleArray : MonoBehaviour {
         //float s = (2*O) / (3*8);
         float s = stimsize;
         //Debug.Log("target size  = "+s);
-        float scale = s / GameObject.Find("PatternMask").transform.localScale.x;
+        float scale = s / patternMask.transform.localScale.x;
         ChangeSymbolsSize(scale);
     } 
 }

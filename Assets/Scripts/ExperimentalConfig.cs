@@ -1063,6 +1063,16 @@ public class ExperimentRoot : BlockTrialType
         }
         return i;
     }
+    [XmlAttribute]
+    public float ArrayRadius;
+    [XmlAttribute]
+    public float StimulusSize;
+    [XmlAttribute]
+    public int NumberOfSlots;
+    [XmlAttribute]
+    public float ArrayDistance;
+    [XmlAttribute]
+    public string WhichMask;
     public Participant Participant;
     private FileStream OutputFileStream;
     private StreamWriter Writer;

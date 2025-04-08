@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Experiment Type="TVA-VR">
+<Experiment ArrayRadius="7.5" StimulusSize="2.5" NumberOfSlots="6" ArrayDistance="5.0" WhichMask="RedBlue" Type="TVA-VR">
   <Participant/>
   <Procedure>
     <Instruction Message="In diesem Experiment werden Sie schwarze Kästchen vor sich schweben sehen. Für kurze Zeiträume im Bereich eines Sekundenbruchteils werden diese Kästchen Buchstaben anzeigen. Sie werden gebeten, die Buchstaben nach jedem Durchgang einzugeben.&#10;&#10;Sie werden gebeten, nur &lt;color=red&gt;rote&lt;/color&gt; Buchstaben zu berichten und &lt;color=blue&gt;blaue&lt;/color&gt; Buchstaben zu ignorieren, falls vorhanden.&#10;&#10;Drücken Sie A, wenn Sie bereit sind, fortzufahren"/>
