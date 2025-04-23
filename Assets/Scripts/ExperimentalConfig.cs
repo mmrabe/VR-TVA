@@ -1045,6 +1045,8 @@ public class ExperimentRoot : BlockTrialType
 {
     protected override string GetReadableType() => "Experiment";
 
+    public string Recipe;
+
     public static ExperimentRoot Load(TextAsset bindata, Experiment e)
     {
         XmlSerializer x = new XmlSerializer(typeof(ExperimentRoot));
@@ -1052,6 +1054,7 @@ public class ExperimentRoot : BlockTrialType
         //Debug.Log("XML: "+bindata.text);
         ExperimentRoot i = (ExperimentRoot)x.Deserialize(new StringReader(bindata.text));
         i.Experiment = e;
+        i.Recipe = bindata.name;
         i.OutputFilePath = "Output_"+DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss")+"-"+Extensions.rng.Next(1000,10000)+".csv";
         if(i.Participant.Attributes != null) foreach (XmlAttribute attr in i.Participant.Attributes)
         {
@@ -1086,7 +1089,7 @@ public class ExperimentRoot : BlockTrialType
             Log[i.Name] = i.Value;
             PropagateLogValueToChildren(i.Name, i.Value, true);
         }
-        string OutputPath = Path.Combine(Application.persistentDataPath,"results");
+        string OutputPath = Path.Combine(Application.persistentDataPath,"results",Recipe);
         if(!Directory.Exists(OutputPath)) Directory.CreateDirectory(OutputPath);
         OutputPath = Path.Combine(OutputPath,OutputFilePath);
         Debug.Log("Output path: "+OutputPath);

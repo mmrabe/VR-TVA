@@ -182,8 +182,10 @@ public class CircleArray : MonoBehaviour {
         float initialScale = GameObject.Find("ReceptiveField").transform.localScale.z;
 
         patternMasks[c].transform.position = obj.transform.position;
+        patternMasks[c].transform.rotation = obj.transform.rotation;
         highlights[c].transform.position = obj.transform.position;
         receptiveFields[c].transform.position = obj.transform.position;// + (0.1f*backVec);
+        receptiveFields[c].transform.rotation = obj.transform.rotation;
         obj.transform.position -= backVec * (initialScale / 2);
 
 
