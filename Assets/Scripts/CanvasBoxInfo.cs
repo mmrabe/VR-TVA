@@ -23,7 +23,7 @@ public class CanvasBoxInfo : MonoBehaviour
         //info.text += "Refresh rate: "+ XRDevice.refreshRate;
         //info.text += "\n";
         if(experiment.Procedure != null) {
-            TrialType? currentTrial = experiment.Procedure.CurrentDisplayTrial;
+            TrialType currentTrial = experiment.Procedure.CurrentDisplayTrial;
             if(currentTrial != null) {
                 info.text = $"{experiment.Procedure.CurrentDisplayTrial.ReadableType} {experiment.Procedure.CurrentDisplayTrialID} ({(int) experiment.Procedure.CurrentProgressPercent}%)";
             } else {

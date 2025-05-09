@@ -58,19 +58,23 @@ public abstract class TVAObject
     [XmlAttribute]
     public float Depth;
     [XmlAttribute]
+    public float DepthJitter = 0.0f;
+    [XmlAttribute]
     public bool Target = false;
     [XmlAttribute]
     public int Position;
-    public override string ToString() => $"Object at position {Position} and depth {Depth}";
+    public override string ToString() => $"Object at position {Position} and depth {Depth}±{DepthJitter}";
     public virtual void LogTo(Dictionary<string, object> Log, string Prefix, int Index)
     {
         Log[Prefix + "Depth" + Index] = Depth;
+        Log[Prefix + "DepthJitter" + Index] = DepthJitter;
         Log[Prefix + "Position" + Index] = Position;
     }
     public virtual ISet<string> LogKeys(string Prefix, int Index)
     {
         HashSet<string> Keys = new HashSet<string>();
         Keys.Add(Prefix + "Depth" + Index);
+        Keys.Add(Prefix + "DepthJitter" + Index);
         Keys.Add(Prefix + "Position" + Index);
         return Keys;
     }
@@ -83,7 +87,7 @@ public class TVACharacter : TVAObject
     public string Color;
     [XmlAttribute]
     public string Display;
-    public override string ToString() => $"Character “{Display}” of color {Color} at position {Position} and depth {Depth}";
+    public override string ToString() => $"Character “{Display}” of color {Color} at position {Position} and depth {Depth}±{DepthJitter}";
     public override void LogTo(Dictionary<string, object> Log, string Prefix, int Index)
     {
         base.LogTo(Log, Prefix, Index);
@@ -105,6 +109,12 @@ public class TVACharacter : TVAObject
 
 public abstract class TrialType : Timeable
 {
+    [XmlAttribute]
+    public string RoomType;
+    [XmlAttribute]
+    public string Name { get => this.Log["Name"].ToString(); set {this.Log["Name"] = value; } }
+    [XmlAttribute]
+    public string TextColor;
     private Stopclock Clock;
     public string ReadableType { get => this.GetReadableType(); }
     public enum TrialState
@@ -134,11 +144,13 @@ public abstract class TrialType : Timeable
     public TrialState State { get; protected set; } = TrialState.Initialized;
     [XmlIgnore]
     public Dictionary<string, object> Log = new Dictionary<string, object>();
-    private Experiment? _Experiment = null;
+    private Experiment _Experiment = null;
     [XmlIgnore]
-    public Experiment? Experiment { get => this is ExperimentRoot ? _Experiment : ParentBlock.Experiment; protected set { _Experiment = value; } }
+    public ExperimentRoot Root { get => this is ExperimentRoot ? (ExperimentRoot) this : ParentBlock.Root; private set {}}
     [XmlIgnore]
-    public BlockTrialType? ParentBlock = null;
+    public Experiment Experiment { get => Root._Experiment; protected set { Root._Experiment = value; } }
+    [XmlIgnore]
+    public BlockTrialType ParentBlock = null;
     protected virtual string GetReadableType() => this.GetType().ToString();
     public virtual void Prepare()
     {
@@ -153,6 +165,12 @@ public abstract class TrialType : Timeable
     }
     public virtual void Start()
     {
+        if(RoomType != null) {
+            Experiment.PaintWalls(RoomType);
+        }
+        if(TextColor != null) {
+            Experiment.SetTextColor(TextColor);
+        }
         Debug.Log("Started: "+ToString());
         AssertTrialState(TrialState.Ready);
         Log["TimeStarted"] = DateTime.Now;
@@ -181,7 +199,7 @@ public abstract class TrialType : Timeable
     }
     public virtual ISet<string> LogKeys()
     {
-        var Keys = new HashSet<string> { "Trial", "Type", "TimeStarted", "TimeFinished", "Duration", "FPS" };
+        var Keys = new HashSet<string> { "Trial", "OriginalTrial", "Name", "Experiment", "Subject", "Type", "TimeStarted", "TimeFinished", "Duration", "FPS" };
         foreach (string Key in Log.Keys) Keys.Add(Key);
         return Keys;
     }
@@ -438,7 +456,7 @@ public class TimedTrialType : TrialType
         {
             this.keysPressed = "";
         }
-        private TouchScreenKeyboard input;
+        private TouchScreenKeyboard input = null;
         public override void Start(TimedTrialType Trial)
         {
             base.Start(Trial);
@@ -452,7 +470,7 @@ public class TimedTrialType : TrialType
             Trial.Experiment.FixationCrossObject.SetActive(false);
             Trial.Experiment.array.HideStimuli();
             Trial.Experiment.array.HideFields();
-            input = TouchScreenKeyboard.Open("", TouchScreenKeyboardType.ASCIICapable, false);
+            if(!Trial.Experiment.UsePhysicalKeyboard) input = TouchScreenKeyboard.Open("", TouchScreenKeyboardType.ASCIICapable, false);
         }
         public override void Finish()
         {
@@ -470,7 +488,7 @@ public class TimedTrialType : TrialType
             if (Trial.CurrentStage == this)
             {
                 bool LettersChanged = false;
-                if(input.status == TouchScreenKeyboard.Status.Visible && keysPressed != input.text && !Trial.Experiment.UsePhysicalKeyboard) {
+                if(input != null && input.status == TouchScreenKeyboard.Status.Visible && keysPressed != input.text && !Trial.Experiment.UsePhysicalKeyboard) {
                     keysPressed = "";
                     foreach(char letter in input.text.ToCharArray()) {
                         if(!keysPressed.Contains(letter.ToString().ToUpper())) keysPressed += letter.ToString().ToUpper();
@@ -500,7 +518,7 @@ public class TimedTrialType : TrialType
                     }
                     Debug.Log("Letter input: " + (String.IsNullOrEmpty(keysPressed) ? "(empty)" : keysPressed));
                 }
-                if ((input.status == TouchScreenKeyboard.Status.Done && !Trial.Experiment.UsePhysicalKeyboard) || Input.GetKeyUp(KeyCode.Return))
+                if ((input != null && input.status == TouchScreenKeyboard.Status.Done && !Trial.Experiment.UsePhysicalKeyboard) || Input.GetKeyUp(KeyCode.Return))
                 {
                     RequestFinish = true;
                 }
@@ -525,7 +543,7 @@ public class TimedTrialType : TrialType
     [XmlIgnore]
     public bool HasCurrentStage { get => CurrentStageIndex >= 1 && CurrentStageIndex <= Stages.Count; }
     [XmlIgnore]
-    public TrialStage? CurrentStage { get => HasCurrentStage ? Stages[CurrentStageIndex - 1] : null; }
+    public TrialStage CurrentStage { get => HasCurrentStage ? Stages[CurrentStageIndex - 1] : null; }
     public override void Start()
     {
         base.Start();
@@ -660,7 +678,7 @@ public abstract class TVATrialType : TimedTrialType
         base.Start();
         for (int i = 0; i < Array.Count; i++)
         {
-            ScreenObject.PutIntoSlot(MySymbols[i], Array[i].Position, Array[i].Depth, 2.0f);
+            ScreenObject.PutIntoSlot(MySymbols[i], Array[i].Position, Array[i].Depth + (float) Extensions.rng.NextDouble() * Array[i].DepthJitter, 2.0f);
         }
         //ScreenObject.ShowFields();
         Experiment.FixationCrossObject.SetActive(true);
@@ -705,12 +723,12 @@ public class TrialFeedback {
 
 public abstract class TVAReportTrialType : TVATrialType, Scorable
 {
-    public TrialFeedback? TrialFeedback = null;
+    public TrialFeedback TrialFeedback = null;
     [XmlAttribute]
     public string ReportQueryTop;
     [XmlAttribute]
     public string ReportQueryBottom;
-    protected MultiInputStage InputStage = new MultiInputStage("Input");
+    new protected MultiInputStage InputStage = new MultiInputStage("Input");
     public class TrialFeedbackStage : InputStage {
         public TrialFeedbackStage(string Name) : base(Name, new List<OVRInput.Button>  {OVRInput.Button.One,OVRInput.Button.Three,OVRInput.Button.PrimaryIndexTrigger,OVRInput.Button.SecondaryIndexTrigger}, new List<KeyCode> {KeyCode.Return}) {}
         public override void Start(TimedTrialType Trial)
@@ -808,7 +826,7 @@ public class TVAChangeDetectionTrialType : TVATrialType
         }
         return ret;
     }
-    protected InputStage InputStage = new InputStage("Input", new List<OVRInput.Button> { OVRInput.Button.One,OVRInput.Button.Three,OVRInput.Button.PrimaryIndexTrigger,OVRInput.Button.SecondaryIndexTrigger}, new List<KeyCode> { KeyCode.Return });
+    new protected InputStage InputStage = new InputStage("Input", new List<OVRInput.Button> { OVRInput.Button.One,OVRInput.Button.Three,OVRInput.Button.PrimaryIndexTrigger,OVRInput.Button.SecondaryIndexTrigger}, new List<KeyCode> { KeyCode.Return });
     [XmlAttribute]
     public float DelayDuration { get => DelayStage.DisplayDuration; set => DelayStage.DisplayDuration = value; }
     [XmlAttribute]
@@ -897,8 +915,19 @@ public class BlockTrialType : TrialType, Scorable
     public override void Prepare()
     {
         CurrentTrialNumber = 0;
+        for (int i = 0; i < Procedure.Count; i++)
+        {
+            if (Log.ContainsKey("OriginalTrial"))
+            {
+                Procedure[i].Log["OriginalTrial"] = Log["OriginalTrial"] + "-" + (i + 1);
+            }
+            else
+            {
+                Procedure[i].Log["OriginalTrial"] = i + 1;
+            }
+        }
         if(this.Randomize) {
-            Debug.Log("Randomize "+Log["Trial"]);
+            Debug.Log("Randomize "+Log["OriginalTrial"]);
             this.Procedure.Shuffle();
         }
         base.Prepare();
@@ -1004,9 +1033,9 @@ public class BlockTrialType : TrialType, Scorable
     private bool IsValidTrialNumber(int Number) => Number >= 1 && Number <= Procedure.Count;
     public bool HasCurrentTrial { get => IsValidTrialNumber(CurrentTrialNumber); }
     public bool HasNextTrial { get => IsValidTrialNumber(CurrentTrialNumber + 1); }
-    public TrialType? CurrentTrial { get => (HasCurrentTrial ? Procedure[CurrentTrialNumber - 1] : null); }
-    public TrialType? NextTrial { get => (HasNextTrial ? Procedure[CurrentTrialNumber] : null); }
-    public TrialType? CurrentDisplayTrial
+    public TrialType CurrentTrial { get => (HasCurrentTrial ? Procedure[CurrentTrialNumber - 1] : null); }
+    public TrialType NextTrial { get => (HasNextTrial ? Procedure[CurrentTrialNumber] : null); }
+    public TrialType CurrentDisplayTrial
     {
         get
         {
@@ -1015,8 +1044,8 @@ public class BlockTrialType : TrialType, Scorable
             else return CurrentTrial;
         }
     }
-    public string? CurrentTrialID { get => HasCurrentTrial && CurrentTrial.Log.ContainsKey("Trial") ? CurrentTrial.Log["Trial"].ToString() : null; }
-    public string? CurrentDisplayTrialID { get => CurrentDisplayTrial != null && CurrentDisplayTrial.Log.ContainsKey("Trial") ? CurrentDisplayTrial.Log["Trial"].ToString() : null; }
+    public string CurrentTrialID { get => HasCurrentTrial && CurrentTrial.Log.ContainsKey("Trial") ? CurrentTrial.Log["Trial"].ToString() : null; }
+    public string CurrentDisplayTrialID { get => CurrentDisplayTrial != null && CurrentDisplayTrial.Log.ContainsKey("Trial") ? CurrentDisplayTrial.Log["Trial"].ToString() : null; }
     public override (float, float) CurrentProgress
     {
         get
@@ -1077,6 +1106,7 @@ public class ExperimentRoot : BlockTrialType
     [XmlAttribute]
     public string WhichMask;
     public Participant Participant;
+    public string Subject;
     private FileStream OutputFileStream;
     private StreamWriter Writer;
     private ISet<string> CSVKeys;
@@ -1089,6 +1119,8 @@ public class ExperimentRoot : BlockTrialType
             Log[i.Name] = i.Value;
             PropagateLogValueToChildren(i.Name, i.Value, true);
         }
+        PropagateLogValueToChildren("Experiment", Recipe, true);
+        PropagateLogValueToChildren("Subject", Subject, true);
         string OutputPath = Path.Combine(Application.persistentDataPath,"results",Recipe);
         if(!Directory.Exists(OutputPath)) Directory.CreateDirectory(OutputPath);
         OutputPath = Path.Combine(OutputPath,OutputFilePath);

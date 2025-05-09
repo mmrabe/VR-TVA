@@ -185,6 +185,7 @@
      <None Include="Assets\Oculus\SampleFramework\Usage\HandsTrainExample\Shaders\GradientSkybox.shader" />
      <None Include="Assets\Oculus\SampleFramework\Usage\Passthrough\Materials\PassthroughLine.shader" />
      <None Include="Assets\Resources\pr-depth-german.xml" />
+     <None Include="Assets\Resources\exprak-gr-3.xml" />
      <None Include="Assets\Oculus\SampleFramework\Usage\Passthrough\Materials\BackgroundColor.shader" />
      <None Include="Assets\Oculus\SampleFramework\Usage\Passthrough\Materials\FatFingers.shader" />
      <None Include="Assets\Resources\pr-depth-english.xml" />
@@ -195,6 +196,7 @@
      <None Include="Assets\Oculus\SampleFramework\Core\Locomotion\Materials\ColumnGlow.shader" />
      <None Include="Assets\Resources\pr-color2-german.xml" />
      <None Include="Assets\Resources\pr-color2-english.xml" />
+     <None Include="Assets\Resources\exprak-gr-1.xml" />
      <None Include="Assets\Oculus\SampleFramework\Core\Video\Shaders\Multiview Stereo.shader" />
      <None Include="Assets\Oculus\SampleFramework\Core\DebugUI\Fonts\Montserrat\OFL.txt" />
      <None Include="Assets\Oculus\SampleFramework\Usage\OVROverlayCanvas\Shaders\UI Default Correct.shader" />

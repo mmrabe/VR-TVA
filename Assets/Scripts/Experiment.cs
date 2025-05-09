@@ -16,6 +16,38 @@ using System.Threading.Tasks;
 public class Experiment : MonoBehaviour
 {
 
+    public List<Material> WallMaterials;
+
+    public Material CurrentMaterial;
+
+    public void PaintWalls(string matname) {
+        foreach(Material material in WallMaterials) {
+            if(material.name.Equals(matname)) {
+                PaintWalls(material);
+                return;
+            }
+        }
+        Debug.Log($"Did not find wall material {matname}!");
+    }
+
+    public void PaintWalls(Material material) {
+        Debug.Log($"Painting walls with {material.name}");
+        for(int i = 1; i <= 6; i++) {
+            GameObject wall = GameObject.Find($"PhysicalLayer/Plane ({i})");
+            wall.GetComponent<MeshRenderer>().material = material;
+        }
+        CurrentMaterial = material;
+    }
+
+    public void SetTextColor(string htmlColor) {
+        Color color;
+        if(ColorUtility.TryParseHtmlString(htmlColor, out color)) {
+            textBox.color = color;
+            textBoxTop.color = color;
+            textBoxBottom.color = color;
+        }
+    }
+
     // GameObjects
     public Canvas canvas;
     public Transform canvasCenter;
@@ -53,7 +85,7 @@ public class Experiment : MonoBehaviour
 
     }
 
-    public float CurrentFrameRate { get => OVRPlugin.systemDisplayFrequency != null && OVRPlugin.systemDisplayFrequency >= 1f ? OVRPlugin.systemDisplayFrequency : Application.targetFrameRate ;}
+    public float CurrentFrameRate { get => OVRPlugin.systemDisplayFrequency >= 1f ? OVRPlugin.systemDisplayFrequency : Application.targetFrameRate ;}
 
     
     private void DisplayRefreshRateChanged (float fromRefreshRate, float ToRefreshRate)
@@ -115,6 +147,9 @@ public class Experiment : MonoBehaviour
 
         subjectNumberKeyboard = TouchScreenKeyboard.Open("", TouchScreenKeyboardType.NumberPad, false);
 
+        PaintWalls(WallMaterials[0]);
+        SetTextColor("#303030");
+
         //Procedure.Prepare();
         //Procedure.Start();
 
@@ -131,7 +166,7 @@ public class Experiment : MonoBehaviour
 
     private Queue<Action> ScheduledBackgroundTasks = new Queue<Action>();
 
-    private Task? BackgroundTaskWorker = null;
+    private Task BackgroundTaskWorker = null;
     private object BackgroundTaskWorkerLock = new object();
 
     public void EnqueueTaskOnNextFrame(Action a) {
@@ -175,7 +210,7 @@ public class Experiment : MonoBehaviour
             // if there is an unfinished experimental procedure, propagate update signal to active trial
             Procedure.Update();
         } else {
-            textBox.text = "Subject: " + subjectNumberKeyboard.text + "\r\nProcedure: "+Recipes[currentRecipe].name;
+            textBox.text = "Subject: " + (subjectNumberKeyboard == null ? "" : subjectNumberKeyboard.text) + "\r\nProcedure: "+Recipes[currentRecipe].name;
             if(OVRInput.GetUp(OVRInput.Button.One) || Input.GetKeyUp(KeyCode.RightArrow)) {
                 currentRecipe++;
                 if(currentRecipe >= Recipes.Count()) currentRecipe = 0;
@@ -196,6 +231,7 @@ public class Experiment : MonoBehaviour
                 Debug.Log(Procedure.ToString());
                 Debug.Log("Entered subject number: "+subjectNumberKeyboard.text);
                 Procedure.OutputFilePath = "Output_" + subjectNumberKeyboard.text + ".csv";
+                Procedure.Subject = subjectNumberKeyboard.text;
                 textBox.gameObject.SetActive(false);
                 textBoxTop.gameObject.SetActive(false);
                 Procedure.Prepare();

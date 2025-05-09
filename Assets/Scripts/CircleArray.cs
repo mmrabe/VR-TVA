@@ -146,6 +146,7 @@ public class CircleArray : MonoBehaviour {
     }
 
     public void ShowFields() {
+        if(e.CurrentMaterial.name.Contains("2D")) return;
         foreach(GameObject field in receptiveFields) field.SetActive(true);
     }
 
@@ -176,7 +177,7 @@ public class CircleArray : MonoBehaviour {
 
         Vector3 forward = (canvasCenterTrans.transform.position - canvasBackTrans.position).normalized;
 
-        obj.transform.position -= mult * depth * patternMasks[0].transform.lossyScale.x * forward;
+        obj.transform.position -= mult * depth * receptiveFields[0].transform.lossyScale.x * forward;
 
         Vector3 backVec = (canvasCenterTrans.transform.position - canvasBackTrans.position).normalized;
         float initialScale = GameObject.Find("ReceptiveField").transform.localScale.z;
@@ -232,7 +233,7 @@ public class CircleArray : MonoBehaviour {
         //float s = (2*O) / (3*8);
         float s = stimsize;
         //Debug.Log("target size  = "+s);
-        float scale = s / patternMask.transform.localScale.x;
+        float scale = s / receptiveField.transform.localScale.x;
         ChangeSymbolsSize(scale);
     } 
 }
