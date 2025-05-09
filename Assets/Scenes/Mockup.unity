@@ -135102,10 +135102,8 @@ MonoBehaviour:
   camRig: {fileID: 1192344803}
   FixationCrossObject: {fileID: 126109357}
   Recipes:
-  - {fileID: 4900000, guid: be622d2b594a7434b9405060c4cc063a, type: 3}
-  - {fileID: 4900000, guid: 34d43f922442c4e1ab7ccaadcf0d0626, type: 3}
-  - {fileID: 4900000, guid: 2a1af850d37fd4791b331e9de2bbfa00, type: 3}
-  - {fileID: 4900000, guid: 34c4a3c64605a481b9cd2c32d996b1a5, type: 3}
+  - {fileID: 4900000, guid: c663790cca93647479cde7941d46e1e8, type: 3}
+  - {fileID: 4900000, guid: 4334de0734e3349878f332f39019f2e2, type: 3}
   - {fileID: 4900000, guid: ceb039e0ba01b4521b594aa0fd5b027e, type: 3}
   - {fileID: 4900000, guid: 335b40d95229b42ec9072b0691b0e07c, type: 3}
   UsePhysicalKeyboard: 0
