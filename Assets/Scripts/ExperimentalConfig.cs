@@ -500,13 +500,13 @@ public class TimedTrialType : TrialType
                     if(Input.GetKeyUp(letter.ToString()) && !keysPressed.Contains(letter.ToString().ToUpper())) {
                         keysPressed += letter.ToString().ToUpper();
                         LettersChanged = true;
-                        input.text = keysPressed;
+                        if(input != null) input.text = keysPressed;
                     }
                 }
                 if (Input.GetKeyUp(KeyCode.Backspace))
                 {
                     keysPressed = "";
-                    input.text = keysPressed;
+                    if(input != null) input.text = keysPressed;
                     LettersChanged = true;
                 }
                 if(LettersChanged)
