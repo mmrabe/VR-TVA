@@ -135103,9 +135103,6 @@ MonoBehaviour:
   FixationCrossObject: {fileID: 126109357}
   Recipes:
   - {fileID: 4900000, guid: 37c507920ac6442439ac39a8133f0fa2, type: 3}
-  - {fileID: 4900000, guid: 806629561b1134b3bb24a158c27920d3, type: 3}
-  - {fileID: 4900000, guid: e41ded1361ab8484c8f8fd0c95d41e5d, type: 3}
-  - {fileID: 4900000, guid: ba9c4b699d49f47e18aeff438b68f0b8, type: 3}
   UsePhysicalKeyboard: 0
   passthroughLayer: {fileID: 1192344812}
   array: {fileID: 959163863}
