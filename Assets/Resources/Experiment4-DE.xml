@@ -2,7 +2,7 @@
 <Experiment ArrayRadius="7.5" StimulusSize="2.5" NumberOfSlots="8" ArrayDistance="5.0" WhichMask="RedBlue" Type="TVA-VR">
   <Participant/>
   <Procedure>
-    <Instruction Message="In diesem Experiment werden sie schwarze Boxen vor Ihnen fliegen sehen. Für einen kurzen Moment, werden in diesen Boxen Buchstaben angezeigt. Ihre Aufgabe besteht darin, nach jedem Durchgang die entsprechenden Buchstaben zu berichten, indem Sie sie eingeben.&#10;Sie werden in diesem Experiment 8 Blöcke je 36 Durchgänge durchführen. In jedem Durchgang, sind 2 &lt;color=blue&gt;blaue&lt;/color&gt; nahe, 2 &lt;color=blue&gt;blaue&lt;/color&gt; ferne, 2 &lt;color=red&gt;rote&lt;/color&gt; nahe und 2 &lt;color=red&gt;rote&lt;/color&gt; ferne Buchstaben. Zwischen den Blöcken werden sie aufgefordert nur die 4 blauen, roten, nahen oder fernen Buchstaben zu berichten.&#10;&#10;Drücken sie A, wenn sie bereit sind fortzufahren."/>
+    <Instruction Message="In diesem Experiment werden Sie schwarze Boxen vor Ihnen schweben sehen. Für einen kurzen Moment werden in diesen Boxen Buchstaben angezeigt. Ihre Aufgabe besteht darin, nach jedem Durchgang die entsprechenden Buchstaben zu berichten, indem Sie sie eingeben.&#10;Sie werden in diesem Experiment 8 Blöcke à 36 Durchgänge durchführen. In jedem Durchgang sind 2 &lt;color=blue&gt;blaue&lt;/color&gt; nahe, 2 &lt;color=blue&gt;blaue&lt;/color&gt; ferne, 2 &lt;color=red&gt;rote&lt;/color&gt; nahe und 2 &lt;color=red&gt;rote&lt;/color&gt; ferne Buchstaben. Zwischen den Blöcken werden Sie aufgefordert, nur die 2 blauen-nahen, blauen-fernen, roten-nahen oder roten-fernen Buchstaben zu berichten.&#10;&#10;Drücken Sie A, wenn Sie bereit sind fortzufahren."/>
     <Block Randomize="false">
       <Procedure>
         <Block Randomize="true">
@@ -23,7 +23,7 @@
                         <Character Color="blue" Depth="0" Target="false"/>
                         <Character Color="blue" Depth="0" Target="false"/>
                       </Array>
-                      <TrialFeedback MessageTop="Sie haben [score] von [targets] &lt;b&gt;&lt;color=red&gt;roten&lt;/color&gt; nahen&lt;/b&gt; Buchstaben richtig beantwortet:" MessageBottom="Drücken sie A, wenn Sie bereit sind, um fortzufaren."/>
+                      <TrialFeedback MessageTop="Sie haben [score] von [targets] &lt;b&gt;&lt;color=red&gt;roten&lt;/color&gt; nahen&lt;/b&gt; Buchstaben richtig beantwortet:" MessageBottom="Drücken Sie A, wenn Sie bereit sind fortzufahren."/>
                     </PartialReport>
                     <PartialReport Randomize="true" ReportQueryTop="An welche &lt;b&gt;&lt;color=red&gt;roten&lt;/color&gt; nahen&lt;/b&gt; Buchstaben erinnern Sie sich?&#10;&#10;      Berichten Sie nur die Buchstaben, bei denen Sie sich sicher sind und raten Sie bitte nicht!" ReportQueryBottom="Bitte tippen Sie die Buchstaben ein und drücken A, um fortzufahren." DisplayDuration="100" FixationCrossDuration="1000" MaskDuration="500">
                       <Array>
@@ -36,7 +36,7 @@
                         <Character Color="blue" Depth="0" Target="false"/>
                         <Character Color="blue" Depth="0" Target="false"/>
                       </Array>
-                      <TrialFeedback MessageTop="Sie haben [score] von [targets] &lt;b&gt;&lt;color=red&gt;roten&lt;/color&gt; nahen&lt;/b&gt; Buchstaben richtig beantwortet:" MessageBottom="Drücken sie A, wenn Sie bereit sind, um fortzufaren."/>
+                      <TrialFeedback MessageTop="Sie haben [score] von [targets] &lt;b&gt;&lt;color=red&gt;roten&lt;/color&gt; nahen&lt;/b&gt; Buchstaben richtig beantwortet:" MessageBottom="Drücken Sie A, wenn Sie bereit sind fortzufahren."/>
                     </PartialReport>
                     <PartialReport Randomize="true" ReportQueryTop="An welche &lt;b&gt;&lt;color=red&gt;roten&lt;/color&gt; nahen&lt;/b&gt; Buchstaben erinnern Sie sich?&#10;&#10;      Berichten Sie nur die Buchstaben, bei denen Sie sich sicher sind und raten Sie bitte nicht!" ReportQueryBottom="Bitte tippen Sie die Buchstaben ein und drücken A, um fortzufahren." DisplayDuration="200" FixationCrossDuration="1000" MaskDuration="500">
                       <Array>
@@ -49,7 +49,7 @@
                         <Character Color="blue" Depth="0" Target="false"/>
                         <Character Color="blue" Depth="0" Target="false"/>
                       </Array>
-                      <TrialFeedback MessageTop="Sie haben [score] von [targets] &lt;b&gt;&lt;color=red&gt;roten&lt;/color&gt; nahen&lt;/b&gt; Buchstaben richtig beantwortet:" MessageBottom="Drücken sie A, wenn Sie bereit sind, um fortzufaren."/>
+                      <TrialFeedback MessageTop="Sie haben [score] von [targets] &lt;b&gt;&lt;color=red&gt;roten&lt;/color&gt; nahen&lt;/b&gt; Buchstaben richtig beantwortet:" MessageBottom="Drücken Sie A, wenn Sie bereit sind fortzufahren."/>
                     </PartialReport>
                   </Procedure>
                 </Block>
@@ -71,7 +71,7 @@
                         <Character Color="blue" Depth="0" Target="false"/>
                         <Character Color="blue" Depth="0" Target="false"/>
                       </Array>
-                      <TrialFeedback MessageTop="Sie haben [score] von [targets] &lt;b&gt;&lt;color=red&gt;roten&lt;/color&gt; fernen&lt;/b&gt; Buchstaben richtig beantwortet:" MessageBottom="Drücken sie A, wenn Sie bereit sind, um fortzufaren."/>
+                      <TrialFeedback MessageTop="Sie haben [score] von [targets] &lt;b&gt;&lt;color=red&gt;roten&lt;/color&gt; fernen&lt;/b&gt; Buchstaben richtig beantwortet:" MessageBottom="Drücken Sie A, wenn Sie bereit sind fortzufahren."/>
                     </PartialReport>
                     <PartialReport Randomize="true" ReportQueryTop="An welche &lt;b&gt;&lt;color=red&gt;roten&lt;/color&gt; fernen&lt;/b&gt; Buchstaben erinnern Sie sich?&#10;&#10;      Berichten Sie nur die Buchstaben, bei denen Sie sich sicher sind und raten Sie bitte nicht!" ReportQueryBottom="Bitte tippen Sie die Buchstaben ein und drücken A, um fortzufahren." DisplayDuration="100" FixationCrossDuration="1000" MaskDuration="500">
                       <Array>
@@ -84,7 +84,7 @@
                         <Character Color="blue" Depth="0" Target="false"/>
                         <Character Color="blue" Depth="0" Target="false"/>
                       </Array>
-                      <TrialFeedback MessageTop="Sie haben [score] von [targets] &lt;b&gt;&lt;color=red&gt;roten&lt;/color&gt; fernen&lt;/b&gt; Buchstaben richtig beantwortet:" MessageBottom="Drücken sie A, wenn Sie bereit sind, um fortzufaren."/>
+                      <TrialFeedback MessageTop="Sie haben [score] von [targets] &lt;b&gt;&lt;color=red&gt;roten&lt;/color&gt; fernen&lt;/b&gt; Buchstaben richtig beantwortet:" MessageBottom="Drücken Sie A, wenn Sie bereit sind fortzufahren."/>
                     </PartialReport>
                     <PartialReport Randomize="true" ReportQueryTop="An welche &lt;b&gt;&lt;color=red&gt;roten&lt;/color&gt; fernen&lt;/b&gt; Buchstaben erinnern Sie sich?&#10;&#10;      Berichten Sie nur die Buchstaben, bei denen Sie sich sicher sind und raten Sie bitte nicht!" ReportQueryBottom="Bitte tippen Sie die Buchstaben ein und drücken A, um fortzufahren." DisplayDuration="200" FixationCrossDuration="1000" MaskDuration="500">
                       <Array>
@@ -97,7 +97,7 @@
                         <Character Color="blue" Depth="0" Target="false"/>
                         <Character Color="blue" Depth="0" Target="false"/>
                       </Array>
-                      <TrialFeedback MessageTop="Sie haben [score] von [targets] &lt;b&gt;&lt;color=red&gt;roten&lt;/color&gt; fernen&lt;/b&gt; Buchstaben richtig beantwortet:" MessageBottom="Drücken sie A, wenn Sie bereit sind, um fortzufaren."/>
+                      <TrialFeedback MessageTop="Sie haben [score] von [targets] &lt;b&gt;&lt;color=red&gt;roten&lt;/color&gt; fernen&lt;/b&gt; Buchstaben richtig beantwortet:" MessageBottom="Drücken Sie A, wenn Sie bereit sind fortzufahren."/>
                     </PartialReport>
                   </Procedure>
                 </Block>
@@ -119,7 +119,7 @@
                         <Character Color="blue" Depth="0" Target="false"/>
                         <Character Color="blue" Depth="0" Target="false"/>
                       </Array>
-                      <TrialFeedback MessageTop="Sie haben [score] von [targets] &lt;b&gt;&lt;color=blue&gt;blauen&lt;/color&gt; nahen&lt;/b&gt; Buchstaben richtig beantwortet:" MessageBottom="Drücken sie A, wenn Sie bereit sind, um fortzufaren."/>
+                      <TrialFeedback MessageTop="Sie haben [score] von [targets] &lt;b&gt;&lt;color=blue&gt;blauen&lt;/color&gt; nahen&lt;/b&gt; Buchstaben richtig beantwortet:" MessageBottom="Drücken Sie A, wenn Sie bereit sind fortzufahren."/>
                     </PartialReport>
                     <PartialReport Randomize="true" ReportQueryTop="An welche &lt;b&gt;&lt;color=blue&gt;blauen&lt;/color&gt; nahen&lt;/b&gt; Buchstaben erinnern Sie sich?&#10;&#10;      Berichten Sie nur die Buchstaben, bei denen Sie sich sicher sind und raten Sie bitte nicht!" ReportQueryBottom="Bitte tippen Sie die Buchstaben ein und drücken A, um fortzufahren." DisplayDuration="100" FixationCrossDuration="1000" MaskDuration="500">
                       <Array>
@@ -132,7 +132,7 @@
                         <Character Color="blue" Depth="0" Target="false"/>
                         <Character Color="blue" Depth="0" Target="false"/>
                       </Array>
-                      <TrialFeedback MessageTop="Sie haben [score] von [targets] &lt;b&gt;&lt;color=blue&gt;blauen&lt;/color&gt; nahen&lt;/b&gt; Buchstaben richtig beantwortet:" MessageBottom="Drücken sie A, wenn Sie bereit sind, um fortzufaren."/>
+                      <TrialFeedback MessageTop="Sie haben [score] von [targets] &lt;b&gt;&lt;color=blue&gt;blauen&lt;/color&gt; nahen&lt;/b&gt; Buchstaben richtig beantwortet:" MessageBottom="Drücken Sie A, wenn Sie bereit sind fortzufahren."/>
                     </PartialReport>
                     <PartialReport Randomize="true" ReportQueryTop="An welche &lt;b&gt;&lt;color=blue&gt;blauen&lt;/color&gt; nahen&lt;/b&gt; Buchstaben erinnern Sie sich?&#10;&#10;      Berichten Sie nur die Buchstaben, bei denen Sie sich sicher sind und raten Sie bitte nicht!" ReportQueryBottom="Bitte tippen Sie die Buchstaben ein und drücken A, um fortzufahren." DisplayDuration="200" FixationCrossDuration="1000" MaskDuration="500">
                       <Array>
@@ -145,7 +145,7 @@
                         <Character Color="blue" Depth="0" Target="false"/>
                         <Character Color="blue" Depth="0" Target="false"/>
                       </Array>
-                      <TrialFeedback MessageTop="Sie haben [score] von [targets] &lt;b&gt;&lt;color=blue&gt;blauen&lt;/color&gt; nahen&lt;/b&gt; Buchstaben richtig beantwortet:" MessageBottom="Drücken sie A, wenn Sie bereit sind, um fortzufaren."/>
+                      <TrialFeedback MessageTop="Sie haben [score] von [targets] &lt;b&gt;&lt;color=blue&gt;blauen&lt;/color&gt; nahen&lt;/b&gt; Buchstaben richtig beantwortet:" MessageBottom="Drücken Sie A, wenn Sie bereit sind fortzufahren."/>
                     </PartialReport>
                   </Procedure>
                 </Block>
@@ -167,7 +167,7 @@
                         <Character Color="blue" Depth="0" Target="true"/>
                         <Character Color="blue" Depth="0" Target="true"/>
                       </Array>
-                      <TrialFeedback MessageTop="Sie haben [score] von [targets] &lt;b&gt;&lt;color=blue&gt;blauen&lt;/color&gt; fernen&lt;/b&gt; Buchstaben richtig beantwortet:" MessageBottom="Drücken sie A, wenn Sie bereit sind, um fortzufaren."/>
+                      <TrialFeedback MessageTop="Sie haben [score] von [targets] &lt;b&gt;&lt;color=blue&gt;blauen&lt;/color&gt; fernen&lt;/b&gt; Buchstaben richtig beantwortet:" MessageBottom="Drücken Sie A, wenn Sie bereit sind fortzufahren."/>
                     </PartialReport>
                     <PartialReport Randomize="true" ReportQueryTop="An welche &lt;b&gt;&lt;color=blue&gt;blauen&lt;/color&gt; fernen&lt;/b&gt; Buchstaben erinnern Sie sich?&#10;&#10;      Berichten Sie nur die Buchstaben, bei denen Sie sich sicher sind und raten Sie bitte nicht!" ReportQueryBottom="Bitte tippen Sie die Buchstaben ein und drücken A, um fortzufahren." DisplayDuration="100" FixationCrossDuration="1000" MaskDuration="500">
                       <Array>
@@ -180,7 +180,7 @@
                         <Character Color="blue" Depth="0" Target="true"/>
                         <Character Color="blue" Depth="0" Target="true"/>
                       </Array>
-                      <TrialFeedback MessageTop="Sie haben [score] von [targets] &lt;b&gt;&lt;color=blue&gt;blauen&lt;/color&gt; fernen&lt;/b&gt; Buchstaben richtig beantwortet:" MessageBottom="Drücken sie A, wenn Sie bereit sind, um fortzufaren."/>
+                      <TrialFeedback MessageTop="Sie haben [score] von [targets] &lt;b&gt;&lt;color=blue&gt;blauen&lt;/color&gt; fernen&lt;/b&gt; Buchstaben richtig beantwortet:" MessageBottom="Drücken Sie A, wenn Sie bereit sind fortzufahren."/>
                     </PartialReport>
                     <PartialReport Randomize="true" ReportQueryTop="An welche &lt;b&gt;&lt;color=blue&gt;blauen&lt;/color&gt; fernen&lt;/b&gt; Buchstaben erinnern Sie sich?&#10;&#10;      Berichten Sie nur die Buchstaben, bei denen Sie sich sicher sind und raten Sie bitte nicht!" ReportQueryBottom="Bitte tippen Sie die Buchstaben ein und drücken A, um fortzufahren." DisplayDuration="200" FixationCrossDuration="1000" MaskDuration="500">
                       <Array>
@@ -193,7 +193,7 @@
                         <Character Color="blue" Depth="0" Target="true"/>
                         <Character Color="blue" Depth="0" Target="true"/>
                       </Array>
-                      <TrialFeedback MessageTop="Sie haben [score] von [targets] &lt;b&gt;&lt;color=blue&gt;blauen&lt;/color&gt; fernen&lt;/b&gt; Buchstaben richtig beantwortet:" MessageBottom="Drücken sie A, wenn Sie bereit sind, um fortzufaren."/>
+                      <TrialFeedback MessageTop="Sie haben [score] von [targets] &lt;b&gt;&lt;color=blue&gt;blauen&lt;/color&gt; fernen&lt;/b&gt; Buchstaben richtig beantwortet:" MessageBottom="Drücken Sie A, wenn Sie bereit sind fortzufahren."/>
                     </PartialReport>
                   </Procedure>
                 </Block>
@@ -205,7 +205,7 @@
           <Procedure>
             <Block>
               <Procedure>
-                <Instruction Message="Sie starten jetzt mit einem Block von 36 Durchgängen.&#10;&#10;Denken Sie daran, das Kreuz am Anfang zu fixieren. Sie werden aufgefordert nur &lt;b&gt;&lt;color=red&gt;rote&lt;/color&gt; nahe&lt;/b&gt; Buchstaben zu berichten.&#10;&#10;Sie werden nicht nach jedem Durchgang Feedback bekommen, aber Sie sehen Ihre Ergebnisse am Ende des Blocks. Versuchen Sie bitte, 80-90% korrekt zu beantworten!&#10;&#10;Drücken Sie A, wenn Sie bereit sind, mit dem ersten Durchgang zu beginnen."/>
+                <Instruction Message="Sie starten jetzt mit einem Block von 36 Durchgängen.&#10;&#10;Denken Sie daran, das Kreuz am Anfang zu fixieren. Sie werden aufgefordert, nur &lt;b&gt;&lt;color=red&gt;rote&lt;/color&gt; nahe&lt;/b&gt; Buchstaben zu berichten.&#10;&#10;Sie werden nicht nach jedem Durchgang Feedback bekommen, aber Sie sehen Ihre Ergebnisse am Ende des Blocks. Versuchen Sie bitte, 80-90% korrekt zu beantworten!&#10;&#10;Drücken Sie A, wenn Sie bereit sind, mit dem ersten Durchgang zu beginnen."/>
                 <Block Randomize="true">
                   <Procedure>
                     <PartialReport Randomize="true" ReportQueryTop="An welche &lt;b&gt;&lt;color=red&gt;roten&lt;/color&gt; nahen&lt;/b&gt; Buchstaben erinnern Sie sich?&#10;&#10;      Berichten Sie nur die Buchstaben, bei denen Sie sich sicher sind und raten Sie bitte nicht!" ReportQueryBottom="Bitte tippen Sie die Buchstaben ein und drücken A, um fortzufahren." DisplayDuration="16.66" FixationCrossDuration="1000" MaskDuration="500">
@@ -642,12 +642,12 @@
                     </PartialReport>
                   </Procedure>
                 </Block>
-                <BlockFeedback Message="Sie haben diesen Block abgeschlossen.&#10;&#10;  In diesem Block haben Sie erreicht: [block_score]%&#10;&#10;  Denken Sie daran, 80-90% anzustreben.&#10;&#10;  Drücken Sie A, wenn Sie bereit sind, fortzufahren."/>
+                <BlockFeedback Message="Sie haben diesen Block abgeschlossen.&#10;&#10;  In diesem Block haben Sie erreicht: [block_score]%&#10;&#10;  Denken Sie daran, 80-90% anzustreben.&#10;&#10;  Drücken Sie A, wenn Sie bereit sind fortzufahren."/>
               </Procedure>
             </Block>
             <Block>
               <Procedure>
-                <Instruction Message="Sie starten jetzt mit einem Block von 36 Durchgängen.&#10;&#10;Denken Sie daran, das Kreuz am Anfang zu fixieren. Sie werden aufgefordert nur &lt;b&gt;&lt;color=red&gt;rote&lt;/color&gt; ferne&lt;/b&gt; Buchstaben zu berichten.&#10;&#10;Sie werden nicht nach jedem Durchgang Feedback bekommen, aber Sie sehen Ihre Ergebnisse am Ende des Blocks. Versuchen Sie bitte, 80-90% korrekt zu beantworten!&#10;&#10;Drücken Sie A, wenn Sie bereit sind, mit dem ersten Durchgang zu beginnen."/>
+                <Instruction Message="Sie starten jetzt mit einem Block von 36 Durchgängen.&#10;&#10;Denken Sie daran, das Kreuz am Anfang zu fixieren. Sie werden aufgefordert, nur &lt;b&gt;&lt;color=red&gt;rote&lt;/color&gt; ferne&lt;/b&gt; Buchstaben zu berichten.&#10;&#10;Sie werden nicht nach jedem Durchgang Feedback bekommen, aber Sie sehen Ihre Ergebnisse am Ende des Blocks. Versuchen Sie bitte, 80-90% korrekt zu beantworten!&#10;&#10;Drücken Sie A, wenn Sie bereit sind, mit dem ersten Durchgang zu beginnen."/>
                 <Block Randomize="true">
                   <Procedure>
                     <PartialReport Randomize="true" ReportQueryTop="An welche &lt;b&gt;&lt;color=red&gt;roten&lt;/color&gt; fernen&lt;/b&gt; Buchstaben erinnern Sie sich?&#10;&#10;      Berichten Sie nur die Buchstaben, bei denen Sie sich sicher sind und raten Sie bitte nicht!" ReportQueryBottom="Bitte tippen Sie die Buchstaben ein und drücken A, um fortzufahren." DisplayDuration="16.66" FixationCrossDuration="1000" MaskDuration="500">
@@ -1084,12 +1084,12 @@
                     </PartialReport>
                   </Procedure>
                 </Block>
-                <BlockFeedback Message="Sie haben diesen Block abgeschlossen.&#10;&#10;  In diesem Block haben Sie erreicht: [block_score]%&#10;&#10;  Denken Sie daran, 80-90% anzustreben.&#10;&#10;  Drücken Sie A, wenn Sie bereit sind, fortzufahren."/>
+                <BlockFeedback Message="Sie haben diesen Block abgeschlossen.&#10;&#10;  In diesem Block haben Sie erreicht: [block_score]%&#10;&#10;  Denken Sie daran, 80-90% anzustreben.&#10;&#10;  Drücken Sie A, wenn Sie bereit sind fortzufahren."/>
               </Procedure>
             </Block>
             <Block>
               <Procedure>
-                <Instruction Message="Sie starten jetzt mit einem Block von 36 Durchgängen.&#10;&#10;Denken Sie daran, das Kreuz am Anfang zu fixieren. Sie werden aufgefordert nur &lt;b&gt;&lt;color=red&gt;rote&lt;/color&gt; nahe&lt;/b&gt; Buchstaben zu berichten.&#10;&#10;Sie werden nicht nach jedem Durchgang Feedback bekommen, aber Sie sehen Ihre Ergebnisse am Ende des Blocks. Versuchen Sie bitte, 80-90% korrekt zu beantworten!&#10;&#10;Drücken Sie A, wenn Sie bereit sind, mit dem ersten Durchgang zu beginnen."/>
+                <Instruction Message="Sie starten jetzt mit einem Block von 36 Durchgängen.&#10;&#10;Denken Sie daran, das Kreuz am Anfang zu fixieren. Sie werden aufgefordert, nur &lt;b&gt;&lt;color=red&gt;rote&lt;/color&gt; nahe&lt;/b&gt; Buchstaben zu berichten.&#10;&#10;Sie werden nicht nach jedem Durchgang Feedback bekommen, aber Sie sehen Ihre Ergebnisse am Ende des Blocks. Versuchen Sie bitte, 80-90% korrekt zu beantworten!&#10;&#10;Drücken Sie A, wenn Sie bereit sind, mit dem ersten Durchgang zu beginnen."/>
                 <Block Randomize="true">
                   <Procedure>
                     <PartialReport Randomize="true" ReportQueryTop="An welche &lt;b&gt;&lt;color=red&gt;roten&lt;/color&gt; nahen&lt;/b&gt; Buchstaben erinnern Sie sich?&#10;&#10;      Berichten Sie nur die Buchstaben, bei denen Sie sich sicher sind und raten Sie bitte nicht!" ReportQueryBottom="Bitte tippen Sie die Buchstaben ein und drücken A, um fortzufahren." DisplayDuration="16.66" FixationCrossDuration="1000" MaskDuration="500">
@@ -1526,12 +1526,12 @@
                     </PartialReport>
                   </Procedure>
                 </Block>
-                <BlockFeedback Message="Sie haben diesen Block abgeschlossen.&#10;&#10;  In diesem Block haben Sie erreicht: [block_score]%&#10;&#10;  Denken Sie daran, 80-90% anzustreben.&#10;&#10;  Drücken Sie A, wenn Sie bereit sind, fortzufahren."/>
+                <BlockFeedback Message="Sie haben diesen Block abgeschlossen.&#10;&#10;  In diesem Block haben Sie erreicht: [block_score]%&#10;&#10;  Denken Sie daran, 80-90% anzustreben.&#10;&#10;  Drücken Sie A, wenn Sie bereit sind fortzufahren."/>
               </Procedure>
             </Block>
             <Block>
               <Procedure>
-                <Instruction Message="Sie starten jetzt mit einem Block von 36 Durchgängen.&#10;&#10;Denken Sie daran, das Kreuz am Anfang zu fixieren. Sie werden aufgefordert nur &lt;b&gt;&lt;color=red&gt;rote&lt;/color&gt; ferne&lt;/b&gt; Buchstaben zu berichten.&#10;&#10;Sie werden nicht nach jedem Durchgang Feedback bekommen, aber Sie sehen Ihre Ergebnisse am Ende des Blocks. Versuchen Sie bitte, 80-90% korrekt zu beantworten!&#10;&#10;Drücken Sie A, wenn Sie bereit sind, mit dem ersten Durchgang zu beginnen."/>
+                <Instruction Message="Sie starten jetzt mit einem Block von 36 Durchgängen.&#10;&#10;Denken Sie daran, das Kreuz am Anfang zu fixieren. Sie werden aufgefordert, nur &lt;b&gt;&lt;color=red&gt;rote&lt;/color&gt; ferne&lt;/b&gt; Buchstaben zu berichten.&#10;&#10;Sie werden nicht nach jedem Durchgang Feedback bekommen, aber Sie sehen Ihre Ergebnisse am Ende des Blocks. Versuchen Sie bitte, 80-90% korrekt zu beantworten!&#10;&#10;Drücken Sie A, wenn Sie bereit sind, mit dem ersten Durchgang zu beginnen."/>
                 <Block Randomize="true">
                   <Procedure>
                     <PartialReport Randomize="true" ReportQueryTop="An welche &lt;b&gt;&lt;color=red&gt;roten&lt;/color&gt; fernen&lt;/b&gt; Buchstaben erinnern Sie sich?&#10;&#10;      Berichten Sie nur die Buchstaben, bei denen Sie sich sicher sind und raten Sie bitte nicht!" ReportQueryBottom="Bitte tippen Sie die Buchstaben ein und drücken A, um fortzufahren." DisplayDuration="16.66" FixationCrossDuration="1000" MaskDuration="500">
@@ -1968,12 +1968,12 @@
                     </PartialReport>
                   </Procedure>
                 </Block>
-                <BlockFeedback Message="Sie haben diesen Block abgeschlossen.&#10;&#10;  In diesem Block haben Sie erreicht: [block_score]%&#10;&#10;  Denken Sie daran, 80-90% anzustreben.&#10;&#10;  Drücken Sie A, wenn Sie bereit sind, fortzufahren."/>
+                <BlockFeedback Message="Sie haben diesen Block abgeschlossen.&#10;&#10;  In diesem Block haben Sie erreicht: [block_score]%&#10;&#10;  Denken Sie daran, 80-90% anzustreben.&#10;&#10;  Drücken Sie A, wenn Sie bereit sind fortzufahren."/>
               </Procedure>
             </Block>
             <Block>
               <Procedure>
-                <Instruction Message="Sie starten jetzt mit einem Block von 36 Durchgängen.&#10;&#10;Denken Sie daran, das Kreuz am Anfang zu fixieren. Sie werden aufgefordert nur &lt;b&gt;&lt;color=blue&gt;blaue&lt;/color&gt; nahe&lt;/b&gt; Buchstaben zu berichten.&#10;&#10;Sie werden nicht nach jedem Durchgang Feedback bekommen, aber Sie sehen Ihre Ergebnisse am Ende des Blocks. Versuchen Sie bitte, 80-90% korrekt zu beantworten!&#10;&#10;Drücken Sie A, wenn Sie bereit sind, mit dem ersten Durchgang zu beginnen."/>
+                <Instruction Message="Sie starten jetzt mit einem Block von 36 Durchgängen.&#10;&#10;Denken Sie daran, das Kreuz am Anfang zu fixieren. Sie werden aufgefordert, nur &lt;b&gt;&lt;color=blue&gt;blaue&lt;/color&gt; nahe&lt;/b&gt; Buchstaben zu berichten.&#10;&#10;Sie werden nicht nach jedem Durchgang Feedback bekommen, aber Sie sehen Ihre Ergebnisse am Ende des Blocks. Versuchen Sie bitte, 80-90% korrekt zu beantworten!&#10;&#10;Drücken Sie A, wenn Sie bereit sind, mit dem ersten Durchgang zu beginnen."/>
                 <Block Randomize="true">
                   <Procedure>
                     <PartialReport Randomize="true" ReportQueryTop="An welche &lt;b&gt;&lt;color=blue&gt;blauen&lt;/color&gt; nahen&lt;/b&gt; Buchstaben erinnern Sie sich?&#10;&#10;      Berichten Sie nur die Buchstaben, bei denen Sie sich sicher sind und raten Sie bitte nicht!" ReportQueryBottom="Bitte tippen Sie die Buchstaben ein und drücken A, um fortzufahren." DisplayDuration="16.66" FixationCrossDuration="1000" MaskDuration="500">
@@ -2410,12 +2410,12 @@
                     </PartialReport>
                   </Procedure>
                 </Block>
-                <BlockFeedback Message="Sie haben diesen Block abgeschlossen.&#10;&#10;  In diesem Block haben Sie erreicht: [block_score]%&#10;&#10;  Denken Sie daran, 80-90% anzustreben.&#10;&#10;  Drücken Sie A, wenn Sie bereit sind, fortzufahren."/>
+                <BlockFeedback Message="Sie haben diesen Block abgeschlossen.&#10;&#10;  In diesem Block haben Sie erreicht: [block_score]%&#10;&#10;  Denken Sie daran, 80-90% anzustreben.&#10;&#10;  Drücken Sie A, wenn Sie bereit sind fortzufahren."/>
               </Procedure>
             </Block>
             <Block>
               <Procedure>
-                <Instruction Message="Sie starten jetzt mit einem Block von 36 Durchgängen.&#10;&#10;Denken Sie daran, das Kreuz am Anfang zu fixieren. Sie werden aufgefordert nur &lt;b&gt;&lt;color=blue&gt;blaue&lt;/color&gt; ferne&lt;/b&gt; Buchstaben zu berichten.&#10;&#10;Sie werden nicht nach jedem Durchgang Feedback bekommen, aber Sie sehen Ihre Ergebnisse am Ende des Blocks. Versuchen Sie bitte, 80-90% korrekt zu beantworten!&#10;&#10;Drücken Sie A, wenn Sie bereit sind, mit dem ersten Durchgang zu beginnen."/>
+                <Instruction Message="Sie starten jetzt mit einem Block von 36 Durchgängen.&#10;&#10;Denken Sie daran, das Kreuz am Anfang zu fixieren. Sie werden aufgefordert, nur &lt;b&gt;&lt;color=blue&gt;blaue&lt;/color&gt; ferne&lt;/b&gt; Buchstaben zu berichten.&#10;&#10;Sie werden nicht nach jedem Durchgang Feedback bekommen, aber Sie sehen Ihre Ergebnisse am Ende des Blocks. Versuchen Sie bitte, 80-90% korrekt zu beantworten!&#10;&#10;Drücken Sie A, wenn Sie bereit sind, mit dem ersten Durchgang zu beginnen."/>
                 <Block Randomize="true">
                   <Procedure>
                     <PartialReport Randomize="true" ReportQueryTop="An welche &lt;b&gt;&lt;color=blue&gt;blauen&lt;/color&gt; fernen&lt;/b&gt; Buchstaben erinnern Sie sich?&#10;&#10;      Berichten Sie nur die Buchstaben, bei denen Sie sich sicher sind und raten Sie bitte nicht!" ReportQueryBottom="Bitte tippen Sie die Buchstaben ein und drücken A, um fortzufahren." DisplayDuration="16.66" FixationCrossDuration="1000" MaskDuration="500">
@@ -2852,12 +2852,12 @@
                     </PartialReport>
                   </Procedure>
                 </Block>
-                <BlockFeedback Message="Sie haben diesen Block abgeschlossen.&#10;&#10;  In diesem Block haben Sie erreicht: [block_score]%&#10;&#10;  Denken Sie daran, 80-90% anzustreben.&#10;&#10;  Drücken Sie A, wenn Sie bereit sind, fortzufahren."/>
+                <BlockFeedback Message="Sie haben diesen Block abgeschlossen.&#10;&#10;  In diesem Block haben Sie erreicht: [block_score]%&#10;&#10;  Denken Sie daran, 80-90% anzustreben.&#10;&#10;  Drücken Sie A, wenn Sie bereit sind fortzufahren."/>
               </Procedure>
             </Block>
             <Block>
               <Procedure>
-                <Instruction Message="Sie starten jetzt mit einem Block von 36 Durchgängen.&#10;&#10;Denken Sie daran, das Kreuz am Anfang zu fixieren. Sie werden aufgefordert nur &lt;b&gt;&lt;color=blue&gt;blaue&lt;/color&gt; nahe&lt;/b&gt; Buchstaben zu berichten.&#10;&#10;Sie werden nicht nach jedem Durchgang Feedback bekommen, aber Sie sehen Ihre Ergebnisse am Ende des Blocks. Versuchen Sie bitte, 80-90% korrekt zu beantworten!&#10;&#10;Drücken Sie A, wenn Sie bereit sind, mit dem ersten Durchgang zu beginnen."/>
+                <Instruction Message="Sie starten jetzt mit einem Block von 36 Durchgängen.&#10;&#10;Denken Sie daran, das Kreuz am Anfang zu fixieren. Sie werden aufgefordert, nur &lt;b&gt;&lt;color=blue&gt;blaue&lt;/color&gt; nahe&lt;/b&gt; Buchstaben zu berichten.&#10;&#10;Sie werden nicht nach jedem Durchgang Feedback bekommen, aber Sie sehen Ihre Ergebnisse am Ende des Blocks. Versuchen Sie bitte, 80-90% korrekt zu beantworten!&#10;&#10;Drücken Sie A, wenn Sie bereit sind, mit dem ersten Durchgang zu beginnen."/>
                 <Block Randomize="true">
                   <Procedure>
                     <PartialReport Randomize="true" ReportQueryTop="An welche &lt;b&gt;&lt;color=blue&gt;blauen&lt;/color&gt; nahen&lt;/b&gt; Buchstaben erinnern Sie sich?&#10;&#10;      Berichten Sie nur die Buchstaben, bei denen Sie sich sicher sind und raten Sie bitte nicht!" ReportQueryBottom="Bitte tippen Sie die Buchstaben ein und drücken A, um fortzufahren." DisplayDuration="16.66" FixationCrossDuration="1000" MaskDuration="500">
@@ -3294,12 +3294,12 @@
                     </PartialReport>
                   </Procedure>
                 </Block>
-                <BlockFeedback Message="Sie haben diesen Block abgeschlossen.&#10;&#10;  In diesem Block haben Sie erreicht: [block_score]%&#10;&#10;  Denken Sie daran, 80-90% anzustreben.&#10;&#10;  Drücken Sie A, wenn Sie bereit sind, fortzufahren."/>
+                <BlockFeedback Message="Sie haben diesen Block abgeschlossen.&#10;&#10;  In diesem Block haben Sie erreicht: [block_score]%&#10;&#10;  Denken Sie daran, 80-90% anzustreben.&#10;&#10;  Drücken Sie A, wenn Sie bereit sind fortzufahren."/>
               </Procedure>
             </Block>
             <Block>
               <Procedure>
-                <Instruction Message="Sie starten jetzt mit einem Block von 36 Durchgängen.&#10;&#10;Denken Sie daran, das Kreuz am Anfang zu fixieren. Sie werden aufgefordert nur &lt;b&gt;&lt;color=blue&gt;blaue&lt;/color&gt; ferne&lt;/b&gt; Buchstaben zu berichten.&#10;&#10;Sie werden nicht nach jedem Durchgang Feedback bekommen, aber Sie sehen Ihre Ergebnisse am Ende des Blocks. Versuchen Sie bitte, 80-90% korrekt zu beantworten!&#10;&#10;Drücken Sie A, wenn Sie bereit sind, mit dem ersten Durchgang zu beginnen."/>
+                <Instruction Message="Sie starten jetzt mit einem Block von 36 Durchgängen.&#10;&#10;Denken Sie daran, das Kreuz am Anfang zu fixieren. Sie werden aufgefordert, nur &lt;b&gt;&lt;color=blue&gt;blaue&lt;/color&gt; ferne&lt;/b&gt; Buchstaben zu berichten.&#10;&#10;Sie werden nicht nach jedem Durchgang Feedback bekommen, aber Sie sehen Ihre Ergebnisse am Ende des Blocks. Versuchen Sie bitte, 80-90% korrekt zu beantworten!&#10;&#10;Drücken Sie A, wenn Sie bereit sind, mit dem ersten Durchgang zu beginnen."/>
                 <Block Randomize="true">
                   <Procedure>
                     <PartialReport Randomize="true" ReportQueryTop="An welche &lt;b&gt;&lt;color=blue&gt;blauen&lt;/color&gt; fernen&lt;/b&gt; Buchstaben erinnern Sie sich?&#10;&#10;      Berichten Sie nur die Buchstaben, bei denen Sie sich sicher sind und raten Sie bitte nicht!" ReportQueryBottom="Bitte tippen Sie die Buchstaben ein und drücken A, um fortzufahren." DisplayDuration="16.66" FixationCrossDuration="1000" MaskDuration="500">
@@ -3736,7 +3736,7 @@
                     </PartialReport>
                   </Procedure>
                 </Block>
-                <BlockFeedback Message="Sie haben diesen Block abgeschlossen.&#10;&#10;  In diesem Block haben Sie erreicht: [block_score]%&#10;&#10;  Denken Sie daran, 80-90% anzustreben.&#10;&#10;  Drücken Sie A, wenn Sie bereit sind, fortzufahren."/>
+                <BlockFeedback Message="Sie haben diesen Block abgeschlossen.&#10;&#10;  In diesem Block haben Sie erreicht: [block_score]%&#10;&#10;  Denken Sie daran, 80-90% anzustreben.&#10;&#10;  Drücken Sie A, wenn Sie bereit sind fortzufahren."/>
               </Procedure>
             </Block>
           </Procedure>
